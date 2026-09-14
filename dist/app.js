@@ -513,6 +513,18 @@ function render() {
 }
 
 function bindEvents() {
+  const settingsDialog = $("#settings-dialog");
+  const openSettings = () => {
+    if (typeof settingsDialog.showModal === "function") settingsDialog.showModal();
+    else settingsDialog.setAttribute("open", "");
+  };
+  const closeSettings = () => {
+    if (typeof settingsDialog.close === "function") settingsDialog.close();
+    else settingsDialog.removeAttribute("open");
+  };
+  $("#settings-button").addEventListener("click", openSettings);
+  $("#settings-dialog-close").addEventListener("click", closeSettings);
+  settingsDialog.addEventListener("click", event => { if (event.target === settingsDialog) closeSettings(); });
   $("#component-search").addEventListener("input", event => renderComponentLibrary(event.target.value));
   $("#random-style").addEventListener("click", () => randomizeStyle("all"));
   $("#random-menu-toggle").addEventListener("click", event => {

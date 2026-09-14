@@ -44,6 +44,7 @@
           </div>
           <button id="theme-toggle" class="icon-button" type="button" aria-label="切换明暗主题" title="切换明暗主题">◐</button>
           <button id="export-button" class="button button-primary" type="button">复制 README</button>
+          <button id="settings-button" class="icon-button settings-button" type="button" aria-label="打开设置" title="设置">⚙</button>
         </div>
       </header>
 
@@ -66,13 +67,6 @@
 
           <div class="component-groups" id="component-groups"></div>
 
-          <div class="inspiration-card">
-            <span class="inspiration-icon" aria-hidden="true">✦</span>
-            <div>
-              <strong>灵感来自社区</strong>
-              <p>组件参考 Awesome GitHub Profile README 中的优秀用法。</p>
-            </div>
-          </div>
         </aside>
 
         <section class="canvas-area" aria-label="README 画布">
@@ -143,6 +137,41 @@
         </aside>
       </main>
     </div>
+
+    <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-dialog-title">
+      <div class="dialog-header">
+        <div>
+          <span class="eyebrow">SETTINGS</span>
+          <h2 id="settings-dialog-title">关于 Readme Studio</h2>
+        </div>
+        <button id="settings-dialog-close" class="icon-button dialog-close" type="button" aria-label="关闭设置">×</button>
+      </div>
+
+      <div class="dialog-content">
+        <section class="about-section">
+          <h3>产品介绍</h3>
+          <p>Readme Studio 是一个可视化 GitHub Profile README 搭建器。通过拖拽、规则随机和实时预览，快速生成可复制的 README Markdown。</p>
+        </section>
+
+        <section class="about-section">
+          <h3>鸣谢</h3>
+          <p>感谢 GitHub 社区持续分享优秀的主页设计与组件灵感。</p>
+          <div class="about-links">
+            <a href="https://github.com/abhisheknaiidu/awesome-github-profile-readme" target="_blank" rel="noreferrer">Awesome GitHub Profile README <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/rzashakeri/beautify-github-profile" target="_blank" rel="noreferrer">Beautify GitHub Profile <span aria-hidden="true">↗</span></a>
+          </div>
+        </section>
+
+        <section class="about-section">
+          <h3>联系作者</h3>
+          <p>有建议、问题或新的组件想法，欢迎通过 GitHub 联系。</p>
+          <a class="author-link" href="https://github.com/riko2chen" target="_blank" rel="noreferrer">
+            <span class="author-avatar" aria-hidden="true">R</span>
+            <span><strong>GitHub @riko2chen</strong><small>查看作者主页 ↗</small></span>
+          </a>
+        </section>
+      </div>
+    </dialog>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="./app.js"></script>
