@@ -10,6 +10,10 @@ const COMPONENTS = [
   { type: "activity", group: "展示", icon: "▦", label: "贡献活动", desc: "活动图表组件", defaults: { heading: "Contribution activity", username: "octocat", color: "7C5CFF", align: "center" } },
   { type: "summary", group: "展示", icon: "▤", label: "资料摘要", desc: "Profile Summary 卡片", defaults: { username: "octocat", theme: "github_dark", align: "center" } },
   { type: "snake", group: "展示", icon: "〰", label: "贡献贪吃蛇", desc: "在贡献图上游动", defaults: { username: "octocat", branch: "output", theme: "dark", align: "center" } },
+  { type: "metrics", group: "热门", icon: "M", label: "Metrics 信息图", desc: "高度可定制的账号数据图", defaults: { username: "octocat", filename: "github-metrics.svg", align: "center" } },
+  { type: "contrib3d", group: "热门", icon: "3D", label: "3D 贡献图", desc: "立体呈现年度贡献日历", defaults: { username: "octocat", theme: "profile-green-animate", align: "center" } },
+  { type: "spaceshooter", group: "热门", icon: "SS", label: "贡献太空射击", desc: "把贡献格子变成太空游戏", defaults: { username: "octocat", output: "game.gif", strategy: "random", align: "center" } },
+  { type: "terminal", group: "热门", icon: ">_", label: "终端动图", desc: "复古终端风格个人信息", defaults: { image: "./terminal.gif", alt: "GitHub terminal profile", align: "center" } },
   { type: "social", group: "连接", icon: "↗", label: "社交链接", desc: "联系与关注入口", defaults: { heading: "Connect with me", items: "LinkedIn:https://linkedin.com,Website:https://example.com,X:https://x.com", align: "left" } },
   { type: "quote", group: "连接", icon: "“", label: "开发者语录", desc: "一句个人信条", defaults: { text: "Make it work, make it right, make it delightful.", align: "left" } },
   { type: "visitor", group: "连接", icon: "◎", label: "访问计数", desc: "Profile views 徽章", defaults: { username: "octocat", label: "Profile views", color: "1F6FEB", align: "left" } },
@@ -31,6 +35,10 @@ const FIELD_SCHEMAS = {
   activity: [["heading", "区块标题", "text"], ["username", "GitHub 用户名", "text"], ["color", "强调色（HEX）", "text"]],
   summary: [["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github_dark", "transparent", "tokyonight", "dracula", "nord_dark", "vue"]]],
   snake: [["username", "GitHub 用户名", "text"], ["branch", "输出分支", "text"], ["theme", "显示模式", "select", "", ["dark", "light"]]],
+  metrics: [["username", "GitHub 用户名", "text"], ["filename", "输出文件名", "text", "工作流会把信息图写入这个 SVG 文件"]],
+  contrib3d: [["username", "GitHub 用户名", "text"], ["theme", "3D 主题", "select", "", ["profile-green-animate", "profile-season-animate", "profile-night-view", "profile-night-rainbow", "profile-gitblock"]]],
+  spaceshooter: [["username", "GitHub 用户名", "text"], ["output", "输出文件名", "text", "支持 GIF 或 WebP"], ["strategy", "攻击路线", "select", "", ["random", "column", "row"]]],
+  terminal: [["image", "动图地址", "text", "先使用原项目生成 GIF，再填写仓库相对路径或图片 URL"], ["alt", "替代文字", "text"]],
   social: [["heading", "区块标题", "text"], ["items", "链接", "textarea", "每项格式：名称:URL，使用英文逗号分隔"]],
   quote: [["text", "语录", "textarea"]],
   visitor: [["username", "GitHub 用户名", "text"], ["label", "标签", "text"], ["color", "颜色（HEX）", "text"]],
@@ -42,11 +50,48 @@ const FIELD_SCHEMAS = {
 
 const DEPENDENCY_TYPES = {
   snake: { level: "action", label: "需要 Action" },
+  metrics: { level: "action", label: "需要 Action" },
+  contrib3d: { level: "action", label: "需要 Action" },
+  spaceshooter: { level: "action", label: "需要 Action" },
+  terminal: { level: "setup", label: "需要生成" },
   spotify: { level: "setup", label: "需要配置" },
   custom: { level: "setup", label: "检查依赖" }
 };
 
 const dependencyFor = type => DEPENDENCY_TYPES[type] || { level: "direct", label: "直接可用" };
+
+const SOURCE_META = {
+  typing: { repo: "https://github.com/DenverCoder1/readme-typing-svg", name: "DenverCoder1/readme-typing-svg", intro: "把多段文字渲染成可嵌入 README 的动态打字 SVG。" },
+  capsule: { repo: "https://github.com/kyechan99/capsule-render", name: "kyechan99/capsule-render", intro: "通过 URL 参数生成波浪、渐变等动态页头。" },
+  skills: { repo: "https://github.com/badges/shields", name: "badges/shields", intro: "为技术栈和社交链接生成一致的状态徽章。" },
+  social: { repo: "https://github.com/badges/shields", name: "badges/shields", intro: "使用 Shields 徽章生成一致的社交链接入口。" },
+  stats: { repo: "https://github.com/anuraghazra/github-readme-stats", name: "anuraghazra/github-readme-stats", intro: "动态展示 GitHub 统计数据和常用语言。" },
+  streak: { repo: "https://github.com/DenverCoder1/github-readme-streak-stats", name: "DenverCoder1/github-readme-streak-stats", intro: "生成连续贡献天数与历史记录卡片。" },
+  trophy: { repo: "https://github.com/ryo-ma/github-profile-trophy", name: "ryo-ma/github-profile-trophy", intro: "把 GitHub 活跃数据转换成可展示的奖杯。" },
+  activity: { repo: "https://github.com/Ashutosh00710/github-readme-activity-graph", name: "Ashutosh00710/github-readme-activity-graph", intro: "用折线图展示近期 GitHub 贡献活动。" },
+  summary: { repo: "https://github.com/vn7n24fzkq/github-profile-summary-cards", name: "vn7n24fzkq/github-profile-summary-cards", intro: "生成包含提交、语言与仓库数据的资料摘要卡。" },
+  snake: { repo: "https://github.com/Platane/snk", name: "Platane/snk", intro: "通过 GitHub Action 生成吃掉贡献格子的贪吃蛇动画。" },
+  visitor: { repo: "https://github.com/antonkomarev/github-profile-views-counter", name: "antonkomarev/github-profile-views-counter", intro: "为 GitHub 主页提供轻量的访问次数徽章。" },
+  spotify: { repo: "https://github.com/kittinan/spotify-github-profile", name: "kittinan/spotify-github-profile", intro: "把 Spotify 正在播放或最近播放状态嵌入主页。" },
+  metrics: { repo: "https://github.com/lowlighter/metrics", name: "lowlighter/metrics", intro: "用丰富插件生成高度可定制的 GitHub 账号信息图。" },
+  contrib3d: { repo: "https://github.com/yoshi389111/github-profile-3d-contrib", name: "yoshi389111/github-profile-3d-contrib", intro: "通过 GitHub Action 生成立体的年度贡献日历。" },
+  spaceshooter: { repo: "https://github.com/czl9707/gh-space-shooter", name: "czl9707/gh-space-shooter", intro: "把贡献图转换成会每日更新的太空射击动画。" },
+  terminal: { repo: "https://github.com/x0rzavi/github-readme-terminal", name: "x0rzavi/github-readme-terminal", intro: "生成可高度定制的复古终端 GIF。" }
+};
+
+const ACKNOWLEDGEMENTS = [
+  { repo: "https://github.com/abhisheknaiidu/awesome-github-profile-readme", name: "abhisheknaiidu/awesome-github-profile-readme" },
+  { repo: "https://github.com/rzashakeri/beautify-github-profile", name: "rzashakeri/beautify-github-profile" },
+  ...Object.values(SOURCE_META).map(({ repo, name }) => ({ repo, name }))
+].filter((item, index, list) => list.findIndex(candidate => candidate.repo === item.repo) === index);
+
+const UI_ICONS = {
+  close: '<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  lock: '<svg class="ui-icon small" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>',
+  unlock: '<svg class="ui-icon small" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 017.5-2"/></svg>',
+  sun: '<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>',
+  moon: '<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.1A8.5 8.5 0 118.9 4a7 7 0 0011.1 11.1z"/></svg>'
+};
 
 const DEMO_BLOCKS = [
   { type: "hero", props: { title: "Hi, I'm The Octocat 👋", subtitle: "Open source explorer · Builder · Curious mind", align: "center" } },
@@ -66,7 +111,9 @@ const LAYOUT_RECIPES = [
   { name: "社区建设者", blocks: [["hero"], ["about"], ["trophy"], ["streak"], ["visitor"], ["social"]] },
   { name: "视觉实验室", blocks: [["capsule"], ["typing"], ["skills"], ["activity"], ["quote"], ["visitor"]] },
   { name: "编辑手记", blocks: [["hero"], ["quote"], ["about"], ["divider", { spacing: "large" }], ["stats"], ["social"]] },
-  { name: "紧凑徽章", blocks: [["hero"], ["skills", { style: "for-the-badge" }], ["summary"], ["trophy"], ["visitor"], ["social"]] }
+  { name: "紧凑徽章", blocks: [["hero"], ["skills", { style: "for-the-badge" }], ["summary"], ["trophy"], ["visitor"], ["social"]] },
+  { name: "立体贡献者", blocks: [["hero"], ["contrib3d"], ["stats"], ["trophy"], ["social"]] },
+  { name: "数据宇航员", blocks: [["capsule"], ["metrics"], ["spaceshooter"], ["skills"], ["social"]] }
 ];
 
 const COLOR_THEMES = [
@@ -306,6 +353,10 @@ function blockPreview(block) {
   if (block.type === "activity") content = `<h2>${escapeHTML(p.heading)}</h2><div class="activity-grid">${Array.from({length: 104}, (_, i) => `<i style="--level:${["#161b22",`#${safeColor}35`,`#${safeColor}70`,`#${safeColor}b5`,`#${safeColor}`][(i * 7 + i % 11) % 5]}"></i>`).join("")}</div>`;
   if (block.type === "summary") content = `<div class="summary-card"><div><strong>${escapeHTML(p.username)}</strong><span>Profile details</span></div><div class="summary-metrics"><span><b>1.8k</b> commits</span><span><b>128</b> stars</span><span><b>24</b> repos</span></div><div class="summary-bars"><i></i><i></i><i></i><i></i></div></div>`;
   if (block.type === "snake") content = `<div class="snake-preview"><div class="snake-grid">${Array.from({length: 70}, (_, i) => `<i class="${[8,9,10,11,21,31,32,33,34,35,36,46,56,57,58][i] !== undefined ? "on" : ""}"></i>`).join("")}</div><span class="snake">●━━●━━●</span><small>GitHub contribution snake · ${escapeHTML(p.theme)}</small></div>`;
+  if (block.type === "metrics") content = `<div class="metrics-preview"><div><span>METRICS</span><strong>${escapeHTML(p.username)}</strong></div><div class="metrics-grid"><i style="--v:82%"></i><i style="--v:58%"></i><i style="--v:73%"></i><i style="--v:44%"></i></div><small>Activity · Languages · Repositories · Habits</small></div>`;
+  if (block.type === "contrib3d") content = `<div class="contrib3d-preview"><div class="contrib3d-grid">${Array.from({length: 84}, (_, i) => `<i style="--h:${5 + ((i * 13) % 26)}px;--o:${.25 + ((i * 7) % 70) / 100}"></i>`).join("")}</div><small>3D contribution calendar · ${escapeHTML(p.theme)}</small></div>`;
+  if (block.type === "spaceshooter") content = `<div class="space-preview"><div class="space-stars">${Array.from({length: 24}, (_, i) => `<i style="--x:${(i * 37) % 100}%;--y:${(i * 53) % 100}%"></i>`).join("")}</div><span class="space-ship">△</span><span class="space-shot">····</span><div class="space-blocks">${Array.from({length: 18}, (_, i) => `<i class="${i % 4 ? "on" : ""}"></i>`).join("")}</div><small>Contribution Space Shooter · ${escapeHTML(p.strategy)}</small></div>`;
+  if (block.type === "terminal") content = `<div class="terminal-preview"><div class="terminal-top"><i></i><i></i><i></i><span>profile — terminal</span></div><code><b>$</b> github-profile --user ${escapeHTML(state.profile.login || "developer")}<br><span>Loading repositories...</span><br><em>✓ Profile ready</em></code></div>`;
   if (block.type === "social") content = `<h2>${escapeHTML(p.heading)}</h2><div class="social-row">${csv(p.items).map(item => `<span class="social-pill">${escapeHTML(item.split(":")[0])} ↗</span>`).join("")}</div>`;
   if (block.type === "quote") content = `<div class="quote-card">“${escapeHTML(p.text)}”</div>`;
   if (block.type === "visitor") content = `<div class="visitor-counter"><span>${escapeHTML(p.label)}</span><b>12,840</b></div>`;
@@ -324,8 +375,8 @@ function renderCanvas() {
     zone.innerHTML = state.blocks.map((block, index) => {
       const component = COMPONENTS.find(item => item.type === block.type);
       return `<div class="readme-block ${state.selectedId === block.id ? "selected" : ""}" draggable="true" data-id="${block.id}" data-index="${index}" tabindex="0">
-        <button class="block-remove" type="button" draggable="false" data-remove-id="${block.id}" aria-label="删除${escapeHTML(component?.label || block.type)}" title="删除组件">×</button>
-        <button class="block-lock ${block.locked ? "locked" : ""}" type="button" draggable="false" data-lock-id="${block.id}" aria-label="${block.locked ? "解锁" : "锁定"}${escapeHTML(component?.label || block.type)}" aria-pressed="${Boolean(block.locked)}" title="${block.locked ? "解锁，允许随机替换" : "锁定，随机时保留"}">${block.locked ? "◆" : "◇"}</button>
+        <button class="block-remove" type="button" draggable="false" data-remove-id="${block.id}" aria-label="删除${escapeHTML(component?.label || block.type)}" title="删除组件">${UI_ICONS.close}</button>
+        <button class="block-lock ${block.locked ? "locked" : ""}" type="button" draggable="false" data-lock-id="${block.id}" aria-label="${block.locked ? "解锁" : "锁定"}${escapeHTML(component?.label || block.type)}" aria-pressed="${Boolean(block.locked)}" title="${block.locked ? "解锁，允许随机替换" : "锁定，随机时保留"}">${block.locked ? UI_ICONS.lock : UI_ICONS.unlock}</button>
         <span class="block-tools">⠿ ${escapeHTML(component?.label || block.type)}</span>
         ${blockPreview(block)}
       </div>`;
@@ -391,8 +442,10 @@ function renderSettings() {
   }
   const component = COMPONENTS.find(item => item.type === block.type);
   const fields = FIELD_SCHEMAS[block.type] || [];
+  const source = SOURCE_META[block.type];
   container.innerHTML = `<div class="settings-form">
     <div class="selected-type"><span class="component-icon">${escapeHTML(component.icon)}</span><span><strong>${escapeHTML(component.label)}</strong><small>${escapeHTML(component.desc)}</small></span></div>
+    ${source ? `<aside class="component-source"><span class="source-kicker">开源组件</span><p>${escapeHTML(source.intro)}</p><a href="${source.repo}" target="_blank" rel="noreferrer">${escapeHTML(source.name)} <span aria-hidden="true">↗</span></a></aside>` : ""}
     ${fields.map(([key, label, type, help, options]) => {
       const value = block.props[key] ?? "";
       const controlId = `field-${block.id}-${key}`;
@@ -448,6 +501,10 @@ function markdownFor(block) {
   if (block.type === "activity") md = `## ${p.heading}\n\n<img src="https://github-readme-activity-graph.vercel.app/graph?username=${encodeURIComponent(p.username)}&bg_color=00000000&color=${p.color || "7C5CFF"}&line=${p.color || "7C5CFF"}&point=FFFFFF&hide_border=true" alt="Contribution activity" />`;
   if (block.type === "summary") md = `<img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=${encodeURIComponent(p.username)}&theme=${encodeURIComponent(p.theme)}" alt="GitHub profile summary" />`;
   if (block.type === "snake") md = `<!-- Requires a Platane/snk GitHub Action that publishes to the ${safeGitRef(p.branch)} branch -->\n<img src="https://raw.githubusercontent.com/${encodeURIComponent(p.username)}/${encodeURIComponent(p.username)}/${encodeURIComponent(safeGitRef(p.branch))}/github-contribution-grid-snake-${p.theme}.svg" alt="Contribution snake" />`;
+  if (block.type === "metrics") md = `<img src="./${safeRelativePath(p.filename, "github-metrics.svg")}" alt="GitHub Metrics" />`;
+  if (block.type === "contrib3d") md = `<img src="./profile-3d-contrib/${safeRelativePath(p.theme, "profile-green-animate")}.svg" alt="3D contribution calendar" />`;
+  if (block.type === "spaceshooter") md = `<img src="./${safeRelativePath(p.output, "game.gif")}" alt="GitHub contribution space shooter" />`;
+  if (block.type === "terminal") md = `<img src="${String(p.image || "./terminal.gif").replace(/\"/g, "%22")}" alt="${String(p.alt || "GitHub terminal profile").replace(/\"/g, "&quot;")}" />`;
   if (block.type === "social") md = `## ${p.heading}\n\n${csv(p.items).map(item => { const split = item.indexOf(":"); const name = split > -1 ? item.slice(0, split) : item; const url = split > -1 ? item.slice(split + 1) : "#"; return `[![${name}](https://img.shields.io/badge/${encodeURIComponent(name)}-1F6FEB?style=flat&logoColor=white)](${url})`; }).join(" ")}`;
   if (block.type === "quote") md = `> “${p.text}”`;
   if (block.type === "visitor") md = `![${p.label}](https://komarev.com/ghpvc/?username=${encodeURIComponent(p.username)}&label=${encodeURIComponent(p.label)}&color=${p.color || "1F6FEB"}&style=flat)`;
@@ -468,6 +525,10 @@ function getExportChecks() {
   const remoteTypes = ["typing", "capsule", "stats", "streak", "trophy", "activity", "summary", "visitor"].filter(type => types.has(type));
   if (remoteTypes.length) checks.push({ level: "direct", icon: "↗", title: "动态卡片服务", detail: "这些图片由第三方服务实时渲染，不需要 GitHub Action。", status: "无需配置" });
   if (types.has("snake")) checks.push({ level: "action", icon: "◆", title: "贡献贪吃蛇", detail: "ZIP 将包含每日生成 SVG 的 GitHub Actions 工作流。", status: "需要 Action" });
+  if (types.has("metrics")) checks.push({ level: "action", icon: "M", title: "Metrics 信息图", detail: "ZIP 将包含工作流；运行前需添加 METRICS_TOKEN 仓库密钥。", status: "Action + 密钥" });
+  if (types.has("contrib3d")) checks.push({ level: "action", icon: "3D", title: "3D 贡献图", detail: "ZIP 将包含每日生成并提交 3D SVG 的工作流。", status: "需要 Action" });
+  if (types.has("spaceshooter")) checks.push({ level: "action", icon: "SS", title: "贡献太空射击", detail: "ZIP 将包含每日生成游戏 GIF 或 WebP 的工作流。", status: "需要 Action" });
+  if (types.has("terminal")) checks.push({ level: "setup", icon: ">_", title: "终端动图", detail: "需要先用原项目生成 GIF，再把文件或 URL 提供给 README。", status: "需要生成" });
   if (types.has("spotify")) checks.push({ level: "setup", icon: "!", title: "Spotify 正在播放", detail: "发布前需要在 Spotify GitHub Profile 服务中完成绑定。", status: "需要配置" });
   if (types.has("custom")) checks.push({ level: "setup", icon: "?", title: "自定义 Markdown", detail: "请确认粘贴内容引用的图片、密钥或工作流已经配置。", status: "需要检查" });
   return checks;
@@ -484,6 +545,11 @@ function renderExportChecklist() {
 function safeGitRef(value) {
   const cleaned = String(value || "output").trim().replace(/[^A-Za-z0-9._/-]/g, "-").replace(/\/{2,}/g, "/").replace(/^[-/.]+|[-/.]+$/g, "");
   return cleaned && !cleaned.includes("..") ? cleaned : "output";
+}
+
+function safeRelativePath(value, fallback) {
+  const cleaned = String(value || fallback).trim().replace(/[^A-Za-z0-9._/-]/g, "-").replace(/\/{2,}/g, "/").replace(/^\/+/, "");
+  return cleaned && !cleaned.includes("..") ? cleaned : fallback;
 }
 
 function generateSnakeWorkflow() {
@@ -523,9 +589,103 @@ function generateSnakeWorkflow() {
   ].join("\n");
 }
 
+function generateMetricsWorkflow() {
+  const block = state.blocks.find(item => item.type === "metrics");
+  const filename = safeRelativePath(block?.props.filename, "github-metrics.svg");
+  return [
+    "name: GitHub Metrics",
+    "",
+    "on:",
+    "  schedule:",
+    "    - cron: \"0 0 * * *\"",
+    "  workflow_dispatch:",
+    "",
+    "jobs:",
+    "  github-metrics:",
+    "    runs-on: ubuntu-latest",
+    "    permissions:",
+    "      contents: write",
+    "    steps:",
+    "      - uses: lowlighter/metrics@latest",
+    "        with:",
+    "          token: ${{ secrets.METRICS_TOKEN }}",
+    "          user: ${{ github.repository_owner }}",
+    `          filename: ${filename}`,
+    ""
+  ].join("\n");
+}
+
+function generateContrib3dWorkflow() {
+  return [
+    "name: GitHub Profile 3D Contrib",
+    "",
+    "on:",
+    "  schedule:",
+    "    - cron: \"0 18 * * *\"",
+    "  workflow_dispatch:",
+    "",
+    "permissions:",
+    "  contents: write",
+    "",
+    "jobs:",
+    "  build:",
+    "    runs-on: ubuntu-latest",
+    "    steps:",
+    "      - uses: actions/checkout@v5",
+    "      - uses: yoshi389111/github-profile-3d-contrib@latest",
+    "        env:",
+    "          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+    "          USERNAME: ${{ github.repository_owner }}",
+    "      - name: Commit and push",
+    "        run: |",
+    "          git config user.name github-actions",
+    "          git config user.email github-actions@github.com",
+    "          git add -A .",
+    "          if git commit -m \"chore: update 3D contribution graph\"; then",
+    "            git push",
+    "          fi",
+    ""
+  ].join("\n");
+}
+
+function generateSpaceShooterWorkflow() {
+  const block = state.blocks.find(item => item.type === "spaceshooter");
+  const output = safeRelativePath(block?.props.output, "game.gif");
+  const strategy = ["random", "column", "row"].includes(block?.props.strategy) ? block.props.strategy : "random";
+  return [
+    "name: Update Space Shooter Game",
+    "",
+    "on:",
+    "  schedule:",
+    "    - cron: \"0 0 * * *\"",
+    "  workflow_dispatch:",
+    "",
+    "permissions:",
+    "  contents: write",
+    "",
+    "jobs:",
+    "  update-game:",
+    "    runs-on: ubuntu-latest",
+    "    steps:",
+    "      - uses: actions/checkout@v6",
+    "        with:",
+    "          fetch-depth: 2",
+    "      - uses: czl9707/gh-space-shooter@v2",
+    "        with:",
+    "          github-token: ${{ secrets.GITHUB_TOKEN }}",
+    `          output-path: ${output}`,
+    `          strategy: ${strategy}`,
+    ""
+  ].join("\n");
+}
+
 function generateSetupGuide() {
   const username = state.profile.login || "your-username";
   const hasSnake = state.blocks.some(block => block.type === "snake");
+  const hasMetrics = state.blocks.some(block => block.type === "metrics");
+  const hasContrib3d = state.blocks.some(block => block.type === "contrib3d");
+  const hasSpaceShooter = state.blocks.some(block => block.type === "spaceshooter");
+  const hasTerminal = state.blocks.some(block => block.type === "terminal");
   const hasSpotify = state.blocks.some(block => block.type === "spotify");
   const hasCustom = state.blocks.some(block => block.type === "custom");
   const sections = [
@@ -542,6 +702,33 @@ function generateSetupGuide() {
     "2. 在仓库的 Settings → Actions → General 中允许工作流拥有读写权限。",
     "3. 打开 Actions，手动运行一次 Generate contribution snake。之后工作流会每天自动更新。",
     "4. 首次运行完成后，README 中的贪吃蛇图片才会出现。"
+  );
+  if (hasMetrics) sections.push(
+    "",
+    "## Metrics 信息图",
+    "",
+    "1. 保留 `.github/workflows/metrics.yml` 并提交。",
+    "2. 创建权限尽量精简的 GitHub Personal Access Token。",
+    "3. 在仓库 Settings → Secrets and variables → Actions 中新增名为 `METRICS_TOKEN` 的密钥。",
+    "4. 手动运行一次 GitHub Metrics 工作流。"
+  );
+  if (hasContrib3d) sections.push(
+    "",
+    "## 3D 贡献图",
+    "",
+    "保留 `.github/workflows/profile-3d.yml` 并提交，然后在 Actions 中手动运行一次 GitHub Profile 3D Contrib。"
+  );
+  if (hasSpaceShooter) sections.push(
+    "",
+    "## 贡献太空射击",
+    "",
+    "保留 `.github/workflows/space-shooter.yml` 并提交，然后手动运行一次 Update Space Shooter Game。"
+  );
+  if (hasTerminal) sections.push(
+    "",
+    "## 终端动图",
+    "",
+    "按照 https://github.com/x0rzavi/github-readme-terminal 的说明生成 GIF，并把文件提交到仓库，或在组件属性中填写可公开访问的图片 URL。"
   );
   if (hasSpotify) sections.push(
     "",
@@ -635,6 +822,9 @@ function downloadProject() {
     { name: "SETUP.md", content: generateSetupGuide() }
   ];
   if (state.blocks.some(block => block.type === "snake")) files.push({ name: ".github/workflows/snake.yml", content: generateSnakeWorkflow() });
+  if (state.blocks.some(block => block.type === "metrics")) files.push({ name: ".github/workflows/metrics.yml", content: generateMetricsWorkflow() });
+  if (state.blocks.some(block => block.type === "contrib3d")) files.push({ name: ".github/workflows/profile-3d.yml", content: generateContrib3dWorkflow() });
+  if (state.blocks.some(block => block.type === "spaceshooter")) files.push({ name: ".github/workflows/space-shooter.yml", content: generateSpaceShooterWorkflow() });
   const blob = createZip(files);
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -688,9 +878,15 @@ async function loadProfile() {
   }
 }
 
+function renderAcknowledgements() {
+  const container = $("#acknowledgement-links");
+  if (!container) return;
+  container.innerHTML = ACKNOWLEDGEMENTS.map(item => `<a href="${item.repo}" target="_blank" rel="noreferrer">${escapeHTML(item.name)} <span aria-hidden="true">↗</span></a>`).join("");
+}
+
 function render() {
   document.body.classList.toggle("light-app", state.lightApp);
-  $("#theme-toggle").textContent = state.lightApp ? "☀" : "◐";
+  $("#theme-toggle").innerHTML = state.lightApp ? UI_ICONS.sun : UI_ICONS.moon;
   $("#theme-toggle").setAttribute("aria-label", state.lightApp ? "切换为深色主题" : "切换为浅色主题");
   $("#theme-toggle").title = state.lightApp ? "切换为深色主题" : "切换为浅色主题";
   $("#profile-frame").dataset.device = state.device;
@@ -700,7 +896,8 @@ function render() {
   const mood = MOOD_PACKS[state.style.mood] || MOOD_PACKS[0];
   const density = DENSITY_PRESETS[state.style.density] || DENSITY_PRESETS[1];
   const combination = state.style.layout * COLOR_THEMES.length * MOOD_PACKS.length * DENSITY_PRESETS.length + state.style.theme * MOOD_PACKS.length * DENSITY_PRESETS.length + state.style.mood * DENSITY_PRESETS.length + state.style.density + 1;
-  $("#style-label").textContent = `${recipe.name} · ${theme.name} · ${mood.name} · ${density.name}　${combination}/600`;
+  const totalCombinations = LAYOUT_RECIPES.length * COLOR_THEMES.length * MOOD_PACKS.length * DENSITY_PRESETS.length;
+  $("#style-label").textContent = `${recipe.name} · ${theme.name} · ${mood.name} · ${density.name}　${combination}/${totalCombinations}`;
   document.querySelectorAll(".segment").forEach(button => button.classList.toggle("active", button.dataset.view === state.view));
   document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", button.dataset.device === state.device));
   renderProfile(); renderCanvas(); renderSettings();
@@ -770,6 +967,7 @@ function bindEvents() {
 
 restore();
 renderComponentLibrary();
+renderAcknowledgements();
 bindEvents();
 render();
 
