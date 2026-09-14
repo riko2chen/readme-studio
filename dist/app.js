@@ -48,6 +48,67 @@ const DEMO_BLOCKS = [
   { type: "stats", props: { heading: "GitHub stats", username: "octocat", theme: "github_dark", align: "center" } }
 ];
 
+const STYLE_PRESETS = [
+  {
+    name: "极简名片",
+    light: true,
+    blocks: [
+      ["hero", { title: "Hi, I'm The Octocat.", subtitle: "I make useful things for the web." }],
+      ["about", { heading: "A little about me" }],
+      ["skills", { heading: "Tools I enjoy", style: "flat-square" }],
+      ["divider"],
+      ["social", { heading: "Find me elsewhere" }]
+    ]
+  },
+  {
+    name: "霓虹动态",
+    light: false,
+    blocks: [
+      ["capsule", { title: "Welcome to my digital garden", subtitle: "Code · Create · Explore", color: "0:7C5CFF,100:1F6FEB" }],
+      ["typing", { lines: "Creative developer,Open source enthusiast,Building in public", color: "9B87FF" }],
+      ["activity", { color: "9B87FF" }],
+      ["streak", { theme: "tokyonight" }],
+      ["social", { align: "center" }]
+    ]
+  },
+  {
+    name: "数据仪表盘",
+    light: false,
+    blocks: [
+      ["hero", { title: "Developer dashboard ⚡", subtitle: "A live snapshot of what I'm building", align: "left" }],
+      ["summary", { theme: "github_dark" }],
+      ["stats", { heading: "By the numbers", theme: "transparent" }],
+      ["trophy", { theme: "darkhub" }],
+      ["visitor", { align: "center" }]
+    ]
+  },
+  {
+    name: "开源游乐场",
+    light: true,
+    blocks: [
+      ["capsule", { title: "Open source playground", subtitle: "Small ideas, shipped often", color: "gradient" }],
+      ["about", { heading: "What I'm up to" }],
+      ["skills", { style: "for-the-badge", align: "center" }],
+      ["snake", { theme: "light" }],
+      ["spotify"],
+      ["social", { align: "center" }]
+    ]
+  },
+  {
+    name: "编辑手记",
+    light: true,
+    blocks: [
+      ["hero", { title: "Notes from a curious builder", subtitle: "Learning out loud, one project at a time", align: "left" }],
+      ["quote", { text: "The best way to understand a system is to build one." }],
+      ["about", { heading: "Now" }],
+      ["divider", { spacing: "large" }],
+      ["stats", { heading: "Recent momentum", theme: "transparent" }]
+    ]
+  }
+];
+
+let lastRandomPreset = -1;
+
 let state = {
   blocks: [],
   selectedId: null,
@@ -126,6 +187,27 @@ function addBlock(type, atIndex = state.blocks.length) {
   state.view = "preview";
   render();
   persist();
+}
+
+function createBlock(type, overrides = {}) {
+  const component = COMPONENTS.find(item => item.type === type);
+  const props = { ...(component?.defaults || {}), ...overrides };
+  if ("username" in props) props.username = state.profile.login || "octocat";
+  return { id: id(), type, props };
+}
+
+function randomizeStyle() {
+  let next = Math.floor(Math.random() * STYLE_PRESETS.length);
+  if (STYLE_PRESETS.length > 1 && next === lastRandomPreset) next = (next + 1) % STYLE_PRESETS.length;
+  lastRandomPreset = next;
+  const preset = STYLE_PRESETS[next];
+  state.blocks = preset.blocks.map(([type, overrides = {}]) => createBlock(type, overrides));
+  state.selectedId = state.blocks[0]?.id || null;
+  state.lightApp = preset.light;
+  state.view = "preview";
+  render();
+  persist();
+  showToast(`随机风格：${preset.name}`);
 }
 
 function blockPreview(block) {
@@ -319,6 +401,9 @@ async function loadProfile() {
 
 function render() {
   document.body.classList.toggle("light-app", state.lightApp);
+  $("#theme-toggle").textContent = state.lightApp ? "☀" : "◐";
+  $("#theme-toggle").setAttribute("aria-label", state.lightApp ? "切换为深色主题" : "切换为浅色主题");
+  $("#theme-toggle").title = state.lightApp ? "切换为深色主题" : "切换为浅色主题";
   $("#profile-frame").dataset.device = state.device;
   document.querySelectorAll(".segment").forEach(button => button.classList.toggle("active", button.dataset.view === state.view));
   document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", button.dataset.device === state.device));
@@ -327,6 +412,7 @@ function render() {
 
 function bindEvents() {
   $("#component-search").addEventListener("input", event => renderComponentLibrary(event.target.value));
+  $("#random-style").addEventListener("click", randomizeStyle);
   $("#load-profile").addEventListener("click", loadProfile);
   $("#username").addEventListener("keydown", event => { if (event.key === "Enter") loadProfile(); });
   $("#theme-toggle").addEventListener("click", () => { state.lightApp = !state.lightApp; render(); persist(); });
