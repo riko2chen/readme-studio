@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="拖拽搭建并实时预览你的 GitHub Profile README。" />
+    <title>Readme Studio — GitHub Profile Builder</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230d1117'/%3E%3Cpath d='M18 16h21c5 0 9 4 9 9v23H27c-5 0-9-4-9-9V16Z' fill='%237c5cff'/%3E%3Cpath d='M26 26h14M26 33h14M26 40h8' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Readme Studio 首页">
+          <span class="brand-mark" aria-hidden="true">R</span>
+          <span>
+            <strong>Readme Studio</strong>
+            <small>GitHub Profile Builder</small>
+          </span>
+        </a>
+
+        <div class="profile-loader">
+          <label class="sr-only" for="username">GitHub 用户名</label>
+          <span class="at">@</span>
+          <input id="username" value="octocat" autocomplete="off" spellcheck="false" />
+          <button id="load-profile" class="button button-secondary" type="button">载入资料</button>
+        </div>
+
+        <div class="toolbar-actions">
+          <div class="segmented" aria-label="画布显示方式">
+            <button class="segment active" data-view="preview" type="button">预览</button>
+            <button class="segment" data-view="code" type="button">Markdown</button>
+          </div>
+          <button id="theme-toggle" class="icon-button" type="button" aria-label="切换明暗主题" title="切换明暗主题">◐</button>
+          <button id="export-button" class="button button-primary" type="button">复制 README</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="panel component-panel" aria-label="组件库">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">BUILD</span>
+              <h1>组件</h1>
+            </div>
+            <button id="reset-button" class="text-button" type="button">重置</button>
+          </div>
+
+          <p class="helper">拖入中间的 README 区域，也可以单击添加。</p>
+
+          <div class="component-search">
+            <span aria-hidden="true">⌕</span>
+            <input id="component-search" type="search" placeholder="搜索组件" aria-label="搜索组件" />
+          </div>
+
+          <div class="component-groups" id="component-groups"></div>
+
+          <div class="inspiration-card">
+            <span class="inspiration-icon" aria-hidden="true">✦</span>
+            <div>
+              <strong>灵感来自社区</strong>
+              <p>组件参考 Awesome GitHub Profile README 中的优秀用法。</p>
+            </div>
+          </div>
+        </aside>
+
+        <section class="canvas-area" aria-label="README 画布">
+          <div class="canvas-toolbar">
+            <div class="device-switcher" aria-label="预览宽度">
+              <button class="device-button active" data-device="desktop" type="button" aria-label="桌面宽度">▰</button>
+              <button class="device-button" data-device="tablet" type="button" aria-label="平板宽度">▯</button>
+              <button class="device-button" data-device="mobile" type="button" aria-label="手机宽度">▯</button>
+            </div>
+            <span class="save-state"><i></i> 自动保存到此设备</span>
+            <span id="block-count" class="block-count"></span>
+          </div>
+
+          <div class="canvas-scroll">
+            <div id="profile-frame" class="profile-frame">
+              <div class="github-topnav">
+                <div class="gh-mark" aria-hidden="true">●</div>
+                <div class="gh-search">Type <kbd>/</kbd> to search</div>
+                <div class="gh-nav-lines"><span></span><span></span><span></span></div>
+              </div>
+              <div class="profile-tabs">
+                <span class="active">Overview</span><span>Repositories <b>24</b></span><span>Projects</span><span>Packages</span><span>Stars <b>42</b></span>
+              </div>
+
+              <div class="profile-body">
+                <aside class="profile-sidebar">
+                  <img id="profile-avatar" class="profile-avatar" src="https://github.com/octocat.png" alt="GitHub 头像" />
+                  <h2 id="profile-name">The Octocat</h2>
+                  <p id="profile-login">octocat</p>
+                  <p id="profile-bio" class="profile-bio">GitHub's friendly mascot and open source explorer.</p>
+                  <button class="follow-button" type="button" tabindex="-1">Follow</button>
+                  <p class="follow-stats"><strong id="followers-count">15.2k</strong> followers · <strong id="following-count">9</strong> following</p>
+                  <div class="profile-meta"><span>⌂ San Francisco</span><span>⌁ github.blog</span></div>
+                </aside>
+
+                <section class="profile-main">
+                  <div id="readme-card" class="readme-card">
+                    <div class="readme-heading">
+                      <span><strong id="repo-owner">octocat</strong> / README.md</span>
+                      <span class="more">···</span>
+                    </div>
+                    <div id="drop-zone" class="drop-zone" tabindex="0" aria-label="README 组件画布"></div>
+                    <pre id="markdown-output" class="markdown-output" hidden></pre>
+                  </div>
+
+                  <section class="pinned-section">
+                    <div class="section-title"><strong>Pinned</strong><span>Customize your pins</span></div>
+                    <div class="repo-grid">
+                      <article><strong>readme-studio</strong><p>Design a profile that feels like you.</p><small><i class="lang-dot purple"></i> TypeScript　☆ 128</small></article>
+                      <article><strong>creative-coding</strong><p>Small experiments for the curious web.</p><small><i class="lang-dot yellow"></i> JavaScript　☆ 64</small></article>
+                    </div>
+                  </section>
+                </section>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="panel settings-panel" aria-label="组件设置">
+          <div class="panel-heading settings-heading">
+            <div>
+              <span class="eyebrow">TUNE</span>
+              <h2>属性</h2>
+            </div>
+            <button id="delete-block" class="icon-button danger" type="button" aria-label="删除当前组件" title="删除当前组件">×</button>
+          </div>
+          <div id="settings-content"></div>
+        </aside>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
