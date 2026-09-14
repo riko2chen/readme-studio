@@ -25,11 +25,11 @@ const FIELD_SCHEMAS = {
   capsule: [["title", "横幅标题", "text"], ["subtitle", "副标题", "text"], ["color", "配色", "select", "", ["gradient", "auto", "0:7C5CFF,100:1F6FEB", "0:0D1117,100:30363D"]], ["height", "高度（px）", "number"]],
   about: [["heading", "区块标题", "text"], ["text", "介绍内容", "textarea", "每行会成为一个要点"]],
   skills: [["heading", "区块标题", "text"], ["items", "技术名称", "textarea", "使用英文逗号分隔"], ["style", "徽章样式", "select", "", ["flat", "flat-square", "for-the-badge"]]],
-  stats: [["heading", "区块标题", "text"], ["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github_dark", "transparent", "tokyonight", "radical", "vue-dark"]]],
-  streak: [["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github-dark-blue", "transparent", "tokyonight", "radical"]]],
+  stats: [["heading", "区块标题", "text"], ["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github_dark", "transparent", "tokyonight", "radical", "nord", "vue-dark"]]],
+  streak: [["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github-dark-blue", "transparent", "tokyonight", "radical", "nord"]]],
   trophy: [["username", "GitHub 用户名", "text"], ["theme", "奖杯主题", "select", "", ["onedark", "darkhub", "discord", "flat"]]],
   activity: [["heading", "区块标题", "text"], ["username", "GitHub 用户名", "text"], ["color", "强调色（HEX）", "text"]],
-  summary: [["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github_dark", "transparent", "tokyonight", "radical", "vue"]]],
+  summary: [["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github_dark", "transparent", "tokyonight", "dracula", "nord_dark", "vue"]]],
   snake: [["username", "GitHub 用户名", "text"], ["branch", "输出分支", "text"], ["theme", "显示模式", "select", "", ["dark", "light"]]],
   social: [["heading", "区块标题", "text"], ["items", "链接", "textarea", "每项格式：名称:URL，使用英文逗号分隔"]],
   quote: [["text", "语录", "textarea"]],
@@ -48,66 +48,79 @@ const DEMO_BLOCKS = [
   { type: "stats", props: { heading: "GitHub stats", username: "octocat", theme: "github_dark", align: "center" } }
 ];
 
-const STYLE_PRESETS = [
-  {
-    name: "极简名片",
-    light: true,
-    blocks: [
-      ["hero", { title: "Hi, I'm The Octocat.", subtitle: "I make useful things for the web." }],
-      ["about", { heading: "A little about me" }],
-      ["skills", { heading: "Tools I enjoy", style: "flat-square" }],
-      ["divider"],
-      ["social", { heading: "Find me elsewhere" }]
-    ]
-  },
-  {
-    name: "霓虹动态",
-    light: false,
-    blocks: [
-      ["capsule", { title: "Welcome to my digital garden", subtitle: "Code · Create · Explore", color: "0:7C5CFF,100:1F6FEB" }],
-      ["typing", { lines: "Creative developer,Open source enthusiast,Building in public", color: "9B87FF" }],
-      ["activity", { color: "9B87FF" }],
-      ["streak", { theme: "tokyonight" }],
-      ["social", { align: "center" }]
-    ]
-  },
-  {
-    name: "数据仪表盘",
-    light: false,
-    blocks: [
-      ["hero", { title: "Developer dashboard ⚡", subtitle: "A live snapshot of what I'm building", align: "left" }],
-      ["summary", { theme: "github_dark" }],
-      ["stats", { heading: "By the numbers", theme: "transparent" }],
-      ["trophy", { theme: "darkhub" }],
-      ["visitor", { align: "center" }]
-    ]
-  },
-  {
-    name: "开源游乐场",
-    light: true,
-    blocks: [
-      ["capsule", { title: "Open source playground", subtitle: "Small ideas, shipped often", color: "gradient" }],
-      ["about", { heading: "What I'm up to" }],
-      ["skills", { style: "for-the-badge", align: "center" }],
-      ["snake", { theme: "light" }],
-      ["spotify"],
-      ["social", { align: "center" }]
-    ]
-  },
-  {
-    name: "编辑手记",
-    light: true,
-    blocks: [
-      ["hero", { title: "Notes from a curious builder", subtitle: "Learning out loud, one project at a time", align: "left" }],
-      ["quote", { text: "The best way to understand a system is to build one." }],
-      ["about", { heading: "Now" }],
-      ["divider", { spacing: "large" }],
-      ["stats", { heading: "Recent momentum", theme: "transparent" }]
-    ]
-  }
+const LAYOUT_RECIPES = [
+  { name: "极简名片", blocks: [["hero"], ["about"], ["skills"], ["divider"], ["social"]] },
+  { name: "数据仪表盘", blocks: [["hero"], ["summary"], ["stats"], ["streak"], ["trophy"], ["visitor"]] },
+  { name: "开源贡献者", blocks: [["capsule"], ["about"], ["activity"], ["snake"], ["stats"], ["social"]] },
+  { name: "求职简历", blocks: [["hero"], ["about"], ["skills"], ["summary"], ["divider"], ["social"]] },
+  { name: "创作者主页", blocks: [["capsule"], ["typing"], ["about"], ["spotify"], ["quote"], ["social"]] },
+  { name: "技术专家", blocks: [["hero"], ["skills"], ["stats"], ["activity"], ["summary"], ["social"]] },
+  { name: "社区建设者", blocks: [["hero"], ["about"], ["trophy"], ["streak"], ["visitor"], ["social"]] },
+  { name: "视觉实验室", blocks: [["capsule"], ["typing"], ["skills"], ["activity"], ["quote"], ["visitor"]] },
+  { name: "编辑手记", blocks: [["hero"], ["quote"], ["about"], ["divider", { spacing: "large" }], ["stats"], ["social"]] },
+  { name: "紧凑徽章", blocks: [["hero"], ["skills", { style: "for-the-badge" }], ["summary"], ["trophy"], ["visitor"], ["social"]] }
 ];
 
-let lastRandomPreset = -1;
+const COLOR_THEMES = [
+  { name: "GitHub", light: false, accent: "58A6FF", stats: "github_dark", summary: "github_dark", streak: "github-dark-blue", trophy: "darkhub", capsule: "0:0D1117,100:1F6FEB" },
+  { name: "Nord", light: true, accent: "5E81AC", stats: "nord", summary: "nord_dark", streak: "nord", trophy: "flat", capsule: "0:2E3440,100:88C0D0" },
+  { name: "Tokyo Night", light: false, accent: "7AA2F7", stats: "tokyonight", summary: "tokyonight", streak: "tokyonight", trophy: "onedark", capsule: "0:1A1B26,100:7AA2F7" },
+  { name: "Dracula", light: false, accent: "BD93F9", stats: "radical", summary: "dracula", streak: "radical", trophy: "discord", capsule: "0:282A36,100:BD93F9" },
+  { name: "Clear Sky", light: true, accent: "0969DA", stats: "transparent", summary: "transparent", streak: "transparent", trophy: "flat", capsule: "0:54AEFF,100:8250DF" }
+];
+
+const DENSITY_PRESETS = [
+  { name: "紧凑", id: "compact" },
+  { name: "均衡", id: "balanced" },
+  { name: "舒展", id: "airy" }
+];
+
+const MOOD_PACKS = [
+  {
+    name: "专业",
+    copy: {
+      hero: { title: "Hi, I'm {name}", subtitle: "Software developer · Open source contributor" },
+      capsule: { title: "{name}", subtitle: "Engineering thoughtful software" },
+      typing: { lines: "Software Developer,Open Source Contributor,Product-minded Engineer" },
+      about: { heading: "About me" }, skills: { heading: "Technical toolkit", style: "flat-square" },
+      stats: { heading: "GitHub overview" }, social: { heading: "Let's connect" },
+      quote: { text: "Clarity in thinking becomes quality in software." }
+    }
+  },
+  {
+    name: "极客",
+    copy: {
+      hero: { title: "Hello, world! I'm {name} 👾", subtitle: "Turning coffee into commits since forever" },
+      capsule: { title: "Welcome to my terminal", subtitle: "sudo make something awesome" },
+      typing: { lines: "Code compiles,Coffee acquired,Ship it!" },
+      about: { heading: "~/about-me" }, skills: { heading: "My loadout", style: "for-the-badge" },
+      stats: { heading: "System metrics" }, social: { heading: "Open a connection" },
+      quote: { text: "There is no place like 127.0.0.1." }
+    }
+  },
+  {
+    name: "创意",
+    copy: {
+      hero: { title: "Crafting ideas into pixels ✦", subtitle: "Creative developer · Digital maker · Curious human" },
+      capsule: { title: "A digital garden by {name}", subtitle: "Code · Create · Explore" },
+      typing: { lines: "Creative Developer,Designing with code,Building in public" },
+      about: { heading: "Currently exploring" }, skills: { heading: "Creative toolkit", style: "flat" },
+      stats: { heading: "Creative momentum" }, social: { heading: "Find me around the web" },
+      quote: { text: "Make it useful, then make it delightful." }
+    }
+  },
+  {
+    name: "友好",
+    copy: {
+      hero: { title: "Hey there, I'm {name} 👋", subtitle: "Learning, sharing, and building together" },
+      capsule: { title: "Thanks for stopping by!", subtitle: "Let's build something good together" },
+      typing: { lines: "Always learning,Happy to collaborate,Ask me anything" },
+      about: { heading: "Nice to meet you" }, skills: { heading: "Things I work with", style: "flat-square" },
+      stats: { heading: "A little progress" }, social: { heading: "Say hello" },
+      quote: { text: "Great software starts with generous collaboration." }
+    }
+  }
+];
 
 let state = {
   blocks: [],
@@ -115,6 +128,7 @@ let state = {
   view: "preview",
   device: "desktop",
   lightApp: false,
+  style: { layout: 0, theme: 0, mood: 0, density: 1 },
   profile: { login: "octocat", name: "The Octocat", bio: "GitHub's friendly mascot and open source explorer.", avatar_url: "https://github.com/octocat.png", followers: 15200, following: 9, location: "San Francisco", blog: "github.blog" }
 };
 
@@ -133,7 +147,7 @@ function showToast(message) {
 }
 
 function persist() {
-  localStorage.setItem("readme-studio-state", JSON.stringify({ blocks: state.blocks, profile: state.profile, lightApp: state.lightApp }));
+  localStorage.setItem("readme-studio-state", JSON.stringify({ blocks: state.blocks, profile: state.profile, lightApp: state.lightApp, style: state.style }));
 }
 
 function restore() {
@@ -142,6 +156,7 @@ function restore() {
     if (saved?.blocks?.length) state.blocks = saved.blocks;
     if (saved?.profile) state.profile = { ...state.profile, ...saved.profile };
     if (saved?.lightApp) state.lightApp = true;
+    if (saved?.style) state.style = { ...state.style, ...saved.style };
   } catch (_) { /* ignore malformed local state */ }
   if (!state.blocks.length) state.blocks = DEMO_BLOCKS.map(block => ({ ...block, id: id(), props: { ...block.props } }));
   state.selectedId = state.blocks[0]?.id || null;
@@ -196,18 +211,75 @@ function createBlock(type, overrides = {}) {
   return { id: id(), type, props };
 }
 
-function randomizeStyle() {
-  let next = Math.floor(Math.random() * STYLE_PRESETS.length);
-  if (STYLE_PRESETS.length > 1 && next === lastRandomPreset) next = (next + 1) % STYLE_PRESETS.length;
-  lastRandomPreset = next;
-  const preset = STYLE_PRESETS[next];
-  state.blocks = preset.blocks.map(([type, overrides = {}]) => createBlock(type, overrides));
+function randomIndex(length, current) {
+  if (length < 2) return 0;
+  const candidate = Math.floor(Math.random() * (length - 1));
+  return candidate >= current ? candidate + 1 : candidate;
+}
+
+function applyTheme(blocks, theme, includeLocked = false) {
+  blocks.forEach(block => {
+    if (block.locked && !includeLocked) return;
+    if (block.type === "capsule") block.props.color = theme.capsule;
+    if (block.type === "typing" || block.type === "activity" || block.type === "visitor") block.props.color = theme.accent;
+    if (block.type === "stats") block.props.theme = theme.stats;
+    if (block.type === "summary") block.props.theme = theme.summary;
+    if (block.type === "streak") block.props.theme = theme.streak;
+    if (block.type === "trophy") block.props.theme = theme.trophy;
+    if (block.type === "snake") block.props.theme = theme.light ? "light" : "dark";
+  });
+}
+
+function applyMood(blocks, mood, includeLocked = false) {
+  const displayName = state.profile.name || state.profile.login || "Developer";
+  blocks.forEach(block => {
+    if (block.locked && !includeLocked) return;
+    const overrides = mood.copy[block.type];
+    if (!overrides) return;
+    Object.entries(overrides).forEach(([key, value]) => {
+      block.props[key] = String(value).replaceAll("{name}", displayName);
+    });
+  });
+}
+
+function mergeLockedBlocks(generated) {
+  const locked = state.blocks.map((block, index) => ({ block, index })).filter(item => item.block.locked);
+  locked.forEach(({ block, index }) => {
+    const duplicate = generated.findIndex(item => item.type === block.type);
+    if (duplicate >= 0) generated.splice(duplicate, 1);
+    generated.splice(Math.min(index, generated.length), 0, block);
+  });
+  return generated;
+}
+
+function randomizeStyle(mode = "all") {
+  if (mode === "all" || mode === "layout") state.style.layout = randomIndex(LAYOUT_RECIPES.length, state.style.layout);
+  if (mode === "all" || mode === "theme") state.style.theme = randomIndex(COLOR_THEMES.length, state.style.theme);
+  if (mode === "all" || mode === "mood") state.style.mood = randomIndex(MOOD_PACKS.length, state.style.mood);
+  if (mode === "all" || mode === "density") state.style.density = randomIndex(DENSITY_PRESETS.length, state.style.density);
+
+  const recipe = LAYOUT_RECIPES[state.style.layout];
+  const theme = COLOR_THEMES[state.style.theme];
+  const mood = MOOD_PACKS[state.style.mood];
+
+  if (mode === "all" || mode === "layout") {
+    const generated = recipe.blocks.map(([type, overrides = {}]) => createBlock(type, overrides));
+    applyTheme(generated, theme, true);
+    applyMood(generated, mood, true);
+    state.blocks = mergeLockedBlocks(generated);
+  } else {
+    if (mode === "theme") applyTheme(state.blocks, theme);
+    if (mode === "mood") applyMood(state.blocks, mood);
+  }
+
   state.selectedId = state.blocks[0]?.id || null;
-  state.lightApp = preset.light;
+  state.lightApp = theme.light;
   state.view = "preview";
   render();
   persist();
-  showToast(`随机风格：${preset.name}`);
+  const density = DENSITY_PRESETS[state.style.density];
+  const modeLabel = { all: "随机组合", layout: "布局", theme: "配色", mood: "气质", density: "密度" }[mode];
+  showToast(`${modeLabel}：${recipe.name} · ${theme.name} · ${mood.name} · ${density.name}`);
 }
 
 function blockPreview(block) {
@@ -244,6 +316,8 @@ function renderCanvas() {
     zone.innerHTML = state.blocks.map((block, index) => {
       const component = COMPONENTS.find(item => item.type === block.type);
       return `<div class="readme-block ${state.selectedId === block.id ? "selected" : ""}" draggable="true" data-id="${block.id}" data-index="${index}" tabindex="0">
+        <button class="block-remove" type="button" draggable="false" data-remove-id="${block.id}" aria-label="删除${escapeHTML(component?.label || block.type)}" title="删除组件">×</button>
+        <button class="block-lock ${block.locked ? "locked" : ""}" type="button" draggable="false" data-lock-id="${block.id}" aria-label="${block.locked ? "解锁" : "锁定"}${escapeHTML(component?.label || block.type)}" aria-pressed="${Boolean(block.locked)}" title="${block.locked ? "解锁，允许随机替换" : "锁定，随机时保留"}">${block.locked ? "◆" : "◇"}</button>
         <span class="block-tools">⠿ ${escapeHTML(component?.label || block.type)}</span>
         ${blockPreview(block)}
       </div>`;
@@ -255,6 +329,19 @@ function renderCanvas() {
   $("#block-count").textContent = `${state.blocks.length} 个组件`;
 
   zone.querySelectorAll(".readme-block").forEach(element => {
+    const removeButton = element.querySelector(".block-remove");
+    const lockButton = element.querySelector(".block-lock");
+    removeButton.addEventListener("mousedown", event => event.stopPropagation());
+    lockButton.addEventListener("mousedown", event => event.stopPropagation());
+    removeButton.addEventListener("click", event => { event.preventDefault(); event.stopPropagation(); removeBlock(removeButton.dataset.removeId); });
+    lockButton.addEventListener("click", event => {
+      event.preventDefault(); event.stopPropagation();
+      const block = state.blocks.find(item => item.id === lockButton.dataset.lockId);
+      if (!block) return;
+      block.locked = !block.locked;
+      renderCanvas(); persist();
+      showToast(block.locked ? "组件已锁定，随机时会保留" : "组件已解锁");
+    });
     element.addEventListener("click", event => { event.stopPropagation(); state.selectedId = element.dataset.id; renderCanvas(); renderSettings(); });
     element.addEventListener("focus", () => { state.selectedId = element.dataset.id; renderCanvas(); renderSettings(); });
     element.addEventListener("dragstart", event => {
@@ -327,6 +414,14 @@ function moveSelected(delta) {
   if (index < 0 || next < 0 || next >= state.blocks.length) return;
   [state.blocks[index], state.blocks[next]] = [state.blocks[next], state.blocks[index]];
   render(); persist();
+}
+
+function removeBlock(blockId) {
+  const index = state.blocks.findIndex(block => block.id === blockId);
+  if (index < 0) return;
+  state.blocks.splice(index, 1);
+  state.selectedId = state.blocks[Math.min(index, state.blocks.length - 1)]?.id || null;
+  render(); persist(); showToast("组件已删除");
 }
 
 function markdownFor(block) {
@@ -405,6 +500,13 @@ function render() {
   $("#theme-toggle").setAttribute("aria-label", state.lightApp ? "切换为深色主题" : "切换为浅色主题");
   $("#theme-toggle").title = state.lightApp ? "切换为深色主题" : "切换为浅色主题";
   $("#profile-frame").dataset.device = state.device;
+  $("#profile-frame").dataset.density = DENSITY_PRESETS[state.style.density]?.id || "balanced";
+  const recipe = LAYOUT_RECIPES[state.style.layout] || LAYOUT_RECIPES[0];
+  const theme = COLOR_THEMES[state.style.theme] || COLOR_THEMES[0];
+  const mood = MOOD_PACKS[state.style.mood] || MOOD_PACKS[0];
+  const density = DENSITY_PRESETS[state.style.density] || DENSITY_PRESETS[1];
+  const combination = state.style.layout * COLOR_THEMES.length * MOOD_PACKS.length * DENSITY_PRESETS.length + state.style.theme * MOOD_PACKS.length * DENSITY_PRESETS.length + state.style.mood * DENSITY_PRESETS.length + state.style.density + 1;
+  $("#style-label").textContent = `${recipe.name} · ${theme.name} · ${mood.name} · ${density.name}　${combination}/600`;
   document.querySelectorAll(".segment").forEach(button => button.classList.toggle("active", button.dataset.view === state.view));
   document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", button.dataset.device === state.device));
   renderProfile(); renderCanvas(); renderSettings();
@@ -412,7 +514,23 @@ function render() {
 
 function bindEvents() {
   $("#component-search").addEventListener("input", event => renderComponentLibrary(event.target.value));
-  $("#random-style").addEventListener("click", randomizeStyle);
+  $("#random-style").addEventListener("click", () => randomizeStyle("all"));
+  $("#random-menu-toggle").addEventListener("click", event => {
+    event.stopPropagation();
+    const menu = $("#random-menu");
+    menu.hidden = !menu.hidden;
+    $("#random-menu-toggle").setAttribute("aria-expanded", String(!menu.hidden));
+  });
+  document.querySelectorAll("[data-random-mode]").forEach(button => button.addEventListener("click", () => {
+    randomizeStyle(button.dataset.randomMode);
+    $("#random-menu").hidden = true;
+    $("#random-menu-toggle").setAttribute("aria-expanded", "false");
+  }));
+  document.addEventListener("click", event => {
+    if (event.target.closest(".random-wrap")) return;
+    $("#random-menu").hidden = true;
+    $("#random-menu-toggle").setAttribute("aria-expanded", "false");
+  });
   $("#load-profile").addEventListener("click", loadProfile);
   $("#username").addEventListener("keydown", event => { if (event.key === "Enter") loadProfile(); });
   $("#theme-toggle").addEventListener("click", () => { state.lightApp = !state.lightApp; render(); persist(); });
@@ -420,15 +538,11 @@ function bindEvents() {
     try { await navigator.clipboard.writeText(generateMarkdown()); showToast("README Markdown 已复制"); }
     catch (_) { showToast("复制失败，请切换到 Markdown 手动复制"); }
   });
-  $("#delete-block").addEventListener("click", () => {
-    const index = state.blocks.findIndex(block => block.id === state.selectedId);
-    if (index < 0) return;
-    state.blocks.splice(index, 1);
-    state.selectedId = state.blocks[Math.min(index, state.blocks.length - 1)]?.id || null;
-    render(); persist();
-  });
+  $("#delete-block").addEventListener("click", () => removeBlock(state.selectedId));
   $("#reset-button").addEventListener("click", () => {
     state.blocks = DEMO_BLOCKS.map(block => ({ ...block, id: id(), props: { ...block.props, ...(block.props.username ? { username: state.profile.login } : {}) } }));
+    state.style = { layout: 0, theme: 0, mood: 0, density: 1 };
+    state.lightApp = false;
     state.selectedId = state.blocks[0].id;
     render(); persist(); showToast("已恢复示例布局");
   });
@@ -458,6 +572,18 @@ if (modelContext?.registerTool) {
       if (!COMPONENTS.some(item => item.type === type)) throw new Error("Unsupported component type");
       addBlock(type);
       return { componentType: type, componentCount: state.blocks.length };
+    }
+  });
+  modelContext.registerTool({
+    name: "randomize_readme_style",
+    title: "随机 README 风格",
+    description: "Randomize the README layout, color theme, mood, or all three while preserving locked components.",
+    inputSchema: { type: "object", properties: { mode: { type: "string", enum: ["all", "layout", "theme", "mood", "density"] } }, required: ["mode"], additionalProperties: false },
+    annotations: { readOnlyHint: false, untrustedContentHint: false },
+    execute: ({ mode }) => {
+      if (!["all", "layout", "theme", "mood", "density"].includes(mode)) throw new Error("Unsupported random mode");
+      randomizeStyle(mode);
+      return { mode, layout: LAYOUT_RECIPES[state.style.layout].name, theme: COLOR_THEMES[state.style.theme].name, mood: MOOD_PACKS[state.style.mood].name, density: DENSITY_PRESETS[state.style.density].name, componentCount: state.blocks.length };
     }
   });
   modelContext.registerTool({

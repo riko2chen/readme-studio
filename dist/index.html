@@ -31,7 +31,17 @@
             <button class="segment active" data-view="preview" type="button">预览</button>
             <button class="segment" data-view="code" type="button">Markdown</button>
           </div>
-          <button id="random-style" class="button button-random" type="button" title="随机生成一套精选布局"><span aria-hidden="true">✦</span> 随机风格</button>
+          <div class="random-wrap">
+            <button id="random-style" class="button button-random" type="button" title="随机生成一套精选组合"><span aria-hidden="true">✦</span> 随机风格</button>
+            <button id="random-menu-toggle" class="random-menu-toggle" type="button" aria-label="选择随机范围" aria-expanded="false">⌄</button>
+            <div id="random-menu" class="random-menu" hidden>
+              <button type="button" data-random-mode="all"><strong>全部随机</strong><small>布局、配色与气质</small></button>
+              <button type="button" data-random-mode="layout"><strong>只换布局</strong><small>保留配色与文案气质</small></button>
+              <button type="button" data-random-mode="theme"><strong>只换配色</strong><small>保留当前组件顺序</small></button>
+              <button type="button" data-random-mode="mood"><strong>只换气质</strong><small>专业、极客、创意或友好</small></button>
+              <button type="button" data-random-mode="density"><strong>只换密度</strong><small>紧凑、均衡或舒展</small></button>
+            </div>
+          </div>
           <button id="theme-toggle" class="icon-button" type="button" aria-label="切换明暗主题" title="切换明暗主题">◐</button>
           <button id="export-button" class="button button-primary" type="button">复制 README</button>
         </div>
@@ -73,7 +83,7 @@
               <button class="device-button" data-device="mobile" type="button" aria-label="手机宽度">▯</button>
             </div>
             <span class="save-state"><i></i> 自动保存到此设备</span>
-            <span id="block-count" class="block-count"></span>
+            <div class="canvas-status"><span id="style-label" class="style-label"></span><span id="block-count" class="block-count"></span></div>
           </div>
 
           <div class="canvas-scroll">
