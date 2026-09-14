@@ -43,7 +43,7 @@
             </div>
           </div>
           <button id="theme-toggle" class="icon-button" type="button" aria-label="切换明暗主题" title="切换明暗主题">◐</button>
-          <button id="export-button" class="button button-primary" type="button">复制 README</button>
+          <button id="export-button" class="button button-primary" type="button">导出</button>
           <button id="settings-button" class="icon-button settings-button" type="button" aria-label="打开设置" title="设置">⚙</button>
         </div>
       </header>
@@ -137,6 +137,26 @@
         </aside>
       </main>
     </div>
+
+    <dialog id="export-dialog" class="settings-dialog export-dialog" aria-labelledby="export-dialog-title">
+      <div class="dialog-header">
+        <div>
+          <span class="eyebrow">EXPORT</span>
+          <h2 id="export-dialog-title">导出 GitHub Profile</h2>
+        </div>
+        <button id="export-dialog-close" class="icon-button dialog-close" type="button" aria-label="关闭导出窗口">×</button>
+      </div>
+
+      <div class="dialog-content export-content">
+        <p class="export-intro">已根据当前组件检查 README 之外还需要的文件和配置。</p>
+        <div id="export-checklist" class="export-checklist"></div>
+        <div class="export-actions">
+          <button id="copy-readme" class="button button-secondary export-copy" type="button">仅复制 README</button>
+          <button id="download-project" class="button button-primary export-download" type="button">下载完整项目 ZIP</button>
+        </div>
+        <p class="export-note">ZIP 至少包含 README.md 和配置说明；需要 GitHub Action 时会自动加入工作流文件。</p>
+      </div>
+    </dialog>
 
     <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-dialog-title">
       <div class="dialog-header">

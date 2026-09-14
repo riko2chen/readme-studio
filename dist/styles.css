@@ -129,6 +129,10 @@ button { color: inherit; }
 .component-copy strong, .component-copy small { display: block; }
 .component-copy strong { margin-bottom: 3px; font-size: 13px; }
 .component-copy small { color: var(--muted); font-size: 11px; }
+.dependency-badge { display: inline-flex; align-items: center; width: fit-content; margin-top: 7px; padding: 2px 6px; border-radius: 20px; font-size: 9px; font-style: normal; font-weight: 700; letter-spacing: .02em; }
+.dependency-direct { background: rgba(63,185,80,.12); color: #56d364; }
+.dependency-setup { background: rgba(210,153,34,.14); color: #e3b341; }
+.dependency-action { background: var(--accent-soft); color: #ad9cff; }
 .drag-handle { color: var(--subtle); letter-spacing: 1px; }
 
 .canvas-area { min-width: 0; min-height: calc(100vh - 64px); display: flex; flex-direction: column; background: #07090d; }
@@ -320,6 +324,25 @@ button { color: inherit; }
 .dialog-header h2 { margin: 3px 0 0; font-size: 19px; letter-spacing: -.02em; }
 .dialog-close { flex: 0 0 auto; font-size: 22px; line-height: 1; }
 .dialog-content { max-height: calc(100vh - 126px); overflow-y: auto; padding: 6px 22px 22px; }
+.export-content { padding-top: 20px; }
+.export-intro { margin: 0 0 15px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.export-checklist { display: grid; gap: 8px; }
+.export-check-item { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 11px; border: 1px solid var(--border-soft); border-radius: 9px; background: var(--surface); }
+.export-check-icon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; font-weight: 800; }
+.export-check-item.direct .export-check-icon { background: rgba(63,185,80,.12); color: #56d364; }
+.export-check-item.setup .export-check-icon { background: rgba(210,153,34,.14); color: #e3b341; }
+.export-check-item.action .export-check-icon { background: var(--accent-soft); color: #ad9cff; }
+.export-check-copy strong, .export-check-copy small { display: block; }
+.export-check-copy strong { margin-bottom: 3px; font-size: 12px; }
+.export-check-copy small { color: var(--muted); font-size: 10px; line-height: 1.45; }
+.export-status { padding: 3px 7px; border-radius: 20px; white-space: nowrap; font-size: 9px; font-weight: 700; }
+.export-check-item.direct .export-status { background: rgba(63,185,80,.12); color: #56d364; }
+.export-check-item.setup .export-status { background: rgba(210,153,34,.14); color: #e3b341; }
+.export-check-item.action .export-status { background: var(--accent-soft); color: #ad9cff; }
+.export-actions { display: grid; grid-template-columns: 1fr 1.35fr; gap: 9px; margin-top: 18px; }
+.export-actions .button { height: 39px; }
+.export-copy { border: 1px solid var(--border); background: var(--surface); }
+.export-note { margin: 11px 2px 0; color: var(--subtle); font-size: 10px; line-height: 1.45; text-align: center; }
 .about-section { padding: 18px 0; border-bottom: 1px solid var(--border-soft); }
 .about-section:last-child { border-bottom: 0; padding-bottom: 2px; }
 .about-section h3 { margin: 0 0 8px; font-size: 13px; }
@@ -350,6 +373,9 @@ body.light-app .canvas-area, body.light-app .canvas-toolbar { background: #e7ebf
 body.light-app .canvas-scroll { background-image: radial-gradient(circle at 1px 1px, #c6ced8 1px, transparent 0); }
 body.light-app .button-random { color: #5f3dc4; }
 body.light-app .random-menu-toggle { color: #5f3dc4; }
+body.light-app .dependency-direct, body.light-app .export-check-item.direct .export-status { color: #1a7f37; }
+body.light-app .dependency-setup, body.light-app .export-check-item.setup .export-status { color: #9a6700; }
+body.light-app .dependency-action, body.light-app .export-check-item.action .export-status { color: #5f3dc4; }
 body.light-app .block-remove, body.light-app .block-lock { border-color: #afb8c1; background: #f6f8fa; color: #656d76; }
 body.light-app .block-remove:hover { border-color: #cf222e; color: #cf222e; }
 body.light-app .block-lock.locked { border-color: #7c5cff; color: #5f3dc4; background: #f3f0ff; }
@@ -432,4 +458,5 @@ body.light-app .markdown-output { background: #fff; color: #1f2328; }
   .canvas-scroll { padding: 14px; }
   .profile-frame { min-width: 650px; }
   .settings-panel { min-height: 400px; }
+  .export-actions { grid-template-columns: 1fr; }
 }

@@ -40,6 +40,14 @@ const FIELD_SCHEMAS = {
   custom: [["markdown", "Markdown 内容", "textarea", "导出时将原样保留"]]
 };
 
+const DEPENDENCY_TYPES = {
+  snake: { level: "action", label: "需要 Action" },
+  spotify: { level: "setup", label: "需要配置" },
+  custom: { level: "setup", label: "检查依赖" }
+};
+
+const dependencyFor = type => DEPENDENCY_TYPES[type] || { level: "direct", label: "直接可用" };
+
 const DEMO_BLOCKS = [
   { type: "hero", props: { title: "Hi, I'm The Octocat 👋", subtitle: "Open source explorer · Builder · Curious mind", align: "center" } },
   { type: "typing", props: { lines: "Open Source Explorer,Creative Developer,Always Learning", color: "58A6FF", align: "center" } },
@@ -173,7 +181,7 @@ function renderComponentLibrary(query = "") {
       <div class="component-list">${items.map(item => `
         <div class="component-item" draggable="true" tabindex="0" role="button" data-component="${item.type}" aria-label="添加${escapeHTML(item.label)}">
           <span class="component-icon">${escapeHTML(item.icon)}</span>
-          <span class="component-copy"><strong>${escapeHTML(item.label)}</strong><small>${escapeHTML(item.desc)}</small></span>
+          <span class="component-copy"><strong>${escapeHTML(item.label)}</strong><small>${escapeHTML(item.desc)}</small><em class="dependency-badge dependency-${dependencyFor(item.type).level}">${dependencyFor(item.type).label}</em></span>
           <span class="drag-handle">⠿</span>
         </div>`).join("")}</div>
     </section>`;
@@ -439,7 +447,7 @@ function markdownFor(block) {
   if (block.type === "trophy") md = `<img src="https://github-profile-trophy.vercel.app/?username=${encodeURIComponent(p.username)}&theme=${encodeURIComponent(p.theme)}&no-frame=true&row=1&column=6" alt="GitHub trophies" />`;
   if (block.type === "activity") md = `## ${p.heading}\n\n<img src="https://github-readme-activity-graph.vercel.app/graph?username=${encodeURIComponent(p.username)}&bg_color=00000000&color=${p.color || "7C5CFF"}&line=${p.color || "7C5CFF"}&point=FFFFFF&hide_border=true" alt="Contribution activity" />`;
   if (block.type === "summary") md = `<img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=${encodeURIComponent(p.username)}&theme=${encodeURIComponent(p.theme)}" alt="GitHub profile summary" />`;
-  if (block.type === "snake") md = `<!-- Requires a Platane/snk GitHub Action that publishes to the ${p.branch} branch -->\n<img src="https://raw.githubusercontent.com/${encodeURIComponent(p.username)}/${encodeURIComponent(p.username)}/${encodeURIComponent(p.branch)}/github-contribution-grid-snake-${p.theme}.svg" alt="Contribution snake" />`;
+  if (block.type === "snake") md = `<!-- Requires a Platane/snk GitHub Action that publishes to the ${safeGitRef(p.branch)} branch -->\n<img src="https://raw.githubusercontent.com/${encodeURIComponent(p.username)}/${encodeURIComponent(p.username)}/${encodeURIComponent(safeGitRef(p.branch))}/github-contribution-grid-snake-${p.theme}.svg" alt="Contribution snake" />`;
   if (block.type === "social") md = `## ${p.heading}\n\n${csv(p.items).map(item => { const split = item.indexOf(":"); const name = split > -1 ? item.slice(0, split) : item; const url = split > -1 ? item.slice(split + 1) : "#"; return `[![${name}](https://img.shields.io/badge/${encodeURIComponent(name)}-1F6FEB?style=flat&logoColor=white)](${url})`; }).join(" ")}`;
   if (block.type === "quote") md = `> “${p.text}”`;
   if (block.type === "visitor") md = `![${p.label}](https://komarev.com/ghpvc/?username=${encodeURIComponent(p.username)}&label=${encodeURIComponent(p.label)}&color=${p.color || "1F6FEB"}&style=flat)`;
@@ -452,6 +460,192 @@ function markdownFor(block) {
 
 function generateMarkdown() {
   return state.blocks.map(markdownFor).join("\n\n");
+}
+
+function getExportChecks() {
+  const types = new Set(state.blocks.map(block => block.type));
+  const checks = [{ level: "direct", icon: "✓", title: "README.md", detail: `${state.blocks.length} 个组件已生成，可直接放入同名 GitHub 主页仓库。`, status: "已就绪" }];
+  const remoteTypes = ["typing", "capsule", "stats", "streak", "trophy", "activity", "summary", "visitor"].filter(type => types.has(type));
+  if (remoteTypes.length) checks.push({ level: "direct", icon: "↗", title: "动态卡片服务", detail: "这些图片由第三方服务实时渲染，不需要 GitHub Action。", status: "无需配置" });
+  if (types.has("snake")) checks.push({ level: "action", icon: "◆", title: "贡献贪吃蛇", detail: "ZIP 将包含每日生成 SVG 的 GitHub Actions 工作流。", status: "需要 Action" });
+  if (types.has("spotify")) checks.push({ level: "setup", icon: "!", title: "Spotify 正在播放", detail: "发布前需要在 Spotify GitHub Profile 服务中完成绑定。", status: "需要配置" });
+  if (types.has("custom")) checks.push({ level: "setup", icon: "?", title: "自定义 Markdown", detail: "请确认粘贴内容引用的图片、密钥或工作流已经配置。", status: "需要检查" });
+  return checks;
+}
+
+function renderExportChecklist() {
+  $("#export-checklist").innerHTML = getExportChecks().map(item => `<div class="export-check-item ${item.level}">
+    <span class="export-check-icon" aria-hidden="true">${item.icon}</span>
+    <span class="export-check-copy"><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.detail)}</small></span>
+    <span class="export-status">${escapeHTML(item.status)}</span>
+  </div>`).join("");
+}
+
+function safeGitRef(value) {
+  const cleaned = String(value || "output").trim().replace(/[^A-Za-z0-9._/-]/g, "-").replace(/\/{2,}/g, "/").replace(/^[-/.]+|[-/.]+$/g, "");
+  return cleaned && !cleaned.includes("..") ? cleaned : "output";
+}
+
+function generateSnakeWorkflow() {
+  const snake = state.blocks.find(block => block.type === "snake");
+  const branch = safeGitRef(snake?.props.branch);
+  return [
+    "name: Generate contribution snake",
+    "",
+    "on:",
+    "  schedule:",
+    "    - cron: \"0 0 * * *\"",
+    "  workflow_dispatch:",
+    "",
+    "jobs:",
+    "  generate:",
+    "    permissions:",
+    "      contents: write",
+    "    runs-on: ubuntu-latest",
+    "    timeout-minutes: 5",
+    "    steps:",
+    "      - name: Generate contribution snake",
+    "        uses: Platane/snk/svg-only@v3",
+    "        with:",
+    "          github_user_name: ${{ github.repository_owner }}",
+    "          outputs: |",
+    "            dist/github-contribution-grid-snake.svg",
+    "            dist/github-contribution-grid-snake-dark.svg?palette=github-dark",
+    "",
+    "      - name: Publish SVG files",
+    "        uses: crazy-max/ghaction-github-pages@v3.1.0",
+    "        with:",
+    `          target_branch: ${branch}`,
+    "          build_dir: dist",
+    "        env:",
+    "          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+    ""
+  ].join("\n");
+}
+
+function generateSetupGuide() {
+  const username = state.profile.login || "your-username";
+  const hasSnake = state.blocks.some(block => block.type === "snake");
+  const hasSpotify = state.blocks.some(block => block.type === "spotify");
+  const hasCustom = state.blocks.some(block => block.type === "custom");
+  const sections = [
+    "# GitHub Profile README 配置说明",
+    "",
+    `1. 在 GitHub 创建或打开名为 \`${username}\` 的公开仓库。仓库名需要与用户名完全相同。`,
+    "2. 把 `README.md` 放在仓库根目录并提交。"
+  ];
+  if (hasSnake) sections.push(
+    "",
+    "## 贡献贪吃蛇",
+    "",
+    "1. 保留 `.github/workflows/snake.yml` 的目录结构并提交。",
+    "2. 在仓库的 Settings → Actions → General 中允许工作流拥有读写权限。",
+    "3. 打开 Actions，手动运行一次 Generate contribution snake。之后工作流会每天自动更新。",
+    "4. 首次运行完成后，README 中的贪吃蛇图片才会出现。"
+  );
+  if (hasSpotify) sections.push(
+    "",
+    "## Spotify 正在播放",
+    "",
+    "请先访问 https://spotify-github-profile.kittinanx.com/ 完成 Spotify 账号绑定，并确认组件中的 UID 正确。"
+  );
+  if (hasCustom) sections.push(
+    "",
+    "## 自定义 Markdown",
+    "",
+    "请自行检查其中引用的外部图片、服务、密钥或额外工作流。Readme Studio 会原样导出这部分内容。"
+  );
+  sections.push("", "## 说明", "", "统计卡片、连续贡献、奖杯等动态图片由第三方服务提供，通常不需要仓库内的 GitHub Action，但服务短暂不可用时图片可能无法加载。", "");
+  return sections.join("\n");
+}
+
+function crc32(bytes) {
+  if (!crc32.table) crc32.table = Array.from({ length: 256 }, (_, index) => {
+    let value = index;
+    for (let bit = 0; bit < 8; bit += 1) value = (value & 1) ? (0xEDB88320 ^ (value >>> 1)) : (value >>> 1);
+    return value >>> 0;
+  });
+  let crc = 0xFFFFFFFF;
+  bytes.forEach(byte => { crc = crc32.table[(crc ^ byte) & 0xFF] ^ (crc >>> 8); });
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+
+function createZip(files) {
+  const encoder = new TextEncoder();
+  const localParts = [];
+  const centralParts = [];
+  let offset = 0;
+  const now = new Date();
+  const dosTime = ((now.getHours() & 31) << 11) | ((now.getMinutes() & 63) << 5) | ((now.getSeconds() / 2) & 31);
+  const dosDate = (((now.getFullYear() - 1980) & 127) << 9) | (((now.getMonth() + 1) & 15) << 5) | (now.getDate() & 31);
+
+  files.forEach(file => {
+    const name = encoder.encode(file.name);
+    const data = encoder.encode(file.content);
+    const checksum = crc32(data);
+    const local = new Uint8Array(30 + name.length + data.length);
+    const localView = new DataView(local.buffer);
+    localView.setUint32(0, 0x04034B50, true);
+    localView.setUint16(4, 20, true);
+    localView.setUint16(6, 0x0800, true);
+    localView.setUint16(8, 0, true);
+    localView.setUint16(10, dosTime, true);
+    localView.setUint16(12, dosDate, true);
+    localView.setUint32(14, checksum, true);
+    localView.setUint32(18, data.length, true);
+    localView.setUint32(22, data.length, true);
+    localView.setUint16(26, name.length, true);
+    local.set(name, 30);
+    local.set(data, 30 + name.length);
+    localParts.push(local);
+
+    const central = new Uint8Array(46 + name.length);
+    const centralView = new DataView(central.buffer);
+    centralView.setUint32(0, 0x02014B50, true);
+    centralView.setUint16(4, 20, true);
+    centralView.setUint16(6, 20, true);
+    centralView.setUint16(8, 0x0800, true);
+    centralView.setUint16(10, 0, true);
+    centralView.setUint16(12, dosTime, true);
+    centralView.setUint16(14, dosDate, true);
+    centralView.setUint32(16, checksum, true);
+    centralView.setUint32(20, data.length, true);
+    centralView.setUint32(24, data.length, true);
+    centralView.setUint16(28, name.length, true);
+    centralView.setUint32(42, offset, true);
+    central.set(name, 46);
+    centralParts.push(central);
+    offset += local.length;
+  });
+
+  const centralSize = centralParts.reduce((sum, part) => sum + part.length, 0);
+  const end = new Uint8Array(22);
+  const endView = new DataView(end.buffer);
+  endView.setUint32(0, 0x06054B50, true);
+  endView.setUint16(8, files.length, true);
+  endView.setUint16(10, files.length, true);
+  endView.setUint32(12, centralSize, true);
+  endView.setUint32(16, offset, true);
+  return new Blob([...localParts, ...centralParts, end], { type: "application/zip" });
+}
+
+function downloadProject() {
+  const files = [
+    { name: "README.md", content: `${generateMarkdown()}\n` },
+    { name: "SETUP.md", content: generateSetupGuide() }
+  ];
+  if (state.blocks.some(block => block.type === "snake")) files.push({ name: ".github/workflows/snake.yml", content: generateSnakeWorkflow() });
+  const blob = createZip(files);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const username = String(state.profile.login || "github-profile").replace(/[^A-Za-z0-9._-]/g, "-");
+  link.href = url;
+  link.download = `${username}-github-profile.zip`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast("完整项目 ZIP 已下载");
 }
 
 function renderProfile() {
@@ -514,17 +708,22 @@ function render() {
 
 function bindEvents() {
   const settingsDialog = $("#settings-dialog");
-  const openSettings = () => {
-    if (typeof settingsDialog.showModal === "function") settingsDialog.showModal();
-    else settingsDialog.setAttribute("open", "");
+  const exportDialog = $("#export-dialog");
+  const openDialog = dialog => {
+    if (typeof dialog.showModal === "function") dialog.showModal();
+    else dialog.setAttribute("open", "");
   };
-  const closeSettings = () => {
-    if (typeof settingsDialog.close === "function") settingsDialog.close();
-    else settingsDialog.removeAttribute("open");
+  const closeDialog = dialog => {
+    if (typeof dialog.close === "function") dialog.close();
+    else dialog.removeAttribute("open");
+  };
+  const openSettings = () => {
+    openDialog(settingsDialog);
   };
   $("#settings-button").addEventListener("click", openSettings);
-  $("#settings-dialog-close").addEventListener("click", closeSettings);
-  settingsDialog.addEventListener("click", event => { if (event.target === settingsDialog) closeSettings(); });
+  $("#settings-dialog-close").addEventListener("click", () => closeDialog(settingsDialog));
+  $("#export-dialog-close").addEventListener("click", () => closeDialog(exportDialog));
+  [settingsDialog, exportDialog].forEach(dialog => dialog.addEventListener("click", event => { if (event.target === dialog) closeDialog(dialog); }));
   $("#component-search").addEventListener("input", event => renderComponentLibrary(event.target.value));
   $("#random-style").addEventListener("click", () => randomizeStyle("all"));
   $("#random-menu-toggle").addEventListener("click", event => {
@@ -546,10 +745,12 @@ function bindEvents() {
   $("#load-profile").addEventListener("click", loadProfile);
   $("#username").addEventListener("keydown", event => { if (event.key === "Enter") loadProfile(); });
   $("#theme-toggle").addEventListener("click", () => { state.lightApp = !state.lightApp; render(); persist(); });
-  $("#export-button").addEventListener("click", async () => {
+  $("#export-button").addEventListener("click", () => { renderExportChecklist(); openDialog(exportDialog); });
+  $("#copy-readme").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText(generateMarkdown()); showToast("README Markdown 已复制"); }
     catch (_) { showToast("复制失败，请切换到 Markdown 手动复制"); }
   });
+  $("#download-project").addEventListener("click", downloadProject);
   $("#delete-block").addEventListener("click", () => removeBlock(state.selectedId));
   $("#reset-button").addEventListener("click", () => {
     state.blocks = DEMO_BLOCKS.map(block => ({ ...block, id: id(), props: { ...block.props, ...(block.props.username ? { username: state.profile.login } : {}) } }));
