@@ -187,6 +187,13 @@ let state = {
   profile: { login: "octocat", name: "The Octocat", bio: "GitHub's friendly mascot and open source explorer.", avatar_url: "https://github.com/octocat.png", followers: 15200, following: 9, location: "San Francisco", blog: "github.blog" }
 };
 
+const API_BASE_URL = String(window.README_STUDIO_CONFIG?.apiBaseUrl || "").trim().replace(/\/$/, "");
+const PUBLISH_SESSION_KEY = "readme-studio-publish-session";
+const PUBLISH_SESSION_MAX_AGE = 9 * 60 * 1000;
+let publishSession = null;
+let lastPublishedUrl = "";
+let lastAuthorizationRevoked = true;
+
 const $ = (selector) => document.querySelector(selector);
 const escapeHTML = (value = "") => String(value).replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
 const lines = value => String(value || "").split("\n").map(v => v.trim()).filter(Boolean);
@@ -199,6 +206,39 @@ function showToast(message) {
   toast.classList.add("show");
   clearTimeout(showToast.timer);
   showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800);
+}
+
+function restorePublishSession() {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(PUBLISH_SESSION_KEY));
+    if (saved?.id && saved?.login && Date.now() - saved.createdAt < PUBLISH_SESSION_MAX_AGE) publishSession = saved;
+    else sessionStorage.removeItem(PUBLISH_SESSION_KEY);
+  } catch (_) {
+    sessionStorage.removeItem(PUBLISH_SESSION_KEY);
+  }
+}
+
+function clearPublishSession() {
+  publishSession = null;
+  sessionStorage.removeItem(PUBLISH_SESSION_KEY);
+}
+
+function handleAuthReturn() {
+  const params = new URLSearchParams(location.hash.replace(/^#/, ""));
+  const sessionId = params.get("github_session");
+  const login = params.get("github_login");
+  const error = params.get("github_error");
+  if (!sessionId && !error) return false;
+  history.replaceState(null, "", `${location.pathname}${location.search}`);
+  if (sessionId && login) {
+    publishSession = { id: sessionId, login, createdAt: Date.now() };
+    sessionStorage.setItem(PUBLISH_SESSION_KEY, JSON.stringify(publishSession));
+    showToast(`已连接 GitHub @${login}`);
+  } else {
+    clearPublishSession();
+    setTimeout(() => showToast(error || "GitHub 授权没有完成"), 0);
+  }
+  return true;
 }
 
 function persist() {
@@ -746,6 +786,98 @@ function generateSetupGuide() {
   return sections.join("\n");
 }
 
+function getProjectFiles({ includeSetup = true } = {}) {
+  const files = [{ name: "README.md", content: `${generateMarkdown()}\n` }];
+  if (includeSetup) files.push({ name: "SETUP.md", content: generateSetupGuide() });
+  if (state.blocks.some(block => block.type === "snake")) files.push({ name: ".github/workflows/snake.yml", content: generateSnakeWorkflow() });
+  if (state.blocks.some(block => block.type === "metrics")) files.push({ name: ".github/workflows/metrics.yml", content: generateMetricsWorkflow() });
+  if (state.blocks.some(block => block.type === "contrib3d")) files.push({ name: ".github/workflows/profile-3d.yml", content: generateContrib3dWorkflow() });
+  if (state.blocks.some(block => block.type === "spaceshooter")) files.push({ name: ".github/workflows/space-shooter.yml", content: generateSpaceShooterWorkflow() });
+  return files;
+}
+
+function beginGitHubLogin() {
+  if (!API_BASE_URL) {
+    showToast("一键发布后端尚未配置，仍可下载 ZIP");
+    return;
+  }
+  const returnTo = `${location.origin}${location.pathname}${location.search}`;
+  location.assign(`${API_BASE_URL}/auth/start?return_to=${encodeURIComponent(returnTo)}`);
+}
+
+function renderPublishPanel() {
+  const panel = $("#publish-panel");
+  const topButton = $("#github-login");
+  const topLabel = $("#github-login-label");
+  const action = $("#publish-action");
+  const title = $("#publish-title");
+  const description = $("#publish-description");
+  const result = $("#publish-result");
+  if (!panel || !topButton || !action) return;
+
+  const connected = Boolean(publishSession);
+  panel.classList.toggle("connected", connected);
+  topButton.classList.toggle("connected", connected);
+  topLabel.textContent = connected ? `@${publishSession.login}` : "GitHub 登录";
+  result.hidden = !lastPublishedUrl;
+  if (lastPublishedUrl) result.href = lastPublishedUrl;
+
+  if (connected) {
+    title.textContent = `已连接 @${publishSession.login}`;
+    description.textContent = `将创建或更新 ${publishSession.login}/${publishSession.login}；完成后立即撤销本次令牌。`;
+    action.textContent = `发布到 ${publishSession.login}/${publishSession.login}`;
+    action.disabled = false;
+  } else if (lastPublishedUrl) {
+    title.textContent = lastAuthorizationRevoked ? "发布完成，授权已撤销" : "发布完成，请检查 GitHub 授权";
+    description.textContent = lastAuthorizationRevoked
+      ? "Readme Studio 不再持有本次 GitHub 访问令牌。需要再次发布时请重新登录。"
+      : "自动撤销令牌未得到 GitHub 确认，请在 GitHub Settings → Applications 中手动撤销。";
+    action.textContent = "再次登录发布";
+    action.disabled = false;
+  } else {
+    title.textContent = "连接 GitHub 后一键发布";
+    description.textContent = API_BASE_URL
+      ? "只会创建或更新与你用户名同名的公开仓库；完成后立即撤销本次令牌。"
+      : "后端地址尚未配置；编辑和下载功能不受影响。";
+    action.textContent = "登录并发布";
+    action.disabled = false;
+  }
+}
+
+async function publishToGitHub() {
+  if (!publishSession) {
+    beginGitHubLogin();
+    return;
+  }
+  const button = $("#publish-action");
+  button.disabled = true;
+  button.textContent = "正在安全发布…";
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/publish`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${publishSession.id}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ files: getProjectFiles({ includeSetup: false }) })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "发布失败，请重新登录后再试");
+    lastPublishedUrl = data.repositoryUrl || `https://github.com/${publishSession.login}/${publishSession.login}`;
+    lastAuthorizationRevoked = data.authorizationRevoked !== false;
+    clearPublishSession();
+    renderPublishPanel();
+    showToast(lastAuthorizationRevoked ? "已发布到 GitHub，本次授权已撤销" : "发布完成，请手动检查 GitHub 授权");
+  } catch (error) {
+    clearPublishSession();
+    renderPublishPanel();
+    showToast(error.message || "发布失败，会话已结束，请检查 GitHub 授权");
+  } finally {
+    button.disabled = false;
+  }
+}
+
 function crc32(bytes) {
   if (!crc32.table) crc32.table = Array.from({ length: 256 }, (_, index) => {
     let value = index;
@@ -817,14 +949,7 @@ function createZip(files) {
 }
 
 function downloadProject() {
-  const files = [
-    { name: "README.md", content: `${generateMarkdown()}\n` },
-    { name: "SETUP.md", content: generateSetupGuide() }
-  ];
-  if (state.blocks.some(block => block.type === "snake")) files.push({ name: ".github/workflows/snake.yml", content: generateSnakeWorkflow() });
-  if (state.blocks.some(block => block.type === "metrics")) files.push({ name: ".github/workflows/metrics.yml", content: generateMetricsWorkflow() });
-  if (state.blocks.some(block => block.type === "contrib3d")) files.push({ name: ".github/workflows/profile-3d.yml", content: generateContrib3dWorkflow() });
-  if (state.blocks.some(block => block.type === "spaceshooter")) files.push({ name: ".github/workflows/space-shooter.yml", content: generateSpaceShooterWorkflow() });
+  const files = getProjectFiles();
   const blob = createZip(files);
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -901,6 +1026,7 @@ function render() {
   document.querySelectorAll(".segment").forEach(button => button.classList.toggle("active", button.dataset.view === state.view));
   document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", button.dataset.device === state.device));
   renderProfile(); renderCanvas(); renderSettings();
+  renderPublishPanel();
 }
 
 function bindEvents() {
@@ -942,7 +1068,13 @@ function bindEvents() {
   $("#load-profile").addEventListener("click", loadProfile);
   $("#username").addEventListener("keydown", event => { if (event.key === "Enter") loadProfile(); });
   $("#theme-toggle").addEventListener("click", () => { state.lightApp = !state.lightApp; render(); persist(); });
-  $("#export-button").addEventListener("click", () => { renderExportChecklist(); openDialog(exportDialog); });
+  $("#github-login").addEventListener("click", () => {
+    if (publishSession) {
+      renderExportChecklist(); renderPublishPanel(); openDialog(exportDialog);
+    } else beginGitHubLogin();
+  });
+  $("#export-button").addEventListener("click", () => { renderExportChecklist(); renderPublishPanel(); openDialog(exportDialog); });
+  $("#publish-action").addEventListener("click", publishToGitHub);
   $("#copy-readme").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText(generateMarkdown()); showToast("README Markdown 已复制"); }
     catch (_) { showToast("复制失败，请切换到 Markdown 手动复制"); }
@@ -965,11 +1097,14 @@ function bindEvents() {
   zone.addEventListener("click", () => { state.selectedId = null; renderCanvas(); renderSettings(); });
 }
 
+restorePublishSession();
+const returnedFromGitHub = handleAuthReturn();
 restore();
 renderComponentLibrary();
 renderAcknowledgements();
 bindEvents();
 render();
+if (returnedFromGitHub) $("#export-button").click();
 
 const modelContext = typeof document === "undefined" ? undefined : document.modelContext;
 if (modelContext?.registerTool) {

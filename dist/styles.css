@@ -84,6 +84,11 @@ button svg { pointer-events: none; }
 .button { height: 34px; border-radius: 7px; padding: 0 13px; font-weight: 600; font-size: 13px; }
 .button-primary { background: var(--accent); color: #fff; box-shadow: 0 6px 16px rgba(124,92,255,.2); }
 .button-primary:hover { background: #8c73ff; }
+.button-github { display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid #3b444f; background: #21262d; color: #f0f3f6; }
+.button-github:hover { border-color: #59636e; background: #2b3139; }
+.button-github .ui-icon { fill: currentColor; stroke: none; }
+.button-github.connected { border-color: rgba(63,185,80,.45); background: rgba(63,185,80,.12); color: #56d364; }
+.button:disabled { cursor: not-allowed; opacity: .58; }
 .random-wrap { position: relative; display: flex; }
 .button-random { display: inline-flex; align-items: center; gap: 6px; padding-right: 10px; border: 1px solid rgba(124,92,255,.48); border-right: 0; border-radius: 7px 0 0 7px; background: var(--accent-soft); color: #cfc5ff; }
 .button-random:hover { border-color: #8c73ff; background: rgba(124,92,255,.22); }
@@ -357,6 +362,16 @@ button svg { pointer-events: none; }
 .dialog-content { max-height: calc(100vh - 126px); overflow-y: auto; padding: 6px 22px 22px; }
 .export-content { padding-top: 20px; }
 .export-intro { margin: 0 0 15px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.publish-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-bottom: 16px; padding: 14px; border: 1px solid rgba(88,166,255,.3); border-radius: 10px; background: rgba(88,166,255,.07); }
+.publish-panel.connected { border-color: rgba(63,185,80,.3); background: rgba(63,185,80,.07); }
+.publish-panel-copy { min-width: 0; }
+.publish-panel-copy strong, .publish-panel-copy small { display: block; }
+.publish-panel-copy strong { margin: 4px 0; font-size: 13px; }
+.publish-panel-copy small { color: var(--muted); font-size: 10px; line-height: 1.5; }
+.publish-kicker { color: var(--blue); font-size: 9px; font-weight: 800; letter-spacing: .12em; }
+.publish-panel.connected .publish-kicker { color: #56d364; }
+.publish-result { grid-column: 1 / -1; width: fit-content; color: var(--blue); font-size: 11px; font-weight: 700; text-decoration: none; }
+.publish-result:hover { text-decoration: underline; }
 .export-checklist { display: grid; gap: 8px; }
 .export-check-item { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 11px; border: 1px solid var(--border-soft); border-radius: 9px; background: var(--surface); }
 .export-check-icon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; font-weight: 800; }
@@ -405,6 +420,9 @@ body.light-app .canvas-area, body.light-app .canvas-toolbar { background: #e7ebf
 body.light-app .canvas-scroll { background-image: radial-gradient(circle at 1px 1px, #c6ced8 1px, transparent 0); }
 body.light-app .button-random { color: #5f3dc4; }
 body.light-app .random-menu-toggle { color: #5f3dc4; }
+body.light-app .button-github { border-color: #d0d7de; background: #f6f8fa; color: #1f2328; }
+body.light-app .button-github:hover { background: #eaeef2; }
+body.light-app .button-github.connected { border-color: rgba(26,127,55,.35); background: rgba(26,127,55,.08); color: #1a7f37; }
 body.light-app .dependency-direct, body.light-app .export-check-item.direct .export-status { color: #1a7f37; }
 body.light-app .dependency-setup, body.light-app .export-check-item.setup .export-status { color: #9a6700; }
 body.light-app .dependency-action, body.light-app .export-check-item.action .export-status { color: #5f3dc4; }
@@ -478,7 +496,7 @@ body.light-app .markdown-output { background: #fff; color: #1f2328; }
 }
 
 @media (max-width: 760px) {
-  .brand small, .segmented, .save-state, .block-count, .style-label { display: none; }
+  .brand small, .segmented, .save-state, .block-count, .style-label, #github-login-label { display: none; }
   .topbar { gap: 10px; }
   .toolbar-actions { gap: 5px; }
   .button-primary { padding-inline: 10px; }
@@ -491,4 +509,6 @@ body.light-app .markdown-output { background: #fff; color: #1f2328; }
   .profile-frame { min-width: 650px; }
   .settings-panel { min-height: 400px; }
   .export-actions { grid-template-columns: 1fr; }
+  .publish-panel { grid-template-columns: 1fr; }
+  .publish-panel .button { width: 100%; }
 }
