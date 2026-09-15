@@ -268,7 +268,7 @@ function renderComponentLibrary(query = "") {
       <div class="component-list">${items.map(item => `
         <div class="component-item" draggable="true" tabindex="0" role="button" data-component="${item.type}" aria-label="添加${escapeHTML(item.label)}">
           <span class="component-icon">${escapeHTML(item.icon)}</span>
-          <span class="component-copy"><strong>${escapeHTML(item.label)}</strong><small>${escapeHTML(item.desc)}</small><em class="dependency-badge dependency-${dependencyFor(item.type).level}">${dependencyFor(item.type).label}</em></span>
+          <span class="component-copy"><strong>${escapeHTML(item.label)}</strong><small>${escapeHTML(item.desc)}</small>${dependencyFor(item.type).level === "direct" ? "" : `<em class="dependency-badge dependency-${dependencyFor(item.type).level}">${dependencyFor(item.type).label}</em>`}</span>
           <span class="drag-handle">⠿</span>
         </div>`).join("")}</div>
     </section>`;

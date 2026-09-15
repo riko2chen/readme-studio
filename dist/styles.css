@@ -139,7 +139,6 @@ button svg { pointer-events: none; }
 .component-copy strong { margin-bottom: 3px; font-size: 13px; }
 .component-copy small { color: var(--muted); font-size: 11px; }
 .dependency-badge { display: inline-flex; align-items: center; width: fit-content; margin-top: 7px; padding: 2px 6px; border-radius: 20px; font-size: 9px; font-style: normal; font-weight: 700; letter-spacing: .02em; }
-.dependency-direct { background: rgba(63,185,80,.12); color: #56d364; }
 .dependency-setup { background: rgba(210,153,34,.14); color: #e3b341; }
 .dependency-action { background: var(--accent-soft); color: #ad9cff; }
 .drag-handle { color: var(--subtle); letter-spacing: 1px; }
@@ -212,10 +211,10 @@ button svg { pointer-events: none; }
 .readme-block.dragging { opacity: .4; }
 .block-tools { position: absolute; top: -11px; right: 7px; display: none; height: 22px; align-items: center; gap: 4px; padding: 0 7px; border: 1px solid #7c5cff; border-radius: 5px; background: #18112f; color: #cfc5ff; font-size: 10px; z-index: 3; }
 .readme-block.selected .block-tools { display: flex; }
-.block-remove, .block-lock { position: absolute; top: -11px; z-index: 4; width: 22px; height: 22px; display: grid; place-items: center; padding: 0; border: 1px solid #484f58; border-radius: 50%; background: #161b22; color: #8b949e; cursor: pointer; opacity: .62; transition: opacity .14s, color .14s, border-color .14s, transform .14s; }
+.block-remove, .block-lock { position: absolute; top: -11px; z-index: 4; width: 22px; height: 22px; display: none; place-items: center; padding: 0; border: 1px solid #484f58; border-radius: 50%; background: #161b22; color: #8b949e; cursor: pointer; opacity: 0; transition: opacity .14s, color .14s, border-color .14s, transform .14s; }
 .block-remove { left: 7px; font-size: 17px; line-height: 1; }
 .block-lock { left: 34px; border-radius: 5px; font-size: 10px; }
-.readme-block:hover .block-remove, .readme-block:hover .block-lock, .readme-block.selected .block-remove, .readme-block.selected .block-lock { opacity: 1; }
+.readme-block.selected .block-remove, .readme-block.selected .block-lock { display: grid; opacity: 1; }
 .block-remove:hover { border-color: #f85149; color: #ff7b72; transform: scale(1.06); }
 .block-lock:hover, .block-lock.locked { border-color: #7c5cff; color: #cfc5ff; background: #18112f; }
 .readme-content { overflow: hidden; }
