@@ -223,6 +223,19 @@ button svg { pointer-events: none; }
 .readme-content p { margin: 7px 0; color: #c9d1d9; line-height: 1.55; }
 .readme-content .muted { color: #8b949e; }
 .readme-content img { max-width: 100%; }
+.live-preview-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: var(--preview-justify, flex-start); gap: 8px; width: 100%; }
+.live-preview-shell { position: relative; display: inline-grid; place-items: center; max-width: 100%; min-height: 36px; overflow: hidden; border: 1px solid #30363d; border-radius: 6px; background: #0d1117; }
+.live-preview-shell a { display: block; max-width: 100%; }
+.live-preview-card { flex: 1 1 270px; min-height: 128px; }
+.live-preview-banner { width: 100%; min-height: 76px; }
+.live-preview-badge { min-width: 70px; min-height: 24px; border: 0; background: transparent; }
+.live-preview-image { position: relative; z-index: 1; display: block; width: auto; max-width: 100%; height: auto; opacity: 0; transition: opacity .16s ease; }
+.live-preview-shell.loaded { min-height: 0; border-color: transparent; background: transparent; }
+.live-preview-shell.loaded .live-preview-image { opacity: 1; }
+.live-preview-loading, .live-preview-error { position: absolute; inset: 0; display: grid; place-items: center; padding: 10px; color: #8b949e; font-size: 10px; text-align: center; }
+.live-preview-error { display: none; color: #ff7b72; }
+.live-preview-shell.loaded .live-preview-loading, .live-preview-shell.failed .live-preview-loading { display: none; }
+.live-preview-shell.failed .live-preview-error { display: grid; }
 .hero-block { text-align: center; padding: 8px 0; }
 .hero-block h1 { border: 0; margin-bottom: 2px; font-size: 26px; }
 .hero-block p { color: #8b949e; }
@@ -429,6 +442,10 @@ body.light-app .block-remove { border-color: rgba(207,34,46,.38); background: #f
 body.light-app .block-lock { border-color: rgba(95,61,196,.38); background: #fff; color: #5f3dc4; }
 body.light-app .block-remove:hover { border-color: #cf222e; background: #fff1f1; color: #cf222e; }
 body.light-app .block-lock:hover, body.light-app .block-lock.locked { border-color: #7c5cff; color: #5f3dc4; background: #f3f0ff; }
+body.light-app .live-preview-shell { border-color: #d0d7de; background: #f6f8fa; }
+body.light-app .live-preview-shell.loaded, body.light-app .live-preview-badge { border-color: transparent; background: transparent; }
+body.light-app .live-preview-loading { color: #656d76; }
+body.light-app .live-preview-error { color: #cf222e; }
 
 /* GitHub profile light preview */
 body.light-app .profile-frame { border-color: #d0d7de; background: #fff; color: #1f2328; }

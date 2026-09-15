@@ -376,34 +376,136 @@ function randomizeStyle(mode = "all") {
   showToast(`${modeLabel}：${recipe.name} · ${theme.name} · ${mood.name} · ${density.name}`);
 }
 
+function assetUrl(base, params = {}) {
+  const url = new URL(base);
+  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, String(value ?? "")));
+  return url.toString();
+}
+
+function socialItem(value) {
+  const split = value.indexOf(":");
+  const rawHref = split > -1 ? value.slice(split + 1) : "#";
+  let href = "#";
+  try {
+    const url = new URL(rawHref);
+    if (["http:", "https:"].includes(url.protocol)) href = url.toString();
+  } catch (_) { /* keep invalid links inert in preview */ }
+  return {
+    name: split > -1 ? value.slice(0, split) : value,
+    href
+  };
+}
+
+function isRemoteImage(value) {
+  try {
+    return ["http:", "https:"].includes(new URL(String(value)).protocol);
+  } catch (_) {
+    return false;
+  }
+}
+
+function directAssetsFor(block) {
+  const p = block.props;
+  if (block.type === "typing") return [{
+    src: assetUrl("https://readme-typing-svg.demolab.com", { font: "Fira Code", pause: 1000, color: p.color || "58A6FF", center: true, vCenter: true, width: 520, lines: csv(p.lines).join(";") }),
+    alt: "Typing animation",
+    kind: "banner"
+  }];
+  if (block.type === "capsule") return [{
+    src: assetUrl("https://capsule-render.vercel.app/api", { type: "waving", color: p.color, height: p.height, section: "header", text: p.title, fontSize: 38, fontColor: "ffffff", animation: "fadeIn", desc: p.subtitle, descAlignY: 64 }),
+    alt: "Profile header",
+    kind: "banner"
+  }];
+  if (block.type === "skills") return csv(p.items).map(item => ({
+    src: assetUrl(`https://img.shields.io/badge/${encodeURIComponent(item)}-161B22`, { style: p.style || "flat", logo: item.toLowerCase().replace(/\./g, "dot"), logoColor: "white" }),
+    alt: item,
+    kind: "badge"
+  }));
+  if (block.type === "stats") return [
+    { src: assetUrl("https://github-readme-stats.vercel.app/api", { username: p.username, show_icons: true, theme: p.theme, hide_border: true }), alt: "GitHub stats", kind: "card" },
+    { src: assetUrl("https://github-readme-stats.vercel.app/api/top-langs/", { username: p.username, layout: "compact", theme: p.theme, hide_border: true }), alt: "Top languages", kind: "card" }
+  ];
+  if (block.type === "streak") return [{
+    src: assetUrl("https://streak-stats.demolab.com", { user: p.username, theme: p.theme, hide_border: true }),
+    alt: "GitHub streak",
+    kind: "banner"
+  }];
+  if (block.type === "trophy") return [{
+    src: assetUrl("https://github-profile-trophy.vercel.app/", { username: p.username, theme: p.theme, "no-frame": true, row: 1, column: 6 }),
+    alt: "GitHub trophies",
+    kind: "banner"
+  }];
+  if (block.type === "activity") return [{
+    src: assetUrl("https://github-readme-activity-graph.vercel.app/graph", { username: p.username, bg_color: "00000000", color: p.color || "7C5CFF", line: p.color || "7C5CFF", point: "FFFFFF", hide_border: true }),
+    alt: "Contribution activity",
+    kind: "banner"
+  }];
+  if (block.type === "summary") return [{
+    src: assetUrl("https://github-profile-summary-cards.vercel.app/api/cards/profile-details", { username: p.username, theme: p.theme }),
+    alt: "GitHub profile summary",
+    kind: "banner"
+  }];
+  if (block.type === "social") return csv(p.items).map(value => {
+    const item = socialItem(value);
+    return {
+      src: assetUrl(`https://img.shields.io/badge/${encodeURIComponent(item.name)}-1F6FEB`, { style: "flat", logoColor: "white" }),
+      alt: item.name,
+      href: item.href,
+      kind: "badge"
+    };
+  });
+  if (block.type === "visitor") return [{
+    src: assetUrl("https://komarev.com/ghpvc/", { username: p.username, label: p.label, color: p.color || "1F6FEB", style: "flat" }),
+    alt: p.label || "Profile views",
+    kind: "badge"
+  }];
+  if (block.type === "spotify") return [{
+    src: assetUrl("https://spotify-github-profile.kittinanx.com/api/view", { uid: p.uid, cover_image: true, theme: p.theme, show_offline: false, background_color: "121212" }),
+    alt: "Spotify now playing",
+    kind: "card"
+  }];
+  if (block.type === "terminal" && isRemoteImage(p.image)) return [{ src: p.image, alt: p.alt || "GitHub terminal profile", kind: "card" }];
+  return [];
+}
+
+function livePreviewImage(asset) {
+  const image = `<img class="live-preview-image" src="${escapeHTML(asset.src)}" alt="${escapeHTML(asset.alt)}" loading="eager" referrerpolicy="no-referrer" />`;
+  const media = asset.href && asset.href !== "#" ? `<a href="${escapeHTML(asset.href)}" target="_blank" rel="noreferrer">${image}</a>` : image;
+  return `<span class="live-preview-shell live-preview-${asset.kind || "card"}">
+    <span class="live-preview-loading">正在载入真实预览…</span>
+    <span class="live-preview-error">远程预览暂不可用</span>
+    ${media}
+  </span>`;
+}
+
+function livePreview(assets) {
+  return `<div class="live-preview-row">${assets.map(livePreviewImage).join("")}</div>`;
+}
+
 function blockPreview(block) {
   const p = block.props;
   const align = ["left", "center", "right"].includes(p.align) ? p.align : "left";
-  const safeColor = /^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(p.color || "") ? p.color : "7C5CFF";
+  const justify = align === "center" ? "center" : align === "right" ? "flex-end" : "flex-start";
+  const directAssets = directAssetsFor(block);
   let content = "";
   if (block.type === "hero") content = `<div class="hero-block"><h1>${escapeHTML(p.title)}</h1><p>${escapeHTML(p.subtitle)}</p></div>`;
-  if (block.type === "typing") content = `<div class="typing-placeholder"><span>${escapeHTML(csv(p.lines)[0] || "Always learning")}</span><i class="typing-caret"></i></div>`;
-  if (block.type === "capsule") content = `<div class="capsule-preview" style="--capsule-height:${Math.max(100, Math.min(240, Number(p.height) || 180))}px"><div><strong>${escapeHTML(p.title)}</strong><span>${escapeHTML(p.subtitle)}</span></div></div>`;
+  if (block.type === "typing" || block.type === "capsule") content = livePreview(directAssets);
   if (block.type === "about") content = `<h2>${escapeHTML(p.heading)}</h2><ul class="about-list">${lines(p.text).map(line => `<li>${escapeHTML(line)}</li>`).join("")}</ul>`;
-  if (block.type === "skills") content = `<h2>${escapeHTML(p.heading)}</h2><div class="badge-row">${csv(p.items).map((item, index) => `<span class="tech-badge" style="--badge:${["#3178c6", "#61dafb", "#5fa04e", "#3776ab", "#f24e1e", "#f05032"][index % 6]}">${escapeHTML(item)}</span>`).join("")}</div>`;
-  if (block.type === "stats") content = `<h2>${escapeHTML(p.heading)}</h2><div class="stat-cards"><div class="stat-card"><strong>${escapeHTML(p.username)}'s GitHub Stats</strong><div class="stat-number">2,486</div><p class="muted">Total contributions this year</p></div><div class="stat-card"><strong>Most used languages</strong><div class="stat-lines"><i style="--w:78%;--c:#3178c6"></i><i style="--w:62%;--c:#f1e05a"></i><i style="--w:38%;--c:#7c3aed"></i><i style="--w:25%;--c:#e34c26"></i></div></div></div>`;
-  if (block.type === "streak") content = `<div class="streak-card"><div><strong>1,284</strong><small>Total contributions</small></div><div><strong>27</strong><small>Current streak</small></div><div><strong>89</strong><small>Longest streak</small></div></div>`;
-  if (block.type === "trophy") content = `<div class="trophy-row">${[["★","Stars"],["⌁","Commits"],["⌘","Pull requests"],["◈","Repositories"]].map(t => `<div class="trophy"><b>${t[0]}</b>${t[1]}</div>`).join("")}</div>`;
-  if (block.type === "activity") content = `<h2>${escapeHTML(p.heading)}</h2><div class="activity-grid">${Array.from({length: 104}, (_, i) => `<i style="--level:${["#161b22",`#${safeColor}35`,`#${safeColor}70`,`#${safeColor}b5`,`#${safeColor}`][(i * 7 + i % 11) % 5]}"></i>`).join("")}</div>`;
-  if (block.type === "summary") content = `<div class="summary-card"><div><strong>${escapeHTML(p.username)}</strong><span>Profile details</span></div><div class="summary-metrics"><span><b>1.8k</b> commits</span><span><b>128</b> stars</span><span><b>24</b> repos</span></div><div class="summary-bars"><i></i><i></i><i></i><i></i></div></div>`;
+  if (block.type === "skills") content = `<h2>${escapeHTML(p.heading)}</h2>${livePreview(directAssets)}`;
+  if (block.type === "stats") content = `<h2>${escapeHTML(p.heading)}</h2>${livePreview(directAssets)}`;
+  if (["streak", "trophy", "summary", "visitor", "spotify"].includes(block.type)) content = livePreview(directAssets);
+  if (block.type === "activity") content = `<h2>${escapeHTML(p.heading)}</h2>${livePreview(directAssets)}`;
   if (block.type === "snake") content = `<div class="snake-preview"><div class="snake-grid">${Array.from({length: 70}, (_, i) => `<i class="${[8,9,10,11,21,31,32,33,34,35,36,46,56,57,58][i] !== undefined ? "on" : ""}"></i>`).join("")}</div><span class="snake">●━━●━━●</span><small>GitHub contribution snake · ${escapeHTML(p.theme)}</small></div>`;
   if (block.type === "metrics") content = `<div class="metrics-preview"><div><span>METRICS</span><strong>${escapeHTML(p.username)}</strong></div><div class="metrics-grid"><i style="--v:82%"></i><i style="--v:58%"></i><i style="--v:73%"></i><i style="--v:44%"></i></div><small>Activity · Languages · Repositories · Habits</small></div>`;
   if (block.type === "contrib3d") content = `<div class="contrib3d-preview"><div class="contrib3d-grid">${Array.from({length: 84}, (_, i) => `<i style="--h:${5 + ((i * 13) % 26)}px;--o:${.25 + ((i * 7) % 70) / 100}"></i>`).join("")}</div><small>3D contribution calendar · ${escapeHTML(p.theme)}</small></div>`;
   if (block.type === "spaceshooter") content = `<div class="space-preview"><div class="space-stars">${Array.from({length: 24}, (_, i) => `<i style="--x:${(i * 37) % 100}%;--y:${(i * 53) % 100}%"></i>`).join("")}</div><span class="space-ship">△</span><span class="space-shot">····</span><div class="space-blocks">${Array.from({length: 18}, (_, i) => `<i class="${i % 4 ? "on" : ""}"></i>`).join("")}</div><small>Contribution Space Shooter · ${escapeHTML(p.strategy)}</small></div>`;
-  if (block.type === "terminal") content = `<div class="terminal-preview"><div class="terminal-top"><i></i><i></i><i></i><span>profile — terminal</span></div><code><b>$</b> github-profile --user ${escapeHTML(state.profile.login || "developer")}<br><span>Loading repositories...</span><br><em>✓ Profile ready</em></code></div>`;
-  if (block.type === "social") content = `<h2>${escapeHTML(p.heading)}</h2><div class="social-row">${csv(p.items).map(item => `<span class="social-pill">${escapeHTML(item.split(":")[0])} ↗</span>`).join("")}</div>`;
+  if (block.type === "terminal") content = directAssets.length ? livePreview(directAssets) : `<div class="terminal-preview"><div class="terminal-top"><i></i><i></i><i></i><span>profile — terminal</span></div><code><b>$</b> 请填写可访问的图片 URL<br><span>支持 HTTPS GIF、PNG、WebP 或 SVG</span></code></div>`;
+  if (block.type === "social") content = `<h2>${escapeHTML(p.heading)}</h2>${livePreview(directAssets)}`;
   if (block.type === "quote") content = `<div class="quote-card">“${escapeHTML(p.text)}”</div>`;
-  if (block.type === "visitor") content = `<div class="visitor-counter"><span>${escapeHTML(p.label)}</span><b>12,840</b></div>`;
-  if (block.type === "spotify") content = `<div class="spotify-card"><span class="spotify-cover">♫</span><div><small>LISTENING ON SPOTIFY</small><strong>Recently played track</strong><span>${escapeHTML(p.uid)}</span></div><i>•••</i></div>`;
   if (block.type === "divider") content = `<div class="readme-divider" style="margin-block:${p.spacing === "large" ? 22 : p.spacing === "small" ? 4 : 11}px"></div>`;
   if (block.type === "spacer") content = `<div style="height:${Math.max(8, Math.min(120, Number(p.height) || 24))}px"></div>`;
   if (block.type === "custom") content = `<div class="custom-preview">${escapeHTML(p.markdown)}</div>`;
-  return `<div class="readme-content" style="text-align:${align}">${content}</div>`;
+  return `<div class="readme-content" style="text-align:${align};--preview-justify:${justify}">${content}</div>`;
 }
 
 function renderCanvas() {
@@ -427,6 +529,17 @@ function renderCanvas() {
   $("#markdown-output").hidden = state.view !== "code";
   $("#markdown-output").textContent = generateMarkdown();
   $("#block-count").textContent = `${state.blocks.length} 个组件`;
+
+  zone.querySelectorAll(".live-preview-image").forEach(image => {
+    const shell = image.closest(".live-preview-shell");
+    const settle = loaded => {
+      shell.classList.toggle("loaded", loaded);
+      shell.classList.toggle("failed", !loaded);
+    };
+    image.addEventListener("load", () => settle(true));
+    image.addEventListener("error", () => settle(false));
+    if (image.complete) settle(image.naturalWidth > 0);
+  });
 
   zone.querySelectorAll(".readme-block").forEach(element => {
     const removeButton = element.querySelector(".block-remove");
@@ -532,28 +645,29 @@ function removeBlock(blockId) {
 
 function markdownFor(block) {
   const p = block.props;
+  const assets = directAssetsFor(block);
   const open = p.align && p.align !== "left" ? `<div align="${p.align}">\n\n` : "";
   const close = open ? "\n\n</div>" : "";
   let md = "";
   if (block.type === "hero") md = `# ${p.title}\n\n${p.subtitle}`;
-  if (block.type === "typing") md = `[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=${p.color || "58A6FF"}&center=true&vCenter=true&width=520&lines=${csv(p.lines).map(encodeURIComponent).join(";")})](https://git.io/typing-svg)`;
-  if (block.type === "capsule") md = `<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=${encodeURIComponent(p.color)}&height=${encodeURIComponent(p.height)}&section=header&text=${encodeURIComponent(p.title)}&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=${encodeURIComponent(p.subtitle)}&descAlignY=64" alt="Profile header" />`;
+  if (block.type === "typing") md = `[![Typing SVG](${assets[0].src})](https://git.io/typing-svg)`;
+  if (block.type === "capsule") md = `<img width="100%" src="${assets[0].src}" alt="Profile header" />`;
   if (block.type === "about") md = `## ${p.heading}\n\n${lines(p.text).map(line => `- ${line}`).join("\n")}`;
-  if (block.type === "skills") md = `## ${p.heading}\n\n${csv(p.items).map(item => `![${item}](https://img.shields.io/badge/${encodeURIComponent(item)}-161B22?style=${p.style || "flat"}&logo=${encodeURIComponent(item.toLowerCase().replace(/\./g, "dot"))}&logoColor=white)`).join(" ")}`;
-  if (block.type === "stats") md = `## ${p.heading}\n\n<img height="165" src="https://github-readme-stats.vercel.app/api?username=${encodeURIComponent(p.username)}&show_icons=true&theme=${encodeURIComponent(p.theme)}&hide_border=true" alt="GitHub stats" />\n<img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=${encodeURIComponent(p.username)}&layout=compact&theme=${encodeURIComponent(p.theme)}&hide_border=true" alt="Top languages" />`;
-  if (block.type === "streak") md = `<img src="https://streak-stats.demolab.com?user=${encodeURIComponent(p.username)}&theme=${encodeURIComponent(p.theme)}&hide_border=true" alt="GitHub streak" />`;
-  if (block.type === "trophy") md = `<img src="https://github-profile-trophy.vercel.app/?username=${encodeURIComponent(p.username)}&theme=${encodeURIComponent(p.theme)}&no-frame=true&row=1&column=6" alt="GitHub trophies" />`;
-  if (block.type === "activity") md = `## ${p.heading}\n\n<img src="https://github-readme-activity-graph.vercel.app/graph?username=${encodeURIComponent(p.username)}&bg_color=00000000&color=${p.color || "7C5CFF"}&line=${p.color || "7C5CFF"}&point=FFFFFF&hide_border=true" alt="Contribution activity" />`;
-  if (block.type === "summary") md = `<img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=${encodeURIComponent(p.username)}&theme=${encodeURIComponent(p.theme)}" alt="GitHub profile summary" />`;
+  if (block.type === "skills") md = `## ${p.heading}\n\n${assets.map(asset => `![${asset.alt}](${asset.src})`).join(" ")}`;
+  if (block.type === "stats") md = `## ${p.heading}\n\n<img height="165" src="${assets[0].src}" alt="GitHub stats" />\n<img height="165" src="${assets[1].src}" alt="Top languages" />`;
+  if (block.type === "streak") md = `<img src="${assets[0].src}" alt="GitHub streak" />`;
+  if (block.type === "trophy") md = `<img src="${assets[0].src}" alt="GitHub trophies" />`;
+  if (block.type === "activity") md = `## ${p.heading}\n\n<img src="${assets[0].src}" alt="Contribution activity" />`;
+  if (block.type === "summary") md = `<img src="${assets[0].src}" alt="GitHub profile summary" />`;
   if (block.type === "snake") md = `<!-- Requires a Platane/snk GitHub Action that publishes to the ${safeGitRef(p.branch)} branch -->\n<img src="https://raw.githubusercontent.com/${encodeURIComponent(p.username)}/${encodeURIComponent(p.username)}/${encodeURIComponent(safeGitRef(p.branch))}/github-contribution-grid-snake-${p.theme}.svg" alt="Contribution snake" />`;
   if (block.type === "metrics") md = `<img src="./${safeRelativePath(p.filename, "github-metrics.svg")}" alt="GitHub Metrics" />`;
   if (block.type === "contrib3d") md = `<img src="./profile-3d-contrib/${safeRelativePath(p.theme, "profile-green-animate")}.svg" alt="3D contribution calendar" />`;
   if (block.type === "spaceshooter") md = `<img src="./${safeRelativePath(p.output, "game.gif")}" alt="GitHub contribution space shooter" />`;
   if (block.type === "terminal") md = `<img src="${String(p.image || "./terminal.gif").replace(/\"/g, "%22")}" alt="${String(p.alt || "GitHub terminal profile").replace(/\"/g, "&quot;")}" />`;
-  if (block.type === "social") md = `## ${p.heading}\n\n${csv(p.items).map(item => { const split = item.indexOf(":"); const name = split > -1 ? item.slice(0, split) : item; const url = split > -1 ? item.slice(split + 1) : "#"; return `[![${name}](https://img.shields.io/badge/${encodeURIComponent(name)}-1F6FEB?style=flat&logoColor=white)](${url})`; }).join(" ")}`;
+  if (block.type === "social") md = `## ${p.heading}\n\n${assets.map(asset => `[![${asset.alt}](${asset.src})](${asset.href})`).join(" ")}`;
   if (block.type === "quote") md = `> “${p.text}”`;
-  if (block.type === "visitor") md = `![${p.label}](https://komarev.com/ghpvc/?username=${encodeURIComponent(p.username)}&label=${encodeURIComponent(p.label)}&color=${p.color || "1F6FEB"}&style=flat)`;
-  if (block.type === "spotify") md = `<img src="https://spotify-github-profile.kittinanx.com/api/view?uid=${encodeURIComponent(p.uid)}&cover_image=true&theme=${encodeURIComponent(p.theme)}&show_offline=false&background_color=121212" alt="Spotify now playing" />`;
+  if (block.type === "visitor") md = `![${p.label}](${assets[0].src})`;
+  if (block.type === "spotify") md = `<img src="${assets[0].src}" alt="Spotify now playing" />`;
   if (block.type === "divider") md = "---";
   if (block.type === "spacer") md = `<br clear="both" />`;
   if (block.type === "custom") return p.markdown;
