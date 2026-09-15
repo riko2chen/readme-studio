@@ -425,9 +425,10 @@ body.light-app .button-github.connected { border-color: rgba(26,127,55,.35); bac
 body.light-app .dependency-direct, body.light-app .export-check-item.direct .export-status { color: #1a7f37; }
 body.light-app .dependency-setup, body.light-app .export-check-item.setup .export-status { color: #9a6700; }
 body.light-app .dependency-action, body.light-app .export-check-item.action .export-status { color: #5f3dc4; }
-body.light-app .block-remove, body.light-app .block-lock { border-color: #afb8c1; background: #f6f8fa; color: #656d76; }
-body.light-app .block-remove:hover { border-color: #cf222e; color: #cf222e; }
-body.light-app .block-lock.locked { border-color: #7c5cff; color: #5f3dc4; background: #f3f0ff; }
+body.light-app .block-remove { border-color: rgba(207,34,46,.38); background: #fff; color: #cf222e; }
+body.light-app .block-lock { border-color: rgba(95,61,196,.38); background: #fff; color: #5f3dc4; }
+body.light-app .block-remove:hover { border-color: #cf222e; background: #fff1f1; color: #cf222e; }
+body.light-app .block-lock:hover, body.light-app .block-lock.locked { border-color: #7c5cff; color: #5f3dc4; background: #f3f0ff; }
 
 /* GitHub profile light preview */
 body.light-app .profile-frame { border-color: #d0d7de; background: #fff; color: #1f2328; }

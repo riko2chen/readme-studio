@@ -368,7 +368,6 @@ function randomizeStyle(mode = "all") {
   }
 
   state.selectedId = state.blocks[0]?.id || null;
-  state.lightApp = theme.light;
   state.view = "preview";
   render();
   persist();
