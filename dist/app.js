@@ -65,7 +65,7 @@ const SOURCE_META = {
   capsule: { repo: "https://github.com/kyechan99/capsule-render", name: "kyechan99/capsule-render", intro: "通过 URL 参数生成波浪、渐变等动态页头。" },
   skills: { repo: "https://github.com/badges/shields", name: "badges/shields", intro: "为技术栈和社交链接生成一致的状态徽章。" },
   social: { repo: "https://github.com/badges/shields", name: "badges/shields", intro: "使用 Shields 徽章生成一致的社交链接入口。" },
-  stats: { repo: "https://github.com/anuraghazra/github-readme-stats", name: "anuraghazra/github-readme-stats", intro: "动态展示 GitHub 统计数据和常用语言。" },
+  stats: { repo: "https://github.com/stats-organization/github-stats-extended", name: "stats-organization/github-stats-extended", intro: "持续维护的 GitHub 统计与常用语言动态卡片服务。" },
   streak: { repo: "https://github.com/DenverCoder1/github-readme-streak-stats", name: "DenverCoder1/github-readme-streak-stats", intro: "生成连续贡献天数与历史记录卡片。" },
   trophy: { repo: "https://github.com/ryo-ma/github-profile-trophy", name: "ryo-ma/github-profile-trophy", intro: "把 GitHub 活跃数据转换成可展示的奖杯。" },
   activity: { repo: "https://github.com/Ashutosh00710/github-readme-activity-graph", name: "Ashutosh00710/github-readme-activity-graph", intro: "用折线图展示近期 GitHub 贡献活动。" },
@@ -422,8 +422,8 @@ function directAssetsFor(block) {
     kind: "badge"
   }));
   if (block.type === "stats") return [
-    { src: assetUrl("https://github-readme-stats.vercel.app/api", { username: p.username, show_icons: true, theme: p.theme, hide_border: true }), alt: "GitHub stats", kind: "card" },
-    { src: assetUrl("https://github-readme-stats.vercel.app/api/top-langs/", { username: p.username, layout: "compact", theme: p.theme, hide_border: true }), alt: "Top languages", kind: "card" }
+    { src: assetUrl("https://github-stats-extended.vercel.app/api", { username: p.username, show_icons: true, theme: p.theme, hide_border: true }), alt: "GitHub stats", kind: "card" },
+    { src: assetUrl("https://github-stats-extended.vercel.app/api/top-langs/", { username: p.username, layout: "compact", theme: p.theme, hide_border: true }), alt: "Top languages", kind: "card" }
   ];
   if (block.type === "streak") return [{
     src: assetUrl("https://streak-stats.demolab.com", { user: p.username, theme: p.theme, hide_border: true }),
