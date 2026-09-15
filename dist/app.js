@@ -413,10 +413,12 @@ function renderCanvas() {
   } else {
     zone.innerHTML = state.blocks.map((block, index) => {
       const component = COMPONENTS.find(item => item.type === block.type);
-      return `<div class="readme-block ${state.selectedId === block.id ? "selected" : ""}" draggable="true" data-id="${block.id}" data-index="${index}" tabindex="0">
+      const isSelected = state.selectedId === block.id;
+      const selectedTools = isSelected ? `
         <button class="block-remove" type="button" draggable="false" data-remove-id="${block.id}" aria-label="删除${escapeHTML(component?.label || block.type)}" title="删除组件">${UI_ICONS.close}</button>
         <button class="block-lock ${block.locked ? "locked" : ""}" type="button" draggable="false" data-lock-id="${block.id}" aria-label="${block.locked ? "解锁" : "锁定"}${escapeHTML(component?.label || block.type)}" aria-pressed="${Boolean(block.locked)}" title="${block.locked ? "解锁，允许随机替换" : "锁定，随机时保留"}">${block.locked ? UI_ICONS.lock : UI_ICONS.unlock}</button>
-        <span class="block-tools">⠿ ${escapeHTML(component?.label || block.type)}</span>
+        <span class="block-tools">⠿ ${escapeHTML(component?.label || block.type)}</span>` : "";
+      return `<div class="readme-block ${isSelected ? "selected" : ""}" draggable="true" data-id="${block.id}" data-index="${index}" tabindex="0">${selectedTools}
         ${blockPreview(block)}
       </div>`;
     }).join("");
@@ -429,17 +431,21 @@ function renderCanvas() {
   zone.querySelectorAll(".readme-block").forEach(element => {
     const removeButton = element.querySelector(".block-remove");
     const lockButton = element.querySelector(".block-lock");
-    removeButton.addEventListener("mousedown", event => event.stopPropagation());
-    lockButton.addEventListener("mousedown", event => event.stopPropagation());
-    removeButton.addEventListener("click", event => { event.preventDefault(); event.stopPropagation(); removeBlock(removeButton.dataset.removeId); });
-    lockButton.addEventListener("click", event => {
-      event.preventDefault(); event.stopPropagation();
-      const block = state.blocks.find(item => item.id === lockButton.dataset.lockId);
-      if (!block) return;
-      block.locked = !block.locked;
-      renderCanvas(); persist();
-      showToast(block.locked ? "组件已锁定，随机时会保留" : "组件已解锁");
-    });
+    if (removeButton) {
+      removeButton.addEventListener("mousedown", event => event.stopPropagation());
+      removeButton.addEventListener("click", event => { event.preventDefault(); event.stopPropagation(); removeBlock(removeButton.dataset.removeId); });
+    }
+    if (lockButton) {
+      lockButton.addEventListener("mousedown", event => event.stopPropagation());
+      lockButton.addEventListener("click", event => {
+        event.preventDefault(); event.stopPropagation();
+        const block = state.blocks.find(item => item.id === lockButton.dataset.lockId);
+        if (!block) return;
+        block.locked = !block.locked;
+        renderCanvas(); persist();
+        showToast(block.locked ? "组件已锁定，随机时会保留" : "组件已解锁");
+      });
+    }
     element.addEventListener("click", event => { event.stopPropagation(); state.selectedId = element.dataset.id; renderCanvas(); renderSettings(); });
     element.addEventListener("focus", () => { state.selectedId = element.dataset.id; renderCanvas(); renderSettings(); });
     element.addEventListener("dragstart", event => {
