@@ -1,0 +1,28 @@
+{
+  "multipleOutputs": [
+    {
+      "name": "README.md",
+      "content": "<div align=\"center\">\n\n<img src=\"./first.svg\" alt=\"GitHub Metrics\" />\n\n</div>\n\n<div align=\"center\">\n\n<img src=\"./second.svg\" alt=\"GitHub Metrics\" />\n\n</div>\n\n<div align=\"center\">\n\n<img src=\"./first.gif\" alt=\"GitHub contribution space shooter\" />\n\n</div>\n\n<div align=\"center\">\n\n<img src=\"./second.gif\" alt=\"GitHub contribution space shooter\" />\n\n</div>\n"
+    },
+    {
+      "name": "SETUP.md",
+      "content": "# GitHub Profile README 配置说明\n\n1. 在 GitHub 创建或打开名为 `octocat` 的公开仓库。仓库名需要与用户名完全相同。\n2. 把 `README.md` 放在仓库根目录并提交。\n\n## Metrics 信息图\n\n1. 保留 `.github/workflows/metrics.yml` 并提交。\n2. 创建权限尽量精简的 GitHub Personal Access Token。\n3. 在仓库 Settings → Secrets and variables → Actions 中新增名为 `METRICS_TOKEN` 的密钥。\n4. 手动运行一次 GitHub Metrics 工作流。\n\n## 贡献太空射击\n\n保留 `.github/workflows/space-shooter.yml` 并提交，然后手动运行一次 Update Space Shooter Game。\n\n## 说明\n\n统计卡片、连续贡献、奖杯等动态图片由第三方服务提供，通常不需要仓库内的 GitHub Action，但服务短暂不可用时图片可能无法加载。\n"
+    },
+    {
+      "name": ".github/workflows/metrics.yml",
+      "content": "name: GitHub Metrics\n\non:\n  schedule:\n    - cron: \"0 0 * * *\"\n  workflow_dispatch:\n\njobs:\n  github-metrics:\n    runs-on: ubuntu-latest\n    permissions:\n      contents: write\n    steps:\n      - uses: lowlighter/metrics@latest\n        with:\n          token: ${{ secrets.METRICS_TOKEN }}\n          user: ${{ github.repository_owner }}\n          filename: first.svg\n"
+    },
+    {
+      "name": ".github/workflows/space-shooter.yml",
+      "content": "name: Update Space Shooter Game\n\non:\n  schedule:\n    - cron: \"0 0 * * *\"\n  workflow_dispatch:\n\npermissions:\n  contents: write\n\njobs:\n  update-game:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v6\n        with:\n          fetch-depth: 2\n      - uses: czl9707/gh-space-shooter@v2\n        with:\n          github-token: ${{ secrets.GITHUB_TOKEN }}\n          output-path: first.gif\n          strategy: random\n"
+    }
+  ],
+  "terminalRelative": [],
+  "terminalAbsolute": [
+    {
+      "src": "https://raw.githubusercontent.com/x0rzavi/github-readme-terminal/HEAD/docs/assets/sample.gif",
+      "alt": "GitHub terminal profile",
+      "kind": "card"
+    }
+  ]
+}

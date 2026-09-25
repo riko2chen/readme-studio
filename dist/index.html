@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="拖拽搭建并实时预览你的 GitHub Profile README。" />
     <title>Readme Studio — GitHub Profile Builder</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230d1117'/%3E%3Cpath d='M18 16h21c5 0 9 4 9 9v23H27c-5 0-9-4-9-9V16Z' fill='%237c5cff'/%3E%3Cpath d='M26 26h14M26 33h14M26 40h8' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="icon" type="image/png" sizes="128x128" href="./assets/readme-studio-logo.png" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
         <a class="brand" href="#" aria-label="Readme Studio 首页">
-          <span class="brand-mark" aria-hidden="true">R</span>
+          <img class="brand-mark" src="./assets/readme-studio-logo.png" width="34" height="34" alt="" aria-hidden="true" />
           <span>
             <strong>Readme Studio</strong>
             <small>GitHub Profile Builder</small>
@@ -43,7 +43,7 @@
             </div>
           </div>
           <button id="theme-toggle" class="icon-button" type="button" aria-label="切换明暗主题" title="切换明暗主题"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.1A8.5 8.5 0 118.9 4a7 7 0 0011.1 11.1z"/></svg></button>
-          <button id="github-login" class="button button-github" type="button"><svg class="ui-icon small" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.58 9.58 0 0112 6.82c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0012 2z"/></svg><span id="github-login-label">GitHub 登录</span></button>
+          <button id="github-login" class="button button-github" type="button"><svg class="ui-icon small" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.58 9.58 0 0112 6.82c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0012 2z"/></svg><span id="github-login-label">连接 GitHub</span></button>
           <button id="export-button" class="button button-primary" type="button">导出</button>
           <button id="settings-button" class="icon-button settings-button" type="button" aria-label="打开设置" title="设置"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.6v.2h-4V21a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 00.3-1.9A1.7 1.7 0 003 14H2.8v-4H3a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 001.9.3A1.7 1.7 0 0010 3v-.2h4V3a1.7 1.7 0 001 1.6 1.7 1.7 0 001.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 00-.3 1.9 1.7 1.7 0 001.6 1h.2v4H21a1.7 1.7 0 00-1.6 1z"/></svg></button>
         </div>
@@ -153,10 +153,10 @@
         <section id="publish-panel" class="publish-panel" aria-live="polite">
           <div class="publish-panel-copy">
             <span class="publish-kicker">ONE-CLICK PUBLISH</span>
-            <strong id="publish-title">连接 GitHub 后一键发布</strong>
-            <small id="publish-description">只会创建或更新与你用户名同名的公开仓库；完成后立即撤销本次令牌。</small>
+            <strong id="publish-title">安装 GitHub App 后安全发布</strong>
+            <small id="publish-description">请先创建与你用户名同名的公开仓库；安装时只选择该仓库，发布结束后会自动卸载 App。</small>
           </div>
-          <button id="publish-action" class="button button-github" type="button">登录并发布</button>
+          <button id="publish-action" class="button button-github" type="button">安装并发布</button>
           <a id="publish-result" class="publish-result" href="#" target="_blank" rel="noreferrer" hidden>查看 GitHub 主页仓库 ↗</a>
         </section>
         <div id="export-checklist" class="export-checklist"></div>

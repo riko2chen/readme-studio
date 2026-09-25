@@ -1,0 +1,505 @@
+[
+  {
+    "type": "hero",
+    "label": "欢迎标题",
+    "defaults": {
+      "title": "Hi, I'm The Octocat 👋",
+      "subtitle": "Open source explorer · Builder · Curious mind",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": null,
+    "assets": [],
+    "markdown": "<div align=\"center\">\n\n# Hi, I'm The Octocat 👋\n\nOpen source explorer · Builder · Curious mind\n\n</div>"
+  },
+  {
+    "type": "typing",
+    "label": "打字动画",
+    "defaults": {
+      "lines": "Open Source Explorer,Creative Developer,Always Learning",
+      "color": "58A6FF",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": {
+      "repo": "https://github.com/DenverCoder1/readme-typing-svg",
+      "name": "DenverCoder1/readme-typing-svg",
+      "intro": "把多段文字渲染成可嵌入 README 的动态打字 SVG。"
+    },
+    "assets": [
+      {
+        "src": "https://readme-typing-svg.demolab.com/?font=Fira+Code&pause=1000&color=58A6FF&center=true&vCenter=true&width=520&lines=Open+Source+Explorer%3BCreative+Developer%3BAlways+Learning",
+        "alt": "Typing animation",
+        "kind": "banner"
+      }
+    ],
+    "markdown": "<div align=\"center\">\n\n[![Typing SVG](https://readme-typing-svg.demolab.com/?font=Fira+Code&pause=1000&color=58A6FF&center=true&vCenter=true&width=520&lines=Open+Source+Explorer%3BCreative+Developer%3BAlways+Learning)](https://git.io/typing-svg)\n\n</div>"
+  },
+  {
+    "type": "capsule",
+    "label": "动态页头",
+    "defaults": {
+      "title": "Welcome to my profile",
+      "subtitle": "Build · Learn · Share",
+      "color": "gradient",
+      "height": "180",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": {
+      "repo": "https://github.com/kyechan99/capsule-render",
+      "name": "kyechan99/capsule-render",
+      "intro": "通过 URL 参数生成波浪、渐变等动态页头。"
+    },
+    "assets": [
+      {
+        "src": "https://capsule-render.vercel.app/api?type=waving&color=gradient&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64",
+        "alt": "Profile header",
+        "kind": "banner"
+      }
+    ],
+    "markdown": "<div align=\"center\">\n\n<img width=\"100%\" src=\"https://capsule-render.vercel.app/api?type=waving&color=gradient&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64\" alt=\"Profile header\" />\n\n</div>"
+  },
+  {
+    "type": "about",
+    "label": "关于我",
+    "defaults": {
+      "heading": "About me",
+      "text": "🔭 Building delightful developer tools\n🌱 Learning something new every day\n💬 Ask me about open source",
+      "align": "left"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": null,
+    "assets": [],
+    "markdown": "## About me\n\n- 🔭 Building delightful developer tools\n- 🌱 Learning something new every day\n- 💬 Ask me about open source"
+  },
+  {
+    "type": "skills",
+    "label": "技术栈",
+    "defaults": {
+      "heading": "Languages and tools",
+      "items": "TypeScript,React,Node.js,Python,Figma,Git",
+      "style": "flat",
+      "align": "left"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": {
+      "repo": "https://github.com/badges/shields",
+      "name": "badges/shields",
+      "intro": "为技术栈和社交链接生成一致的状态徽章。"
+    },
+    "assets": [
+      {
+        "src": "https://img.shields.io/badge/TypeScript-161B22?style=flat&logo=typescript&logoColor=white",
+        "alt": "TypeScript",
+        "kind": "badge"
+      },
+      {
+        "src": "https://img.shields.io/badge/React-161B22?style=flat&logo=react&logoColor=white",
+        "alt": "React",
+        "kind": "badge"
+      },
+      {
+        "src": "https://img.shields.io/badge/Node.js-161B22?style=flat&logo=nodedotjs&logoColor=white",
+        "alt": "Node.js",
+        "kind": "badge"
+      },
+      {
+        "src": "https://img.shields.io/badge/Python-161B22?style=flat&logo=python&logoColor=white",
+        "alt": "Python",
+        "kind": "badge"
+      },
+      {
+        "src": "https://img.shields.io/badge/Figma-161B22?style=flat&logo=figma&logoColor=white",
+        "alt": "Figma",
+        "kind": "badge"
+      },
+      {
+        "src": "https://img.shields.io/badge/Git-161B22?style=flat&logo=git&logoColor=white",
+        "alt": "Git",
+        "kind": "badge"
+      }
+    ],
+    "markdown": "## Languages and tools\n\n![TypeScript](https://img.shields.io/badge/TypeScript-161B22?style=flat&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-161B22?style=flat&logo=react&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-161B22?style=flat&logo=nodedotjs&logoColor=white) ![Python](https://img.shields.io/badge/Python-161B22?style=flat&logo=python&logoColor=white) ![Figma](https://img.shields.io/badge/Figma-161B22?style=flat&logo=figma&logoColor=white) ![Git](https://img.shields.io/badge/Git-161B22?style=flat&logo=git&logoColor=white)"
+  },
+  {
+    "type": "stats",
+    "label": "GitHub 统计",
+    "defaults": {
+      "heading": "GitHub stats",
+      "username": "octocat",
+      "theme": "github_dark",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": {
+      "repo": "https://github.com/stats-organization/github-stats-extended",
+      "name": "stats-organization/github-stats-extended",
+      "intro": "持续维护的 GitHub 统计与常用语言动态卡片服务。"
+    },
+    "assets": [
+      {
+        "src": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=github_dark&hide_border=true",
+        "alt": "GitHub stats",
+        "kind": "card"
+      },
+      {
+        "src": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=github_dark&hide_border=true",
+        "alt": "Top languages",
+        "kind": "card"
+      }
+    ],
+    "markdown": "<div align=\"center\">\n\n## GitHub stats\n\n<img height=\"165\" src=\"https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=github_dark&hide_border=true\" alt=\"GitHub stats\" />\n<img height=\"165\" src=\"https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=github_dark&hide_border=true\" alt=\"Top languages\" />\n\n</div>"
+  },
+  {
+    "type": "streak",
+    "label": "连续贡献",
+    "defaults": {
+      "username": "octocat",
+      "theme": "github-dark-blue",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": {
+      "repo": "https://github.com/DenverCoder1/github-readme-streak-stats",
+      "name": "DenverCoder1/github-readme-streak-stats",
+      "intro": "生成连续贡献天数与历史记录卡片。"
+    },
+    "assets": [
+      {
+        "src": "https://streak-stats.demolab.com/?user=octocat&theme=github-dark-blue&hide_border=true",
+        "alt": "GitHub streak",
+        "kind": "banner"
+      }
+    ],
+    "markdown": "<div align=\"center\">\n\n<img src=\"https://streak-stats.demolab.com/?user=octocat&theme=github-dark-blue&hide_border=true\" alt=\"GitHub streak\" />\n\n</div>"
+  },
+  {
+    "type": "activity",
+    "label": "贡献活动",
+    "defaults": {
+      "heading": "Contribution activity",
+      "username": "octocat",
+      "color": "7C5CFF",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": {
+      "repo": "https://github.com/Ashutosh00710/github-readme-activity-graph",
+      "name": "Ashutosh00710/github-readme-activity-graph",
+      "intro": "用折线图展示近期 GitHub 贡献活动。"
+    },
+    "assets": [
+      {
+        "src": "https://github-readme-activity-graph.vercel.app/graph?username=octocat&bg_color=00000000&color=7C5CFF&line=7C5CFF&point=FFFFFF&hide_border=true",
+        "alt": "Contribution activity",
+        "kind": "banner"
+      }
+    ],
+    "markdown": "<div align=\"center\">\n\n## Contribution activity\n\n<img src=\"https://github-readme-activity-graph.vercel.app/graph?username=octocat&bg_color=00000000&color=7C5CFF&line=7C5CFF&point=FFFFFF&hide_border=true\" alt=\"Contribution activity\" />\n\n</div>"
+  },
+  {
+    "type": "summary",
+    "label": "资料摘要",
+    "defaults": {
+      "username": "octocat",
+      "theme": "github_dark",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": {
+      "repo": "https://github.com/vn7n24fzkq/github-profile-summary-cards",
+      "name": "vn7n24fzkq/github-profile-summary-cards",
+      "intro": "生成包含提交、语言与仓库数据的资料摘要卡。"
+    },
+    "assets": [
+      {
+        "src": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=github_dark",
+        "alt": "GitHub profile summary",
+        "kind": "banner"
+      }
+    ],
+    "markdown": "<div align=\"center\">\n\n<img src=\"https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=github_dark\" alt=\"GitHub profile summary\" />\n\n</div>"
+  },
+  {
+    "type": "snake",
+    "label": "贡献贪吃蛇",
+    "defaults": {
+      "username": "octocat",
+      "branch": "output",
+      "theme": "dark",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "action",
+      "label": "需要 Action"
+    },
+    "source": {
+      "repo": "https://github.com/Platane/snk",
+      "name": "Platane/snk",
+      "intro": "通过 GitHub Action 生成吃掉贡献格子的贪吃蛇动画。"
+    },
+    "assets": [],
+    "markdown": "<div align=\"center\">\n\n<!-- Requires a Platane/snk GitHub Action that publishes to the output branch -->\n<img src=\"https://raw.githubusercontent.com/octocat/octocat/output/github-contribution-grid-snake-dark.svg\" alt=\"Contribution snake\" />\n\n</div>"
+  },
+  {
+    "type": "metrics",
+    "label": "Metrics 信息图",
+    "defaults": {
+      "username": "octocat",
+      "filename": "github-metrics.svg",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "action",
+      "label": "需要 Action"
+    },
+    "source": {
+      "repo": "https://github.com/lowlighter/metrics",
+      "name": "lowlighter/metrics",
+      "intro": "用丰富插件生成高度可定制的 GitHub 账号信息图。"
+    },
+    "assets": [],
+    "markdown": "<div align=\"center\">\n\n<img src=\"./github-metrics.svg\" alt=\"GitHub Metrics\" />\n\n</div>"
+  },
+  {
+    "type": "contrib3d",
+    "label": "3D 贡献图",
+    "defaults": {
+      "username": "octocat",
+      "theme": "profile-green-animate",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "action",
+      "label": "需要 Action"
+    },
+    "source": {
+      "repo": "https://github.com/yoshi389111/github-profile-3d-contrib",
+      "name": "yoshi389111/github-profile-3d-contrib",
+      "intro": "通过 GitHub Action 生成立体的年度贡献日历。"
+    },
+    "assets": [],
+    "markdown": "<div align=\"center\">\n\n<img src=\"./profile-3d-contrib/profile-green-animate.svg\" alt=\"3D contribution calendar\" />\n\n</div>"
+  },
+  {
+    "type": "spaceshooter",
+    "label": "贡献太空射击",
+    "defaults": {
+      "username": "octocat",
+      "output": "game.gif",
+      "strategy": "random",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "action",
+      "label": "需要 Action"
+    },
+    "source": {
+      "repo": "https://github.com/czl9707/gh-space-shooter",
+      "name": "czl9707/gh-space-shooter",
+      "intro": "把贡献图转换成会每日更新的太空射击动画。"
+    },
+    "assets": [],
+    "markdown": "<div align=\"center\">\n\n<img src=\"./game.gif\" alt=\"GitHub contribution space shooter\" />\n\n</div>"
+  },
+  {
+    "type": "terminal",
+    "label": "终端动图",
+    "defaults": {
+      "image": "./terminal.gif",
+      "alt": "GitHub terminal profile",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "setup",
+      "label": "需要生成"
+    },
+    "source": {
+      "repo": "https://github.com/x0rzavi/github-readme-terminal",
+      "name": "x0rzavi/github-readme-terminal",
+      "intro": "生成可高度定制的复古终端 GIF。"
+    },
+    "assets": [],
+    "markdown": "<div align=\"center\">\n\n<img src=\"./terminal.gif\" alt=\"GitHub terminal profile\" />\n\n</div>"
+  },
+  {
+    "type": "social",
+    "label": "社交链接",
+    "defaults": {
+      "heading": "Connect with me",
+      "items": "LinkedIn:https://linkedin.com,Website:https://example.com,X:https://x.com",
+      "align": "left"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": {
+      "repo": "https://github.com/badges/shields",
+      "name": "badges/shields",
+      "intro": "使用 Shields 徽章生成一致的社交链接入口。"
+    },
+    "assets": [
+      {
+        "src": "https://img.shields.io/badge/LinkedIn-1F6FEB?style=flat&logoColor=white",
+        "alt": "LinkedIn",
+        "href": "https://linkedin.com/",
+        "kind": "badge"
+      },
+      {
+        "src": "https://img.shields.io/badge/Website-1F6FEB?style=flat&logoColor=white",
+        "alt": "Website",
+        "href": "https://example.com/",
+        "kind": "badge"
+      },
+      {
+        "src": "https://img.shields.io/badge/X-1F6FEB?style=flat&logoColor=white",
+        "alt": "X",
+        "href": "https://x.com/",
+        "kind": "badge"
+      }
+    ],
+    "markdown": "## Connect with me\n\n[![LinkedIn](https://img.shields.io/badge/LinkedIn-1F6FEB?style=flat&logoColor=white)](https://linkedin.com/) [![Website](https://img.shields.io/badge/Website-1F6FEB?style=flat&logoColor=white)](https://example.com/) [![X](https://img.shields.io/badge/X-1F6FEB?style=flat&logoColor=white)](https://x.com/)"
+  },
+  {
+    "type": "quote",
+    "label": "开发者语录",
+    "defaults": {
+      "text": "Make it work, make it right, make it delightful.",
+      "align": "left"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": null,
+    "assets": [],
+    "markdown": "> “Make it work, make it right, make it delightful.”"
+  },
+  {
+    "type": "visitor",
+    "label": "访问计数",
+    "defaults": {
+      "username": "octocat",
+      "label": "Profile views",
+      "color": "1F6FEB",
+      "align": "left"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": {
+      "repo": "https://github.com/antonkomarev/github-profile-views-counter",
+      "name": "antonkomarev/github-profile-views-counter",
+      "intro": "为 GitHub 主页提供轻量的访问次数徽章。"
+    },
+    "assets": [
+      {
+        "src": "https://komarev.com/ghpvc/?username=octocat&label=Profile+views&color=1F6FEB&style=flat",
+        "alt": "Profile views",
+        "kind": "badge"
+      }
+    ],
+    "markdown": "![Profile views](https://komarev.com/ghpvc/?username=octocat&label=Profile+views&color=1F6FEB&style=flat)"
+  },
+  {
+    "type": "spotify",
+    "label": "Spotify 正在播放",
+    "defaults": {
+      "uid": "your_spotify_uid",
+      "theme": "default",
+      "align": "center"
+    },
+    "dependency": {
+      "level": "setup",
+      "label": "需要配置"
+    },
+    "source": {
+      "repo": "https://github.com/kittinan/spotify-github-profile",
+      "name": "kittinan/spotify-github-profile",
+      "intro": "把 Spotify 正在播放或最近播放状态嵌入主页。"
+    },
+    "assets": [
+      {
+        "src": "https://spotify-github-profile.kittinanx.com/api/view?uid=your_spotify_uid&cover_image=true&theme=default&show_offline=false&background_color=121212",
+        "alt": "Spotify now playing",
+        "kind": "card"
+      }
+    ],
+    "markdown": "<div align=\"center\">\n\n<img src=\"https://spotify-github-profile.kittinanx.com/api/view?uid=your_spotify_uid&cover_image=true&theme=default&show_offline=false&background_color=121212\" alt=\"Spotify now playing\" />\n\n</div>"
+  },
+  {
+    "type": "divider",
+    "label": "分隔线",
+    "defaults": {
+      "spacing": "medium",
+      "align": "left"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": null,
+    "assets": [],
+    "markdown": "---"
+  },
+  {
+    "type": "spacer",
+    "label": "留白",
+    "defaults": {
+      "height": "24",
+      "align": "left"
+    },
+    "dependency": {
+      "level": "direct",
+      "label": "直接可用"
+    },
+    "source": null,
+    "assets": [],
+    "markdown": "<br clear=\"both\" />"
+  },
+  {
+    "type": "custom",
+    "label": "自定义 Markdown",
+    "defaults": {
+      "markdown": "### A small corner for something uniquely yours ✨",
+      "align": "left"
+    },
+    "dependency": {
+      "level": "setup",
+      "label": "检查依赖"
+    },
+    "source": null,
+    "assets": [],
+    "markdown": "### A small corner for something uniquely yours ✨"
+  }
+]

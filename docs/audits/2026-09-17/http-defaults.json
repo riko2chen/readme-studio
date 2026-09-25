@@ -1,0 +1,329 @@
+[
+  {
+    "type": "typing",
+    "alt": "Typing animation",
+    "url": "https://readme-typing-svg.demolab.com/?font=Fira+Code&pause=1000&color=58A6FF&center=true&vCenter=true&width=520&lines=Open+Source+Explorer%3BCreative+Developer%3BAlways+Learning",
+    "checkedAt": "2026-09-17T11:31:22.614162+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 8617,
+    "finalUrl": "https://readme-typing-svg.demolab.com/?font=Fira+Code&pause=1000&color=58A6FF&center=true&vCenter=true&width=520&lines=Open+Source+Explorer%3BCreative+Developer%3BAlways+Learning",
+    "cacheControl": "no-cache, must-revalidate",
+    "svgText": [
+      "Open Source Explorer",
+      "Creative Developer",
+      "Always Learning"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "capsule",
+    "alt": "Profile header",
+    "url": "https://capsule-render.vercel.app/api?type=waving&color=gradient&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64",
+    "checkedAt": "2026-09-17T11:31:22.614582+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 2584,
+    "finalUrl": "https://capsule-render.vercel.app/api?type=waving&color=gradient&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64",
+    "cacheControl": "public, max-age=0, must-revalidate",
+    "svgText": [
+      "Welcome to my profile",
+      "Build · Learn · Share"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "skills",
+    "alt": "TypeScript",
+    "url": "https://img.shields.io/badge/TypeScript-161B22?style=flat&logo=typescript&logoColor=white",
+    "checkedAt": "2026-09-17T11:31:22.614687+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2826,
+    "finalUrl": "https://img.shields.io/badge/TypeScript-161B22?style=flat&logo=typescript&logoColor=white",
+    "cacheControl": "max-age=86400, s-maxage=86400",
+    "svgText": [
+      "TypeScript",
+      "TypeScript",
+      "TypeScript"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "skills",
+    "alt": "React",
+    "url": "https://img.shields.io/badge/React-161B22?style=flat&logo=react&logoColor=white",
+    "checkedAt": "2026-09-17T11:31:22.614768+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 4977,
+    "finalUrl": "https://img.shields.io/badge/React-161B22?style=flat&logo=react&logoColor=white",
+    "cacheControl": "max-age=86400, s-maxage=86400",
+    "svgText": [
+      "React",
+      "React",
+      "React"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "skills",
+    "alt": "Node.js",
+    "url": "https://img.shields.io/badge/Node.js-161B22?style=flat&logo=nodedotjs&logoColor=white",
+    "checkedAt": "2026-09-17T11:31:22.614835+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 3231,
+    "finalUrl": "https://img.shields.io/badge/Node.js-161B22?style=flat&logo=nodedotjs&logoColor=white",
+    "cacheControl": "max-age=86400, s-maxage=86400",
+    "svgText": [
+      "Node.js",
+      "Node.js",
+      "Node.js"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "skills",
+    "alt": "Python",
+    "url": "https://img.shields.io/badge/Python-161B22?style=flat&logo=python&logoColor=white",
+    "checkedAt": "2026-09-17T11:31:23.685767+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 3106,
+    "finalUrl": "https://img.shields.io/badge/Python-161B22?style=flat&logo=python&logoColor=white",
+    "cacheControl": "max-age=86400, s-maxage=86400",
+    "svgText": [
+      "Python",
+      "Python",
+      "Python"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "skills",
+    "alt": "Figma",
+    "url": "https://img.shields.io/badge/Figma-161B22?style=flat&logo=figma&logoColor=white",
+    "checkedAt": "2026-09-17T11:31:23.769949+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2533,
+    "finalUrl": "https://img.shields.io/badge/Figma-161B22?style=flat&logo=figma&logoColor=white",
+    "cacheControl": "max-age=86400, s-maxage=86400",
+    "svgText": [
+      "Figma",
+      "Figma",
+      "Figma"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "skills",
+    "alt": "Git",
+    "url": "https://img.shields.io/badge/Git-161B22?style=flat&logo=git&logoColor=white",
+    "checkedAt": "2026-09-17T11:31:23.795301+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 1635,
+    "finalUrl": "https://img.shields.io/badge/Git-161B22?style=flat&logo=git&logoColor=white",
+    "cacheControl": "max-age=86400, s-maxage=86400",
+    "svgText": [
+      "Git",
+      "Git",
+      "Git"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "stats",
+    "alt": "GitHub stats",
+    "url": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=github_dark&hide_border=true",
+    "checkedAt": "2026-09-17T11:31:24.016248+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7850,
+    "finalUrl": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=github_dark&hide_border=true",
+    "cacheControl": "max-age=255600",
+    "svgText": [
+      "The Octocat&#39;s GitHub Stats",
+      "B",
+      "Total Stars Earned:",
+      "22.2k",
+      "Total Commits (last year):",
+      "0",
+      "Total PRs:",
+      "8",
+      "Total Issues:",
+      "5",
+      "Contributed to (last year):",
+      "0"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "stats",
+    "alt": "Top languages",
+    "url": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=github_dark&hide_border=true",
+    "checkedAt": "2026-09-17T11:31:24.022895+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 4455,
+    "finalUrl": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=github_dark&hide_border=true",
+    "cacheControl": "max-age=255600",
+    "svgText": [
+      "Most Used Languages",
+      "CSS 77.32%",
+      "HTML 22.43%",
+      "JavaScript 0.25%"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "streak",
+    "alt": "GitHub streak",
+    "url": "https://streak-stats.demolab.com/?user=octocat&theme=github-dark-blue&hide_border=true",
+    "checkedAt": "2026-09-17T11:31:24.623834+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7051,
+    "finalUrl": "https://streak-stats.demolab.com/?user=octocat&theme=github-dark-blue&hide_border=true",
+    "cacheControl": "public, max-age=86400",
+    "svgText": [
+      "38",
+      "Total Contributions",
+      "Jan 25, 2011 - Present",
+      "Current Streak",
+      "Sep 17",
+      "0",
+      "3",
+      "Longest Streak",
+      "Jan 25, 2011 - Jan 27, 2011"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "activity",
+    "alt": "Contribution activity",
+    "url": "https://github-readme-activity-graph.vercel.app/graph?username=octocat&bg_color=00000000&color=7C5CFF&line=7C5CFF&point=FFFFFF&hide_border=true",
+    "checkedAt": "2026-09-17T11:31:24.956176+00:00",
+    "status": 402,
+    "contentType": "text/plain; charset=utf-8",
+    "bytes": 78,
+    "finalUrl": "https://github-readme-activity-graph.vercel.app/graph?username=octocat&bg_color=00000000&color=7C5CFF&line=7C5CFF&point=FFFFFF&hide_border=true",
+    "cacheControl": "public, max-age=0, must-revalidate",
+    "svgText": [],
+    "bodyExcerpt": "Payment required\n\nDEPLOYMENT_DISABLED\n\nsfo1::h28fz-1789644686106-408d723687c0\n",
+    "errorMarkers": []
+  },
+  {
+    "type": "summary",
+    "alt": "GitHub profile summary",
+    "url": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=github_dark",
+    "checkedAt": "2026-09-17T11:31:25.058637+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 6839,
+    "finalUrl": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=github_dark",
+    "cacheControl": "public, max-age=14400",
+    "svgText": [
+      "octocat (The Octocat)",
+      "38 Contributions on GitHub",
+      "6 Public Repos",
+      "Joined GitHub 15 years ago",
+      "octocat@github.com",
+      "25/09",
+      "25/11",
+      "26/01",
+      "26/03",
+      "26/05",
+      "26/07",
+      "26/09",
+      "0",
+      "contributions in the last year"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "social",
+    "alt": "LinkedIn",
+    "url": "https://img.shields.io/badge/LinkedIn-1F6FEB?style=flat&logoColor=white",
+    "checkedAt": "2026-09-17T11:31:25.076936+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 998,
+    "finalUrl": "https://img.shields.io/badge/LinkedIn-1F6FEB?style=flat&logoColor=white",
+    "cacheControl": "max-age=432000, s-maxage=432000",
+    "svgText": [
+      "LinkedIn",
+      "LinkedIn",
+      "LinkedIn"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "social",
+    "alt": "Website",
+    "url": "https://img.shields.io/badge/Website-1F6FEB?style=flat&logoColor=white",
+    "checkedAt": "2026-09-17T11:31:25.330861+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 993,
+    "finalUrl": "https://img.shields.io/badge/Website-1F6FEB?style=flat&logoColor=white",
+    "cacheControl": "max-age=432000, s-maxage=432000",
+    "svgText": [
+      "Website",
+      "Website",
+      "Website"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "social",
+    "alt": "X",
+    "url": "https://img.shields.io/badge/X-1F6FEB?style=flat&logoColor=white",
+    "checkedAt": "2026-09-17T11:31:26.109758+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 957,
+    "finalUrl": "https://img.shields.io/badge/X-1F6FEB?style=flat&logoColor=white",
+    "cacheControl": "max-age=432000, s-maxage=432000",
+    "svgText": [
+      "X",
+      "X",
+      "X"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "visitor",
+    "alt": "Profile views",
+    "url": "https://komarev.com/ghpvc/?username=octocat&label=Profile+views&color=1F6FEB&style=flat",
+    "checkedAt": "2026-09-17T11:31:26.113182+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 914,
+    "finalUrl": "https://komarev.com/ghpvc/?username=octocat&label=Profile+views&color=1F6FEB&style=flat",
+    "cacheControl": "max-age=0, no-cache, no-store, must-revalidate",
+    "svgText": [
+      "Profile views",
+      "Profile views",
+      "1,341",
+      "1,341"
+    ],
+    "errorMarkers": []
+  },
+  {
+    "type": "spotify",
+    "alt": "Spotify now playing",
+    "url": "https://spotify-github-profile.kittinanx.com/api/view?uid=your_spotify_uid&cover_image=true&theme=default&show_offline=false&background_color=121212",
+    "checkedAt": "2026-09-17T11:31:26.302803+00:00",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 151,
+    "finalUrl": "https://spotify-github-profile.kittinanx.com/api/view?uid=your_spotify_uid&cover_image=true&theme=default&show_offline=false&background_color=121212",
+    "cacheControl": null,
+    "svgText": [],
+    "bodyExcerpt": "Error: Invalid Spotify access_token or refresh_token. Possibly the token revoked. Please re-login at https://github.com/kittinan/spotify-github-profile",
+    "errorMarkers": []
+  }
+]

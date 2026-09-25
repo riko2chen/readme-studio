@@ -1,0 +1,263 @@
+{
+  "variants": [
+    {
+      "type": "capsule",
+      "variant": "color=auto",
+      "src": "https://capsule-render.vercel.app/api?type=waving&color=auto&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64",
+      "alt": "Profile header",
+      "kind": "banner"
+    },
+    {
+      "type": "capsule",
+      "variant": "color=0:7C5CFF,100:1F6FEB",
+      "src": "https://capsule-render.vercel.app/api?type=waving&color=0%3A7C5CFF%2C100%3A1F6FEB&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64",
+      "alt": "Profile header",
+      "kind": "banner"
+    },
+    {
+      "type": "capsule",
+      "variant": "color=0:0D1117,100:30363D",
+      "src": "https://capsule-render.vercel.app/api?type=waving&color=0%3A0D1117%2C100%3A30363D&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64",
+      "alt": "Profile header",
+      "kind": "banner"
+    },
+    {
+      "type": "skills",
+      "variant": "style=flat-square",
+      "src": "https://img.shields.io/badge/TypeScript-161B22?style=flat-square&logo=typescript&logoColor=white",
+      "alt": "TypeScript",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=flat-square",
+      "src": "https://img.shields.io/badge/React-161B22?style=flat-square&logo=react&logoColor=white",
+      "alt": "React",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=flat-square",
+      "src": "https://img.shields.io/badge/Node.js-161B22?style=flat-square&logo=nodedotjs&logoColor=white",
+      "alt": "Node.js",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=flat-square",
+      "src": "https://img.shields.io/badge/Python-161B22?style=flat-square&logo=python&logoColor=white",
+      "alt": "Python",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=flat-square",
+      "src": "https://img.shields.io/badge/Figma-161B22?style=flat-square&logo=figma&logoColor=white",
+      "alt": "Figma",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=flat-square",
+      "src": "https://img.shields.io/badge/Git-161B22?style=flat-square&logo=git&logoColor=white",
+      "alt": "Git",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=for-the-badge",
+      "src": "https://img.shields.io/badge/TypeScript-161B22?style=for-the-badge&logo=typescript&logoColor=white",
+      "alt": "TypeScript",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=for-the-badge",
+      "src": "https://img.shields.io/badge/React-161B22?style=for-the-badge&logo=react&logoColor=white",
+      "alt": "React",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=for-the-badge",
+      "src": "https://img.shields.io/badge/Node.js-161B22?style=for-the-badge&logo=nodedotjs&logoColor=white",
+      "alt": "Node.js",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=for-the-badge",
+      "src": "https://img.shields.io/badge/Python-161B22?style=for-the-badge&logo=python&logoColor=white",
+      "alt": "Python",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=for-the-badge",
+      "src": "https://img.shields.io/badge/Figma-161B22?style=for-the-badge&logo=figma&logoColor=white",
+      "alt": "Figma",
+      "kind": "badge"
+    },
+    {
+      "type": "skills",
+      "variant": "style=for-the-badge",
+      "src": "https://img.shields.io/badge/Git-161B22?style=for-the-badge&logo=git&logoColor=white",
+      "alt": "Git",
+      "kind": "badge"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=transparent",
+      "src": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=transparent&hide_border=true",
+      "alt": "GitHub stats",
+      "kind": "card"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=transparent",
+      "src": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=transparent&hide_border=true",
+      "alt": "Top languages",
+      "kind": "card"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=tokyonight",
+      "src": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=tokyonight&hide_border=true",
+      "alt": "GitHub stats",
+      "kind": "card"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=tokyonight",
+      "src": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=tokyonight&hide_border=true",
+      "alt": "Top languages",
+      "kind": "card"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=radical",
+      "src": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=radical&hide_border=true",
+      "alt": "GitHub stats",
+      "kind": "card"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=radical",
+      "src": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=radical&hide_border=true",
+      "alt": "Top languages",
+      "kind": "card"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=nord",
+      "src": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=nord&hide_border=true",
+      "alt": "GitHub stats",
+      "kind": "card"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=nord",
+      "src": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=nord&hide_border=true",
+      "alt": "Top languages",
+      "kind": "card"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=vue-dark",
+      "src": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=vue-dark&hide_border=true",
+      "alt": "GitHub stats",
+      "kind": "card"
+    },
+    {
+      "type": "stats",
+      "variant": "theme=vue-dark",
+      "src": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=vue-dark&hide_border=true",
+      "alt": "Top languages",
+      "kind": "card"
+    },
+    {
+      "type": "streak",
+      "variant": "theme=transparent",
+      "src": "https://streak-stats.demolab.com/?user=octocat&theme=transparent&hide_border=true",
+      "alt": "GitHub streak",
+      "kind": "banner"
+    },
+    {
+      "type": "streak",
+      "variant": "theme=tokyonight",
+      "src": "https://streak-stats.demolab.com/?user=octocat&theme=tokyonight&hide_border=true",
+      "alt": "GitHub streak",
+      "kind": "banner"
+    },
+    {
+      "type": "streak",
+      "variant": "theme=radical",
+      "src": "https://streak-stats.demolab.com/?user=octocat&theme=radical&hide_border=true",
+      "alt": "GitHub streak",
+      "kind": "banner"
+    },
+    {
+      "type": "streak",
+      "variant": "theme=nord",
+      "src": "https://streak-stats.demolab.com/?user=octocat&theme=nord&hide_border=true",
+      "alt": "GitHub streak",
+      "kind": "banner"
+    },
+    {
+      "type": "summary",
+      "variant": "theme=transparent",
+      "src": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=transparent",
+      "alt": "GitHub profile summary",
+      "kind": "banner"
+    },
+    {
+      "type": "summary",
+      "variant": "theme=tokyonight",
+      "src": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=tokyonight",
+      "alt": "GitHub profile summary",
+      "kind": "banner"
+    },
+    {
+      "type": "summary",
+      "variant": "theme=dracula",
+      "src": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=dracula",
+      "alt": "GitHub profile summary",
+      "kind": "banner"
+    },
+    {
+      "type": "summary",
+      "variant": "theme=nord_dark",
+      "src": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=nord_dark",
+      "alt": "GitHub profile summary",
+      "kind": "banner"
+    },
+    {
+      "type": "summary",
+      "variant": "theme=vue",
+      "src": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=vue",
+      "alt": "GitHub profile summary",
+      "kind": "banner"
+    },
+    {
+      "type": "spotify",
+      "variant": "theme=natemoo-re",
+      "src": "https://spotify-github-profile.kittinanx.com/api/view?uid=your_spotify_uid&cover_image=true&theme=natemoo-re&show_offline=false&background_color=121212",
+      "alt": "Spotify now playing",
+      "kind": "card"
+    },
+    {
+      "type": "spotify",
+      "variant": "theme=novatorem",
+      "src": "https://spotify-github-profile.kittinanx.com/api/view?uid=your_spotify_uid&cover_image=true&theme=novatorem&show_offline=false&background_color=121212",
+      "alt": "Spotify now playing",
+      "kind": "card"
+    }
+  ],
+  "workflows": {
+    "snake": "name: Generate contribution snake\n\non:\n  schedule:\n    - cron: \"0 0 * * *\"\n  workflow_dispatch:\n\njobs:\n  generate:\n    permissions:\n      contents: write\n    runs-on: ubuntu-latest\n    timeout-minutes: 5\n    steps:\n      - name: Generate contribution snake\n        uses: Platane/snk/svg-only@v3\n        with:\n          github_user_name: ${{ github.repository_owner }}\n          outputs: |\n            dist/github-contribution-grid-snake.svg\n            dist/github-contribution-grid-snake-dark.svg?palette=github-dark\n\n      - name: Publish SVG files\n        uses: crazy-max/ghaction-github-pages@v3.1.0\n        with:\n          target_branch: output\n          build_dir: dist\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n",
+    "metrics": "name: GitHub Metrics\n\non:\n  schedule:\n    - cron: \"0 0 * * *\"\n  workflow_dispatch:\n\njobs:\n  github-metrics:\n    runs-on: ubuntu-latest\n    permissions:\n      contents: write\n    steps:\n      - uses: lowlighter/metrics@latest\n        with:\n          token: ${{ secrets.METRICS_TOKEN }}\n          user: ${{ github.repository_owner }}\n          filename: github-metrics.svg\n",
+    "contrib3d": "name: GitHub Profile 3D Contrib\n\non:\n  schedule:\n    - cron: \"0 18 * * *\"\n  workflow_dispatch:\n\npermissions:\n  contents: write\n\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v5\n      - uses: yoshi389111/github-profile-3d-contrib@latest\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n          USERNAME: ${{ github.repository_owner }}\n      - name: Commit and push\n        run: |\n          git config user.name github-actions\n          git config user.email github-actions@github.com\n          git add -A .\n          if git commit -m \"chore: update 3D contribution graph\"; then\n            git push\n          fi\n",
+    "spaceshooter": "name: Update Space Shooter Game\n\non:\n  schedule:\n    - cron: \"0 0 * * *\"\n  workflow_dispatch:\n\npermissions:\n  contents: write\n\njobs:\n  update-game:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v6\n        with:\n          fetch-depth: 2\n      - uses: czl9707/gh-space-shooter@v2\n        with:\n          github-token: ${{ secrets.GITHUB_TOKEN }}\n          output-path: game.gif\n          strategy: random\n"
+  },
+  "snakeLight": "<div align=\"center\">\n\n<!-- Requires a Platane/snk GitHub Action that publishes to the output branch -->\n<img src=\"https://raw.githubusercontent.com/octocat/octocat/output/github-contribution-grid-snake-light.svg\" alt=\"Contribution snake\" />\n\n</div>"
+}

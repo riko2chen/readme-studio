@@ -1,3 +1,5 @@
+const ACTIVITY_GRAPH_ENDPOINT = "https://github-readme-activity-graph.vercel.app/graph";
+
 const COMPONENTS = [
   { type: "hero", group: "基础", icon: "H", label: "欢迎标题", desc: "问候语与个人定位", defaults: { title: "Hi, I'm The Octocat 👋", subtitle: "Open source explorer · Builder · Curious mind", align: "center" } },
   { type: "typing", group: "基础", icon: "⌨", label: "打字动画", desc: "循环展示多个身份", defaults: { lines: "Open Source Explorer,Creative Developer,Always Learning", color: "58A6FF", align: "center" } },
@@ -6,8 +8,7 @@ const COMPONENTS = [
   { type: "skills", group: "展示", icon: "◆", label: "技术栈", desc: "语言与工具徽章", defaults: { heading: "Languages and tools", items: "TypeScript,React,Node.js,Python,Figma,Git", style: "flat", align: "left" } },
   { type: "stats", group: "展示", icon: "▥", label: "GitHub 统计", desc: "统计与常用语言", defaults: { heading: "GitHub stats", username: "octocat", theme: "github_dark", align: "center" } },
   { type: "streak", group: "展示", icon: "⌁", label: "连续贡献", desc: "提交连续天数", defaults: { username: "octocat", theme: "github-dark-blue", align: "center" } },
-  { type: "trophy", group: "展示", icon: "♜", label: "成就奖杯", desc: "Profile Trophy 排列", defaults: { username: "octocat", theme: "onedark", align: "center" } },
-  { type: "activity", group: "展示", icon: "▦", label: "贡献活动", desc: "活动图表组件", defaults: { heading: "Contribution activity", username: "octocat", color: "7C5CFF", align: "center" } },
+  { type: "activity", group: "展示", icon: "▦", label: "贡献活动", desc: "活动图表组件", defaults: { heading: "Contribution activity", username: "octocat", color: "7C5CFF", endpoint: ACTIVITY_GRAPH_ENDPOINT, align: "center" } },
   { type: "summary", group: "展示", icon: "▤", label: "资料摘要", desc: "Profile Summary 卡片", defaults: { username: "octocat", theme: "github_dark", align: "center" } },
   { type: "snake", group: "展示", icon: "〰", label: "贡献贪吃蛇", desc: "在贡献图上游动", defaults: { username: "octocat", branch: "output", theme: "dark", align: "center" } },
   { type: "metrics", group: "热门", icon: "M", label: "Metrics 信息图", desc: "高度可定制的账号数据图", defaults: { username: "octocat", filename: "github-metrics.svg", align: "center" } },
@@ -31,8 +32,7 @@ const FIELD_SCHEMAS = {
   skills: [["heading", "区块标题", "text"], ["items", "技术名称", "textarea", "使用英文逗号分隔"], ["style", "徽章样式", "select", "", ["flat", "flat-square", "for-the-badge"]]],
   stats: [["heading", "区块标题", "text"], ["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github_dark", "transparent", "tokyonight", "radical", "nord", "vue-dark"]]],
   streak: [["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github-dark-blue", "transparent", "tokyonight", "radical", "nord"]]],
-  trophy: [["username", "GitHub 用户名", "text"], ["theme", "奖杯主题", "select", "", ["onedark", "darkhub", "discord", "flat"]]],
-  activity: [["heading", "区块标题", "text"], ["username", "GitHub 用户名", "text"], ["color", "强调色（HEX）", "text"]],
+  activity: [["heading", "区块标题", "text"], ["username", "GitHub 用户名", "text"], ["color", "强调色（HEX）", "text"], ["endpoint", "图表接口 URL", "text", "默认公开服务已停用；自部署后可填写完整的 /graph 地址"]],
   summary: [["username", "GitHub 用户名", "text"], ["theme", "卡片主题", "select", "", ["github_dark", "transparent", "tokyonight", "dracula", "nord_dark", "vue"]]],
   snake: [["username", "GitHub 用户名", "text"], ["branch", "输出分支", "text"], ["theme", "显示模式", "select", "", ["dark", "light"]]],
   metrics: [["username", "GitHub 用户名", "text"], ["filename", "输出文件名", "text", "工作流会把信息图写入这个 SVG 文件"]],
@@ -49,6 +49,7 @@ const FIELD_SCHEMAS = {
 };
 
 const DEPENDENCY_TYPES = {
+  activity: { level: "setup", label: "服务异常" },
   snake: { level: "action", label: "需要 Action" },
   metrics: { level: "action", label: "需要 Action" },
   contrib3d: { level: "action", label: "需要 Action" },
@@ -60,6 +61,16 @@ const DEPENDENCY_TYPES = {
 
 const dependencyFor = type => DEPENDENCY_TYPES[type] || { level: "direct", label: "直接可用" };
 
+const GENERATION_NOTICES = {
+  activity: { mode: "unavailable", label: "服务状态", title: "公开预览服务当前不可用", detail: "上游部署返回 DEPLOYMENT_DISABLED。此问题不需要 GitHub Action；请等待服务恢复或改用自部署地址。" },
+  snake: { mode: "action", label: "需要 Action", title: "通过 GitHub Action 生成", detail: "导出或发布时会附带生成工作流；首次运行完成后，贡献贪吃蛇才会显示。" },
+  metrics: { mode: "action", label: "Action + 密钥", title: "通过 GitHub Action 生成", detail: "导出或发布时会附带生成工作流；运行前还需要添加 METRICS_TOKEN 仓库密钥。" },
+  contrib3d: { mode: "action", label: "需要 Action", title: "通过 GitHub Action 生成", detail: "导出或发布时会附带生成工作流；首次运行完成后，3D 贡献图才会显示。" },
+  spaceshooter: { mode: "action", label: "需要 Action", title: "通过 GitHub Action 生成", detail: "导出或发布时会附带生成工作流；首次运行完成后，游戏动图才会显示。" },
+  terminal: { mode: "manual", label: "外部生成", title: "需要在外部项目生成", detail: "当前项目不会直接生成终端 GIF。请先使用原项目生成，再填写图片地址或提交生成文件。相对路径会从主页仓库预览。" },
+  spotify: { mode: "manual", label: "需要绑定", title: "先绑定 Spotify 账号", detail: "默认 UID 是占位值。请先在 Spotify GitHub Profile 服务完成授权，再填写服务提供的真实 UID；无需 GitHub Action。" }
+};
+
 const SOURCE_META = {
   typing: { repo: "https://github.com/DenverCoder1/readme-typing-svg", name: "DenverCoder1/readme-typing-svg", intro: "把多段文字渲染成可嵌入 README 的动态打字 SVG。" },
   capsule: { repo: "https://github.com/kyechan99/capsule-render", name: "kyechan99/capsule-render", intro: "通过 URL 参数生成波浪、渐变等动态页头。" },
@@ -67,7 +78,6 @@ const SOURCE_META = {
   social: { repo: "https://github.com/badges/shields", name: "badges/shields", intro: "使用 Shields 徽章生成一致的社交链接入口。" },
   stats: { repo: "https://github.com/stats-organization/github-stats-extended", name: "stats-organization/github-stats-extended", intro: "持续维护的 GitHub 统计与常用语言动态卡片服务。" },
   streak: { repo: "https://github.com/DenverCoder1/github-readme-streak-stats", name: "DenverCoder1/github-readme-streak-stats", intro: "生成连续贡献天数与历史记录卡片。" },
-  trophy: { repo: "https://github.com/ryo-ma/github-profile-trophy", name: "ryo-ma/github-profile-trophy", intro: "把 GitHub 活跃数据转换成可展示的奖杯。" },
   activity: { repo: "https://github.com/Ashutosh00710/github-readme-activity-graph", name: "Ashutosh00710/github-readme-activity-graph", intro: "用折线图展示近期 GitHub 贡献活动。" },
   summary: { repo: "https://github.com/vn7n24fzkq/github-profile-summary-cards", name: "vn7n24fzkq/github-profile-summary-cards", intro: "生成包含提交、语言与仓库数据的资料摘要卡。" },
   snake: { repo: "https://github.com/Platane/snk", name: "Platane/snk", intro: "通过 GitHub Action 生成吃掉贡献格子的贪吃蛇动画。" },
@@ -103,25 +113,25 @@ const DEMO_BLOCKS = [
 
 const LAYOUT_RECIPES = [
   { name: "极简名片", blocks: [["hero"], ["about"], ["skills"], ["divider"], ["social"]] },
-  { name: "数据仪表盘", blocks: [["hero"], ["summary"], ["stats"], ["streak"], ["trophy"], ["visitor"]] },
+  { name: "数据仪表盘", blocks: [["hero"], ["summary"], ["stats"], ["streak"], ["visitor"]] },
   { name: "开源贡献者", blocks: [["capsule"], ["about"], ["activity"], ["snake"], ["stats"], ["social"]] },
   { name: "求职简历", blocks: [["hero"], ["about"], ["skills"], ["summary"], ["divider"], ["social"]] },
   { name: "创作者主页", blocks: [["capsule"], ["typing"], ["about"], ["spotify"], ["quote"], ["social"]] },
   { name: "技术专家", blocks: [["hero"], ["skills"], ["stats"], ["activity"], ["summary"], ["social"]] },
-  { name: "社区建设者", blocks: [["hero"], ["about"], ["trophy"], ["streak"], ["visitor"], ["social"]] },
+  { name: "社区建设者", blocks: [["hero"], ["about"], ["streak"], ["visitor"], ["social"]] },
   { name: "视觉实验室", blocks: [["capsule"], ["typing"], ["skills"], ["activity"], ["quote"], ["visitor"]] },
   { name: "编辑手记", blocks: [["hero"], ["quote"], ["about"], ["divider", { spacing: "large" }], ["stats"], ["social"]] },
-  { name: "紧凑徽章", blocks: [["hero"], ["skills", { style: "for-the-badge" }], ["summary"], ["trophy"], ["visitor"], ["social"]] },
-  { name: "立体贡献者", blocks: [["hero"], ["contrib3d"], ["stats"], ["trophy"], ["social"]] },
+  { name: "紧凑徽章", blocks: [["hero"], ["skills", { style: "for-the-badge" }], ["summary"], ["visitor"], ["social"]] },
+  { name: "立体贡献者", blocks: [["hero"], ["contrib3d"], ["stats"], ["social"]] },
   { name: "数据宇航员", blocks: [["capsule"], ["metrics"], ["spaceshooter"], ["skills"], ["social"]] }
 ];
 
 const COLOR_THEMES = [
-  { name: "GitHub", light: false, accent: "58A6FF", stats: "github_dark", summary: "github_dark", streak: "github-dark-blue", trophy: "darkhub", capsule: "0:0D1117,100:1F6FEB" },
-  { name: "Nord", light: true, accent: "5E81AC", stats: "nord", summary: "nord_dark", streak: "nord", trophy: "flat", capsule: "0:2E3440,100:88C0D0" },
-  { name: "Tokyo Night", light: false, accent: "7AA2F7", stats: "tokyonight", summary: "tokyonight", streak: "tokyonight", trophy: "onedark", capsule: "0:1A1B26,100:7AA2F7" },
-  { name: "Dracula", light: false, accent: "BD93F9", stats: "radical", summary: "dracula", streak: "radical", trophy: "discord", capsule: "0:282A36,100:BD93F9" },
-  { name: "Clear Sky", light: true, accent: "0969DA", stats: "transparent", summary: "transparent", streak: "transparent", trophy: "flat", capsule: "0:54AEFF,100:8250DF" }
+  { name: "GitHub", light: false, accent: "58A6FF", stats: "github_dark", summary: "github_dark", streak: "github-dark-blue", capsule: "0:0D1117,100:1F6FEB" },
+  { name: "Nord", light: true, accent: "5E81AC", stats: "nord", summary: "nord_dark", streak: "nord", capsule: "0:2E3440,100:88C0D0" },
+  { name: "Tokyo Night", light: false, accent: "7AA2F7", stats: "tokyonight", summary: "tokyonight", streak: "tokyonight", capsule: "0:1A1B26,100:7AA2F7" },
+  { name: "Dracula", light: false, accent: "BD93F9", stats: "radical", summary: "dracula", streak: "radical", capsule: "0:282A36,100:BD93F9" },
+  { name: "Clear Sky", light: true, accent: "0969DA", stats: "transparent", summary: "transparent", streak: "transparent", capsule: "0:54AEFF,100:8250DF" }
 ];
 
 const DENSITY_PRESETS = [
@@ -192,7 +202,8 @@ const PUBLISH_SESSION_KEY = "readme-studio-publish-session";
 const PUBLISH_SESSION_MAX_AGE = 9 * 60 * 1000;
 let publishSession = null;
 let lastPublishedUrl = "";
-let lastAuthorizationRevoked = true;
+let lastInstallationRemoved = true;
+let lastPublishError = "";
 
 const $ = (selector) => document.querySelector(selector);
 const escapeHTML = (value = "") => String(value).replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
@@ -233,10 +244,12 @@ function handleAuthReturn() {
   if (sessionId && login) {
     publishSession = { id: sessionId, login, createdAt: Date.now() };
     sessionStorage.setItem(PUBLISH_SESSION_KEY, JSON.stringify(publishSession));
-    showToast(`已连接 GitHub @${login}`);
+    lastPublishError = "";
+    showToast(`已验证 GitHub App @${login}`);
   } else {
     clearPublishSession();
-    setTimeout(() => showToast(error || "GitHub 授权没有完成"), 0);
+    lastPublishError = error || "GitHub App 安装没有完成";
+    setTimeout(() => showToast(lastPublishError), 0);
   }
   return true;
 }
@@ -248,7 +261,12 @@ function persist() {
 function restore() {
   try {
     const saved = JSON.parse(localStorage.getItem("readme-studio-state"));
-    if (saved?.blocks?.length) state.blocks = saved.blocks;
+    if (saved?.blocks?.length) state.blocks = saved.blocks
+      .filter(block => block?.type !== "trophy")
+      .map(block => {
+        const defaults = COMPONENTS.find(component => component.type === block.type)?.defaults || {};
+        return { ...block, props: { ...defaults, ...(block.props || {}) } };
+      });
     if (saved?.profile) state.profile = { ...state.profile, ...saved.profile };
     if (saved?.lightApp) state.lightApp = true;
     if (saved?.style) state.style = { ...state.style, ...saved.style };
@@ -320,7 +338,6 @@ function applyTheme(blocks, theme, includeLocked = false) {
     if (block.type === "stats") block.props.theme = theme.stats;
     if (block.type === "summary") block.props.theme = theme.summary;
     if (block.type === "streak") block.props.theme = theme.streak;
-    if (block.type === "trophy") block.props.theme = theme.trophy;
     if (block.type === "snake") block.props.theme = theme.light ? "light" : "dark";
   });
 }
@@ -404,6 +421,106 @@ function isRemoteImage(value) {
   }
 }
 
+function safeGithubUser(value, fallback = "octocat") {
+  const cleaned = String(value || fallback).trim().replace(/[^A-Za-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-+|-+$/g, "").slice(0, 39);
+  return cleaned || fallback;
+}
+
+function profileRepositoryOwner() {
+  return safeGithubUser(state.profile.login, "octocat");
+}
+
+function encodePath(value) {
+  return String(value).split("/").filter(Boolean).map(encodeURIComponent).join("/");
+}
+
+function repositoryAssetUrl(path, ref = "HEAD") {
+  const owner = profileRepositoryOwner();
+  return `https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(owner)}/${encodePath(ref)}/${encodePath(path)}`;
+}
+
+function appendPathSuffix(path, suffix) {
+  const slash = path.lastIndexOf("/");
+  const dot = path.lastIndexOf(".");
+  const insertAt = dot > slash ? dot : path.length;
+  return `${path.slice(0, insertAt)}-${suffix}${path.slice(insertAt)}`;
+}
+
+function resolvedOutputPath(block, property, fallback) {
+  const blocks = state.blocks.filter(item => item.type === block.type);
+  const targetIndex = blocks.findIndex(item => item === block || (block.id && item.id === block.id));
+  if (targetIndex < 0) return safeRelativePath(block.props[property], fallback);
+  const used = new Set();
+  let targetPath = safeRelativePath(block.props[property], fallback);
+  blocks.forEach((item, index) => {
+    const requested = safeRelativePath(item.props[property], fallback);
+    let resolved = requested;
+    let suffix = 2;
+    while (used.has(resolved)) resolved = appendPathSuffix(requested, suffix++);
+    used.add(resolved);
+    if (index === targetIndex) targetPath = resolved;
+  });
+  return targetPath;
+}
+
+function snakeAssetNames(block) {
+  const blocks = state.blocks.filter(item => item.type === "snake");
+  if (blocks.length < 2) return { light: "github-contribution-grid-snake.svg", dark: "github-contribution-grid-snake-dark.svg" };
+  const targetIndex = blocks.findIndex(item => item === block || (block.id && item.id === block.id));
+  const usernames = new Map();
+  const keys = blocks.map(item => {
+    const username = safeGithubUser(item.props.username);
+    const count = (usernames.get(username) || 0) + 1;
+    usernames.set(username, count);
+    return count === 1 ? username : `${username}-${count}`;
+  });
+  const key = keys[Math.max(0, targetIndex)];
+  return {
+    light: `github-contribution-grid-snake-${key}.svg`,
+    dark: `github-contribution-grid-snake-${key}-dark.svg`
+  };
+}
+
+function contrib3dGroups() {
+  const blocks = state.blocks.filter(item => item.type === "contrib3d");
+  const usernames = [...new Map(blocks.map(item => {
+    const username = safeGithubUser(item.props.username);
+    return [username.toLowerCase(), username];
+  })).values()];
+  return usernames.map(username => ({
+    username,
+    directory: usernames.length === 1 ? "profile-3d-contrib" : `profile-3d-contrib-${username.toLowerCase()}`
+  }));
+}
+
+function contrib3dDirectory(block) {
+  const username = safeGithubUser(block.props.username);
+  return contrib3dGroups().find(group => group.username.toLowerCase() === username.toLowerCase())?.directory || "profile-3d-contrib";
+}
+
+function spotifyUidConfigured(value) {
+  const uid = String(value || "").trim().toLowerCase();
+  return Boolean(uid && !["your_spotify_uid", "your-spotify-uid", "your uid", "uid"].includes(uid));
+}
+
+function safeRemoteEndpoint(value, fallback) {
+  try {
+    const url = new URL(String(value || fallback));
+    return ["http:", "https:"].includes(url.protocol) ? url.toString() : fallback;
+  } catch (_) {
+    return fallback;
+  }
+}
+
+function generationNoticeFor(block) {
+  if (block.type === "activity") {
+    const endpoint = safeRemoteEndpoint(block.props.endpoint, ACTIVITY_GRAPH_ENDPOINT);
+    if (endpoint !== ACTIVITY_GRAPH_ENDPOINT) return { mode: "manual", label: "自定义服务", title: "正在使用自部署接口", detail: "Readme Studio 会直接请求这个地址；请确认它公开可访问，并返回 SVG 图片。无需 GitHub Action。" };
+  }
+  if (block.type === "spotify" && spotifyUidConfigured(block.props.uid)) return { mode: "manual", label: "检查授权", title: "已填写 Spotify UID", detail: "如果真实预览仍失败，请回到 Spotify GitHub Profile 服务重新绑定或刷新授权。无需 GitHub Action。" };
+  return GENERATION_NOTICES[block.type];
+}
+
 function directAssetsFor(block) {
   const p = block.props;
   if (block.type === "typing") return [{
@@ -430,16 +547,15 @@ function directAssetsFor(block) {
     alt: "GitHub streak",
     kind: "banner"
   }];
-  if (block.type === "trophy") return [{
-    src: assetUrl("https://github-profile-trophy.vercel.app/", { username: p.username, theme: p.theme, "no-frame": true, row: 1, column: 6 }),
-    alt: "GitHub trophies",
-    kind: "banner"
-  }];
-  if (block.type === "activity") return [{
-    src: assetUrl("https://github-readme-activity-graph.vercel.app/graph", { username: p.username, bg_color: "00000000", color: p.color || "7C5CFF", line: p.color || "7C5CFF", point: "FFFFFF", hide_border: true }),
-    alt: "Contribution activity",
-    kind: "banner"
-  }];
+  if (block.type === "activity") {
+    const endpoint = safeRemoteEndpoint(p.endpoint, ACTIVITY_GRAPH_ENDPOINT);
+    return [{
+      src: assetUrl(endpoint, { username: p.username, bg_color: "00000000", color: p.color || "7C5CFF", line: p.color || "7C5CFF", point: "FFFFFF", hide_border: true }),
+      alt: "Contribution activity",
+      kind: "banner",
+      errorMessage: endpoint === ACTIVITY_GRAPH_ENDPOINT ? "贡献活动服务当前已停用，无需配置 GitHub Action" : "自定义图表接口未返回可显示的图片，请检查地址和服务状态"
+    }];
+  }
   if (block.type === "summary") return [{
     src: assetUrl("https://github-profile-summary-cards.vercel.app/api/cards/profile-details", { username: p.username, theme: p.theme }),
     alt: "GitHub profile summary",
@@ -459,21 +575,42 @@ function directAssetsFor(block) {
     alt: p.label || "Profile views",
     kind: "badge"
   }];
-  if (block.type === "spotify") return [{
+  if (block.type === "spotify" && spotifyUidConfigured(p.uid)) return [{
     src: assetUrl("https://spotify-github-profile.kittinanx.com/api/view", { uid: p.uid, cover_image: true, theme: p.theme, show_offline: false, background_color: "121212" }),
     alt: "Spotify now playing",
-    kind: "card"
+    kind: "card",
+    errorMessage: "Spotify 授权无效或已过期，请重新绑定账号"
   }];
-  if (block.type === "terminal" && isRemoteImage(p.image)) return [{ src: p.image, alt: p.alt || "GitHub terminal profile", kind: "card" }];
+  if (block.type === "snake") {
+    const names = snakeAssetNames(block);
+    const filename = p.theme === "dark" ? names.dark : names.light;
+    return [{ src: repositoryAssetUrl(filename, safeGitRef(p.branch)), alt: "Contribution snake", kind: "banner", generated: true, errorMessage: "尚未找到生成的贪吃蛇 SVG，请先运行导出的 Action" }];
+  }
+  if (block.type === "metrics") {
+    const filename = resolvedOutputPath(block, "filename", "github-metrics.svg");
+    return [{ src: repositoryAssetUrl(filename), alt: "GitHub Metrics", kind: "banner", generated: true, errorMessage: "尚未找到 Metrics SVG，请配置 METRICS_TOKEN 并运行 Action" }];
+  }
+  if (block.type === "contrib3d") {
+    const path = `${contrib3dDirectory(block)}/${safeRelativePath(p.theme, "profile-green-animate")}.svg`;
+    return [{ src: repositoryAssetUrl(path), alt: "3D contribution calendar", kind: "banner", generated: true, errorMessage: "尚未找到 3D 贡献图，请先运行导出的 Action" }];
+  }
+  if (block.type === "spaceshooter") {
+    const output = resolvedOutputPath(block, "output", "game.gif");
+    return [{ src: repositoryAssetUrl(output), alt: "GitHub contribution space shooter", kind: "banner", generated: true, errorMessage: "尚未找到太空射击动图，请先运行导出的 Action" }];
+  }
+  if (block.type === "terminal" && p.image) {
+    const src = isRemoteImage(p.image) ? p.image : repositoryAssetUrl(safeRelativePath(p.image, "terminal.gif"));
+    return [{ src, alt: p.alt || "GitHub terminal profile", kind: "card", generated: !isRemoteImage(p.image), errorMessage: "尚未找到终端动图，请先生成并提交文件，或填写公开图片 URL" }];
+  }
   return [];
 }
 
 function livePreviewImage(asset) {
   const image = `<img class="live-preview-image" src="${escapeHTML(asset.src)}" alt="${escapeHTML(asset.alt)}" loading="eager" referrerpolicy="no-referrer" />`;
   const media = asset.href && asset.href !== "#" ? `<a href="${escapeHTML(asset.href)}" target="_blank" rel="noreferrer">${image}</a>` : image;
-  return `<span class="live-preview-shell live-preview-${asset.kind || "card"}">
-    <span class="live-preview-loading">正在载入真实预览…</span>
-    <span class="live-preview-error">远程预览暂不可用</span>
+  return `<span class="live-preview-shell live-preview-${asset.kind || "card"} ${asset.generated ? "generated" : ""}">
+    <span class="live-preview-loading">${asset.generated ? "正在查找生成产物…" : "正在载入真实预览…"}</span>
+    <span class="live-preview-error">${escapeHTML(asset.errorMessage || "远程预览暂不可用")}</span>
     ${media}
   </span>`;
 }
@@ -493,18 +630,20 @@ function blockPreview(block) {
   if (block.type === "about") content = `<h2>${escapeHTML(p.heading)}</h2><ul class="about-list">${lines(p.text).map(line => `<li>${escapeHTML(line)}</li>`).join("")}</ul>`;
   if (block.type === "skills") content = `<h2>${escapeHTML(p.heading)}</h2>${livePreview(directAssets)}`;
   if (block.type === "stats") content = `<h2>${escapeHTML(p.heading)}</h2>${livePreview(directAssets)}`;
-  if (["streak", "trophy", "summary", "visitor", "spotify"].includes(block.type)) content = livePreview(directAssets);
+  if (["streak", "summary", "visitor"].includes(block.type)) content = livePreview(directAssets);
+  if (block.type === "spotify") content = directAssets.length
+    ? livePreview(directAssets)
+    : `<div class="preview-status preview-status-setup"><strong>需要绑定 Spotify</strong><span>先完成 Spotify GitHub Profile 授权，再填写服务提供的真实 UID。此组件不需要 GitHub Action。</span></div>`;
   if (block.type === "activity") content = `<h2>${escapeHTML(p.heading)}</h2>${livePreview(directAssets)}`;
-  if (block.type === "snake") content = `<div class="snake-preview"><div class="snake-grid">${Array.from({length: 70}, (_, i) => `<i class="${[8,9,10,11,21,31,32,33,34,35,36,46,56,57,58][i] !== undefined ? "on" : ""}"></i>`).join("")}</div><span class="snake">●━━●━━●</span><small>GitHub contribution snake · ${escapeHTML(p.theme)}</small></div>`;
-  if (block.type === "metrics") content = `<div class="metrics-preview"><div><span>METRICS</span><strong>${escapeHTML(p.username)}</strong></div><div class="metrics-grid"><i style="--v:82%"></i><i style="--v:58%"></i><i style="--v:73%"></i><i style="--v:44%"></i></div><small>Activity · Languages · Repositories · Habits</small></div>`;
-  if (block.type === "contrib3d") content = `<div class="contrib3d-preview"><div class="contrib3d-grid">${Array.from({length: 84}, (_, i) => `<i style="--h:${5 + ((i * 13) % 26)}px;--o:${.25 + ((i * 7) % 70) / 100}"></i>`).join("")}</div><small>3D contribution calendar · ${escapeHTML(p.theme)}</small></div>`;
-  if (block.type === "spaceshooter") content = `<div class="space-preview"><div class="space-stars">${Array.from({length: 24}, (_, i) => `<i style="--x:${(i * 37) % 100}%;--y:${(i * 53) % 100}%"></i>`).join("")}</div><span class="space-ship">△</span><span class="space-shot">····</span><div class="space-blocks">${Array.from({length: 18}, (_, i) => `<i class="${i % 4 ? "on" : ""}"></i>`).join("")}</div><small>Contribution Space Shooter · ${escapeHTML(p.strategy)}</small></div>`;
-  if (block.type === "terminal") content = directAssets.length ? livePreview(directAssets) : `<div class="terminal-preview"><div class="terminal-top"><i></i><i></i><i></i><span>profile — terminal</span></div><code><b>$</b> 请填写可访问的图片 URL<br><span>支持 HTTPS GIF、PNG、WebP 或 SVG</span></code></div>`;
+  if (["snake", "metrics", "contrib3d", "spaceshooter"].includes(block.type)) content = livePreview(directAssets);
+  if (block.type === "terminal") content = directAssets.length
+    ? livePreview(directAssets)
+    : `<div class="preview-status preview-status-setup"><strong>需要终端动图</strong><span>先使用上游工具生成 GIF 并填写仓库相对路径，或填写公开图片 URL。</span></div>`;
   if (block.type === "social") content = `<h2>${escapeHTML(p.heading)}</h2>${livePreview(directAssets)}`;
   if (block.type === "quote") content = `<div class="quote-card">“${escapeHTML(p.text)}”</div>`;
   if (block.type === "divider") content = `<div class="readme-divider" style="margin-block:${p.spacing === "large" ? 22 : p.spacing === "small" ? 4 : 11}px"></div>`;
   if (block.type === "spacer") content = `<div style="height:${Math.max(8, Math.min(120, Number(p.height) || 24))}px"></div>`;
-  if (block.type === "custom") content = `<div class="custom-preview">${escapeHTML(p.markdown)}</div>`;
+  if (block.type === "custom") content = `<div class="custom-preview"><strong>Markdown 源码预览</strong><small>这里不会加载其中的图片、HTML 或工作流；导出时会原样保留。</small><code>${escapeHTML(p.markdown)}</code></div>`;
   return `<div class="readme-content" style="text-align:${align};--preview-justify:${justify}">${content}</div>`;
 }
 
@@ -601,7 +740,12 @@ function renderSettings() {
   const component = COMPONENTS.find(item => item.type === block.type);
   const fields = FIELD_SCHEMAS[block.type] || [];
   const source = SOURCE_META[block.type];
+  const generationNotice = generationNoticeFor(block);
   container.innerHTML = `<div class="settings-form">
+    ${generationNotice ? `<aside class="generation-notice generation-${generationNotice.mode}" role="note">
+      <span class="generation-notice-mark" aria-hidden="true">${generationNotice.mode === "action" ? "◆" : "!"}</span>
+      <span class="generation-notice-copy"><em>${escapeHTML(generationNotice.label)}</em><strong>${escapeHTML(generationNotice.title)}</strong><small>${escapeHTML(generationNotice.detail)}</small></span>
+    </aside>` : ""}
     <div class="selected-type"><span class="component-icon">${escapeHTML(component.icon)}</span><span><strong>${escapeHTML(component.label)}</strong><small>${escapeHTML(component.desc)}</small></span></div>
     ${source ? `<aside class="component-source"><span class="source-kicker">开源组件</span><p>${escapeHTML(source.intro)}</p><a href="${source.repo}" target="_blank" rel="noreferrer">${escapeHTML(source.name)} <span aria-hidden="true">↗</span></a></aside>` : ""}
     ${fields.map(([key, label, type, help, options]) => {
@@ -656,18 +800,23 @@ function markdownFor(block) {
   if (block.type === "skills") md = `## ${p.heading}\n\n${assets.map(asset => `![${asset.alt}](${asset.src})`).join(" ")}`;
   if (block.type === "stats") md = `## ${p.heading}\n\n<img height="165" src="${assets[0].src}" alt="GitHub stats" />\n<img height="165" src="${assets[1].src}" alt="Top languages" />`;
   if (block.type === "streak") md = `<img src="${assets[0].src}" alt="GitHub streak" />`;
-  if (block.type === "trophy") md = `<img src="${assets[0].src}" alt="GitHub trophies" />`;
   if (block.type === "activity") md = `## ${p.heading}\n\n<img src="${assets[0].src}" alt="Contribution activity" />`;
   if (block.type === "summary") md = `<img src="${assets[0].src}" alt="GitHub profile summary" />`;
-  if (block.type === "snake") md = `<!-- Requires a Platane/snk GitHub Action that publishes to the ${safeGitRef(p.branch)} branch -->\n<img src="https://raw.githubusercontent.com/${encodeURIComponent(p.username)}/${encodeURIComponent(p.username)}/${encodeURIComponent(safeGitRef(p.branch))}/github-contribution-grid-snake-${p.theme}.svg" alt="Contribution snake" />`;
-  if (block.type === "metrics") md = `<img src="./${safeRelativePath(p.filename, "github-metrics.svg")}" alt="GitHub Metrics" />`;
-  if (block.type === "contrib3d") md = `<img src="./profile-3d-contrib/${safeRelativePath(p.theme, "profile-green-animate")}.svg" alt="3D contribution calendar" />`;
-  if (block.type === "spaceshooter") md = `<img src="./${safeRelativePath(p.output, "game.gif")}" alt="GitHub contribution space shooter" />`;
+  if (block.type === "snake") {
+    const names = snakeAssetNames(block);
+    const filename = p.theme === "dark" ? names.dark : names.light;
+    md = `<!-- Requires a Platane/snk GitHub Action that publishes to the ${safeGitRef(p.branch)} branch -->\n<img src="${repositoryAssetUrl(filename, safeGitRef(p.branch))}" alt="Contribution snake" />`;
+  }
+  if (block.type === "metrics") md = `<img src="./${resolvedOutputPath(block, "filename", "github-metrics.svg")}" alt="GitHub Metrics" />`;
+  if (block.type === "contrib3d") md = `<img src="./${contrib3dDirectory(block)}/${safeRelativePath(p.theme, "profile-green-animate")}.svg" alt="3D contribution calendar" />`;
+  if (block.type === "spaceshooter") md = `<img src="./${resolvedOutputPath(block, "output", "game.gif")}" alt="GitHub contribution space shooter" />`;
   if (block.type === "terminal") md = `<img src="${String(p.image || "./terminal.gif").replace(/\"/g, "%22")}" alt="${String(p.alt || "GitHub terminal profile").replace(/\"/g, "&quot;")}" />`;
   if (block.type === "social") md = `## ${p.heading}\n\n${assets.map(asset => `[![${asset.alt}](${asset.src})](${asset.href})`).join(" ")}`;
   if (block.type === "quote") md = `> “${p.text}”`;
   if (block.type === "visitor") md = `![${p.label}](${assets[0].src})`;
-  if (block.type === "spotify") md = `<img src="${assets[0].src}" alt="Spotify now playing" />`;
+  if (block.type === "spotify") md = assets.length
+    ? `<img src="${assets[0].src}" alt="Spotify now playing" />`
+    : "<!-- Spotify component omitted: bind Spotify and enter a real UID before publishing. -->";
   if (block.type === "divider") md = "---";
   if (block.type === "spacer") md = `<br clear="both" />`;
   if (block.type === "custom") return p.markdown;
@@ -680,16 +829,24 @@ function generateMarkdown() {
 
 function getExportChecks() {
   const types = new Set(state.blocks.map(block => block.type));
-  const checks = [{ level: "direct", icon: "✓", title: "README.md", detail: `${state.blocks.length} 个组件已生成，可直接放入同名 GitHub 主页仓库。`, status: "已就绪" }];
-  const remoteTypes = ["typing", "capsule", "stats", "streak", "trophy", "activity", "summary", "visitor"].filter(type => types.has(type));
+  const needsFollowUp = ["activity", "snake", "metrics", "contrib3d", "spaceshooter", "terminal", "spotify", "custom"].some(type => types.has(type));
+  const checks = [{ level: "direct", icon: "✓", title: "README.md", detail: needsFollowUp ? `${state.blocks.length} 个组件已生成；发布前请完成下列服务、Action 或文件检查。` : `${state.blocks.length} 个组件已生成，可直接放入同名 GitHub 主页仓库。`, status: needsFollowUp ? "已生成" : "已就绪" }];
+  const remoteTypes = ["typing", "capsule", "skills", "stats", "streak", "summary", "social", "visitor"].filter(type => types.has(type));
   if (remoteTypes.length) checks.push({ level: "direct", icon: "↗", title: "动态卡片服务", detail: "这些图片由第三方服务实时渲染，不需要 GitHub Action。", status: "无需配置" });
+  if (types.has("activity")) {
+    const customEndpoint = state.blocks.filter(block => block.type === "activity").every(block => safeRemoteEndpoint(block.props.endpoint, ACTIVITY_GRAPH_ENDPOINT) !== ACTIVITY_GRAPH_ENDPOINT);
+    checks.push({ level: "setup", icon: "!", title: "贡献活动", detail: customEndpoint ? "正在使用自定义图表接口；请确认预览成功后再发布。" : "上游公开部署当前已停用；添加 GitHub Action 无法修复，请等待服务恢复或填写自部署的 /graph 地址。", status: customEndpoint ? "检查接口" : "服务不可用" });
+  }
   if (types.has("snake")) checks.push({ level: "action", icon: "◆", title: "贡献贪吃蛇", detail: "ZIP 将包含每日生成 SVG 的 GitHub Actions 工作流。", status: "需要 Action" });
   if (types.has("metrics")) checks.push({ level: "action", icon: "M", title: "Metrics 信息图", detail: "ZIP 将包含工作流；运行前需添加 METRICS_TOKEN 仓库密钥。", status: "Action + 密钥" });
   if (types.has("contrib3d")) checks.push({ level: "action", icon: "3D", title: "3D 贡献图", detail: "ZIP 将包含每日生成并提交 3D SVG 的工作流。", status: "需要 Action" });
   if (types.has("spaceshooter")) checks.push({ level: "action", icon: "SS", title: "贡献太空射击", detail: "ZIP 将包含每日生成游戏 GIF 或 WebP 的工作流。", status: "需要 Action" });
   if (types.has("terminal")) checks.push({ level: "setup", icon: ">_", title: "终端动图", detail: "需要先用原项目生成 GIF，再把文件或 URL 提供给 README。", status: "需要生成" });
-  if (types.has("spotify")) checks.push({ level: "setup", icon: "!", title: "Spotify 正在播放", detail: "发布前需要在 Spotify GitHub Profile 服务中完成绑定。", status: "需要配置" });
-  if (types.has("custom")) checks.push({ level: "setup", icon: "?", title: "自定义 Markdown", detail: "请确认粘贴内容引用的图片、密钥或工作流已经配置。", status: "需要检查" });
+  if (types.has("spotify")) {
+    const configured = state.blocks.filter(block => block.type === "spotify").every(block => spotifyUidConfigured(block.props.uid));
+    checks.push({ level: "setup", icon: "!", title: "Spotify 正在播放", detail: configured ? "已填写 UID；如果预览失败，请重新绑定或刷新 Spotify 授权。" : "当前仍是占位 UID；请先绑定 Spotify，再填写服务提供的真实 UID。", status: configured ? "检查授权" : "需要绑定" });
+  }
+  if (types.has("custom")) checks.push({ level: "setup", icon: "?", title: "自定义 Markdown", detail: "画布只显示源码，不加载其中的图片或 HTML；导出时会原样保留。", status: "源码预览" });
   return checks;
 }
 
@@ -712,9 +869,18 @@ function safeRelativePath(value, fallback) {
 }
 
 function generateSnakeWorkflow() {
-  const snake = state.blocks.find(block => block.type === "snake");
-  const branch = safeGitRef(snake?.props.branch);
-  return [
+  const blocks = state.blocks.filter(block => block.type === "snake");
+  const groups = [];
+  blocks.forEach(block => {
+    const branch = safeGitRef(block.props.branch);
+    let group = groups.find(item => item.branch === branch);
+    if (!group) {
+      group = { branch, directory: blocks.length === 1 ? "dist" : `dist-snake-${groups.length + 1}`, blocks: [] };
+      groups.push(group);
+    }
+    group.blocks.push(block);
+  });
+  const workflow = [
     "name: Generate contribution snake",
     "",
     "on:",
@@ -727,31 +893,40 @@ function generateSnakeWorkflow() {
     "    permissions:",
     "      contents: write",
     "    runs-on: ubuntu-latest",
-    "    timeout-minutes: 5",
-    "    steps:",
-    "      - name: Generate contribution snake",
-    "        uses: Platane/snk/svg-only@v3",
-    "        with:",
-    "          github_user_name: ${{ github.repository_owner }}",
-    "          outputs: |",
-    "            dist/github-contribution-grid-snake.svg",
-    "            dist/github-contribution-grid-snake-dark.svg?palette=github-dark",
-    "",
-    "      - name: Publish SVG files",
-    "        uses: crazy-max/ghaction-github-pages@v3.1.0",
-    "        with:",
-    `          target_branch: ${branch}`,
-    "          build_dir: dist",
-    "        env:",
-    "          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
-    ""
-  ].join("\n");
+    "    timeout-minutes: 10",
+    "    steps:"
+  ];
+  groups.forEach(group => {
+    group.blocks.forEach(block => {
+      const names = snakeAssetNames(block);
+      workflow.push(
+        `      - name: Generate snake for ${safeGithubUser(block.props.username)}`,
+        "        uses: Platane/snk/svg-only@v3",
+        "        with:",
+        `          github_user_name: ${safeGithubUser(block.props.username)}`,
+        "          outputs: |",
+        `            ${group.directory}/${names.light}`,
+        `            ${group.directory}/${names.dark}?palette=github-dark`,
+        ""
+      );
+    });
+    workflow.push(
+      `      - name: Publish SVG files to ${group.branch}`,
+      "        uses: crazy-max/ghaction-github-pages@v3.1.0",
+      "        with:",
+      `          target_branch: ${group.branch}`,
+      `          build_dir: ${group.directory}`,
+      "        env:",
+      "          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+      ""
+    );
+  });
+  return workflow.join("\n");
 }
 
 function generateMetricsWorkflow() {
-  const block = state.blocks.find(item => item.type === "metrics");
-  const filename = safeRelativePath(block?.props.filename, "github-metrics.svg");
-  return [
+  const blocks = state.blocks.filter(item => item.type === "metrics");
+  const workflow = [
     "name: GitHub Metrics",
     "",
     "on:",
@@ -764,18 +939,25 @@ function generateMetricsWorkflow() {
     "    runs-on: ubuntu-latest",
     "    permissions:",
     "      contents: write",
-    "    steps:",
-    "      - uses: lowlighter/metrics@latest",
-    "        with:",
-    "          token: ${{ secrets.METRICS_TOKEN }}",
-    "          user: ${{ github.repository_owner }}",
-    `          filename: ${filename}`,
-    ""
-  ].join("\n");
+    "    steps:"
+  ];
+  blocks.forEach(block => {
+    workflow.push(
+      `      - name: Generate ${resolvedOutputPath(block, "filename", "github-metrics.svg")}`,
+      "        uses: lowlighter/metrics@latest",
+      "        with:",
+      "          token: ${{ secrets.METRICS_TOKEN }}",
+      `          user: ${safeGithubUser(block.props.username)}`,
+      `          filename: ${resolvedOutputPath(block, "filename", "github-metrics.svg")}`,
+      ""
+    );
+  });
+  return workflow.join("\n");
 }
 
 function generateContrib3dWorkflow() {
-  return [
+  const groups = contrib3dGroups();
+  const workflow = [
     "name: GitHub Profile 3D Contrib",
     "",
     "on:",
@@ -790,11 +972,24 @@ function generateContrib3dWorkflow() {
     "  build:",
     "    runs-on: ubuntu-latest",
     "    steps:",
-    "      - uses: actions/checkout@v5",
-    "      - uses: yoshi389111/github-profile-3d-contrib@latest",
-    "        env:",
-    "          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
-    "          USERNAME: ${{ github.repository_owner }}",
+    "      - uses: actions/checkout@v5"
+  ];
+  groups.forEach(group => {
+    workflow.push(
+      `      - name: Generate 3D contributions for ${group.username}`,
+      "        uses: yoshi389111/github-profile-3d-contrib@latest",
+      "        env:",
+      "          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+      `          USERNAME: ${group.username}`
+    );
+    if (groups.length > 1) workflow.push(
+      `      - name: Store ${group.username} output`,
+      "        run: |",
+      `          rm -rf ${group.directory}`,
+      `          mv profile-3d-contrib ${group.directory}`
+    );
+  });
+  workflow.push(
     "      - name: Commit and push",
     "        run: |",
     "          git config user.name github-actions",
@@ -804,14 +999,13 @@ function generateContrib3dWorkflow() {
     "            git push",
     "          fi",
     ""
-  ].join("\n");
+  );
+  return workflow.join("\n");
 }
 
 function generateSpaceShooterWorkflow() {
-  const block = state.blocks.find(item => item.type === "spaceshooter");
-  const output = safeRelativePath(block?.props.output, "game.gif");
-  const strategy = ["random", "column", "row"].includes(block?.props.strategy) ? block.props.strategy : "random";
-  return [
+  const blocks = state.blocks.filter(item => item.type === "spaceshooter");
+  const workflow = [
     "name: Update Space Shooter Game",
     "",
     "on:",
@@ -828,19 +1022,30 @@ function generateSpaceShooterWorkflow() {
     "    steps:",
     "      - uses: actions/checkout@v6",
     "        with:",
-    "          fetch-depth: 2",
-    "      - uses: czl9707/gh-space-shooter@v2",
-    "        with:",
-    "          github-token: ${{ secrets.GITHUB_TOKEN }}",
-    `          output-path: ${output}`,
-    `          strategy: ${strategy}`,
-    ""
-  ].join("\n");
+    "          fetch-depth: 2"
+  ];
+  blocks.forEach(block => {
+    const output = resolvedOutputPath(block, "output", "game.gif");
+    const strategy = ["random", "column", "row"].includes(block.props.strategy) ? block.props.strategy : "random";
+    workflow.push(
+      `      - name: Generate ${output}`,
+      "        uses: czl9707/gh-space-shooter@v2",
+      "        with:",
+      "          github-token: ${{ secrets.GITHUB_TOKEN }}",
+      `          username: ${safeGithubUser(block.props.username)}`,
+      `          output-path: ${output}`,
+      `          strategy: ${strategy}`,
+      `          commit-message: "chore: update ${output}"`,
+      ""
+    );
+  });
+  return workflow.join("\n");
 }
 
 function generateSetupGuide() {
   const username = state.profile.login || "your-username";
   const hasSnake = state.blocks.some(block => block.type === "snake");
+  const hasActivity = state.blocks.some(block => block.type === "activity");
   const hasMetrics = state.blocks.some(block => block.type === "metrics");
   const hasContrib3d = state.blocks.some(block => block.type === "contrib3d");
   const hasSpaceShooter = state.blocks.some(block => block.type === "spaceshooter");
@@ -861,6 +1066,12 @@ function generateSetupGuide() {
     "2. 在仓库的 Settings → Actions → General 中允许工作流拥有读写权限。",
     "3. 打开 Actions，手动运行一次 Generate contribution snake。之后工作流会每天自动更新。",
     "4. 首次运行完成后，README 中的贪吃蛇图片才会出现。"
+  );
+  if (hasActivity) sections.push(
+    "",
+    "## 贡献活动",
+    "",
+    "默认的公开图表部署目前不可用，而且不由仓库内的 GitHub Action 生成。可以等待上游恢复，或自部署服务后在组件属性中填写完整的 `/graph` 接口地址。发布前请确认真实预览已经成功加载。"
   );
   if (hasMetrics) sections.push(
     "",
@@ -887,19 +1098,19 @@ function generateSetupGuide() {
     "",
     "## 终端动图",
     "",
-    "按照 https://github.com/x0rzavi/github-readme-terminal 的说明生成 GIF，并把文件提交到仓库，或在组件属性中填写可公开访问的图片 URL。"
+    "按照 https://github.com/x0rzavi/github-readme-terminal 的说明生成 GIF，并把文件提交到仓库，或在组件属性中填写可公开访问的图片 URL。相对路径会从同名主页仓库的默认分支读取；文件不存在时，画布会显示待生成提示。"
   );
   if (hasSpotify) sections.push(
     "",
     "## Spotify 正在播放",
     "",
-    "请先访问 https://spotify-github-profile.kittinanx.com/ 完成 Spotify 账号绑定，并确认组件中的 UID 正确。"
+    "请先访问 https://spotify-github-profile.kittinanx.com/ 完成 Spotify 账号绑定，并确认组件中的 UID 正确。占位 UID 不会导出损坏的图片，只会留下配置注释。"
   );
   if (hasCustom) sections.push(
     "",
     "## 自定义 Markdown",
     "",
-    "请自行检查其中引用的外部图片、服务、密钥或额外工作流。Readme Studio 会原样导出这部分内容。"
+    "画布仅显示 Markdown 源码，不会加载其中的图片或 HTML。请自行检查引用的外部图片、服务、密钥或额外工作流；Readme Studio 会原样导出这部分内容。"
   );
   sections.push("", "## 说明", "", "统计卡片、连续贡献、奖杯等动态图片由第三方服务提供，通常不需要仓库内的 GitHub Action，但服务短暂不可用时图片可能无法加载。", "");
   return sections.join("\n");
@@ -920,6 +1131,7 @@ function beginGitHubLogin() {
     showToast("一键发布后端尚未配置，仍可下载 ZIP");
     return;
   }
+  lastPublishError = "";
   const returnTo = `${location.origin}${location.pathname}${location.search}`;
   location.assign(`${API_BASE_URL}/auth/start?return_to=${encodeURIComponent(returnTo)}`);
 }
@@ -937,28 +1149,33 @@ function renderPublishPanel() {
   const connected = Boolean(publishSession);
   panel.classList.toggle("connected", connected);
   topButton.classList.toggle("connected", connected);
-  topLabel.textContent = connected ? `@${publishSession.login}` : "GitHub 登录";
+  topLabel.textContent = connected ? `@${publishSession.login}` : "连接 GitHub";
   result.hidden = !lastPublishedUrl;
   if (lastPublishedUrl) result.href = lastPublishedUrl;
 
   if (connected) {
-    title.textContent = `已连接 @${publishSession.login}`;
-    description.textContent = `将创建或更新 ${publishSession.login}/${publishSession.login}；完成后立即撤销本次令牌。`;
+    title.textContent = `已安全连接 @${publishSession.login}`;
+    description.textContent = `只会更新 ${publishSession.login}/${publishSession.login}；短期令牌仅限该仓库，发布后自动卸载 App。`;
     action.textContent = `发布到 ${publishSession.login}/${publishSession.login}`;
     action.disabled = false;
+  } else if (lastPublishError) {
+    title.textContent = "GitHub App 安装未完成";
+    description.textContent = lastPublishError;
+    action.textContent = "重新安装";
+    action.disabled = false;
   } else if (lastPublishedUrl) {
-    title.textContent = lastAuthorizationRevoked ? "发布完成，授权已撤销" : "发布完成，请检查 GitHub 授权";
-    description.textContent = lastAuthorizationRevoked
-      ? "Readme Studio 不再持有本次 GitHub 访问令牌。需要再次发布时请重新登录。"
-      : "自动撤销令牌未得到 GitHub 确认，请在 GitHub Settings → Applications 中手动撤销。";
-    action.textContent = "再次登录发布";
+    title.textContent = lastInstallationRemoved ? "发布完成，GitHub App 已卸载" : "发布完成，请检查 GitHub App 安装";
+    description.textContent = lastInstallationRemoved
+      ? "短期安装令牌已结束，Readme Studio 已解除对仓库的访问；再次发布时需要重新安装。"
+      : "自动卸载未得到 GitHub 确认，请在 GitHub Settings → Applications 中手动卸载 Readme Studio。";
+    action.textContent = "再次安装并发布";
     action.disabled = false;
   } else {
-    title.textContent = "连接 GitHub 后一键发布";
+    title.textContent = "安装 GitHub App 后安全发布";
     description.textContent = API_BASE_URL
-      ? "只会创建或更新与你用户名同名的公开仓库；完成后立即撤销本次令牌。"
+      ? "请先创建与你用户名同名的公开仓库；安装时只选择该仓库，发布后自动卸载 App。"
       : "后端地址尚未配置；编辑和下载功能不受影响。";
-    action.textContent = "登录并发布";
+    action.textContent = "安装并发布";
     action.disabled = false;
   }
 }
@@ -982,16 +1199,18 @@ async function publishToGitHub() {
       body: JSON.stringify({ files: getProjectFiles({ includeSetup: false }) })
     });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || "发布失败，请重新登录后再试");
+    if (!response.ok) throw new Error(data.error || "发布失败，请重新安装 GitHub App 后再试");
     lastPublishedUrl = data.repositoryUrl || `https://github.com/${publishSession.login}/${publishSession.login}`;
-    lastAuthorizationRevoked = data.authorizationRevoked !== false;
+    lastInstallationRemoved = data.installationRemoved !== false;
+    lastPublishError = "";
     clearPublishSession();
     renderPublishPanel();
-    showToast(lastAuthorizationRevoked ? "已发布到 GitHub，本次授权已撤销" : "发布完成，请手动检查 GitHub 授权");
+    showToast(lastInstallationRemoved ? "已发布到 GitHub，App 已自动卸载" : "发布完成，请手动检查 GitHub App 安装");
   } catch (error) {
     clearPublishSession();
+    lastPublishError = error.message || "发布失败，会话已结束，请检查 GitHub App 安装";
     renderPublishPanel();
-    showToast(error.message || "发布失败，会话已结束，请检查 GitHub 授权");
+    showToast(lastPublishError);
   } finally {
     button.disabled = false;
   }

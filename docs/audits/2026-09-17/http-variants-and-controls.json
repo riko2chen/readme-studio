@@ -1,0 +1,659 @@
+[
+  {
+    "type": "capsule",
+    "variant": "color=auto",
+    "url": "https://capsule-render.vercel.app/api?type=waving&color=auto&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64",
+    "checkedAt": "2026-09-17T11:33:22.456141+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 2340,
+    "svgText": [
+      "Welcome to my profile",
+      "Build · Learn · Share"
+    ]
+  },
+  {
+    "type": "capsule",
+    "variant": "color=0:7C5CFF,100:1F6FEB",
+    "url": "https://capsule-render.vercel.app/api?type=waving&color=0%3A7C5CFF%2C100%3A1F6FEB&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64",
+    "checkedAt": "2026-09-17T11:33:22.457046+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 2584,
+    "svgText": [
+      "Welcome to my profile",
+      "Build · Learn · Share"
+    ]
+  },
+  {
+    "type": "capsule",
+    "variant": "color=0:0D1117,100:30363D",
+    "url": "https://capsule-render.vercel.app/api?type=waving&color=0%3A0D1117%2C100%3A30363D&height=180&section=header&text=Welcome+to+my+profile&fontSize=38&fontColor=ffffff&animation=fadeIn&desc=Build+%C2%B7+Learn+%C2%B7+Share&descAlignY=64",
+    "checkedAt": "2026-09-17T11:33:22.457184+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 2584,
+    "svgText": [
+      "Welcome to my profile",
+      "Build · Learn · Share"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=flat-square",
+    "url": "https://img.shields.io/badge/TypeScript-161B22?style=flat-square&logo=typescript&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:22.457329+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2300,
+    "svgText": [
+      "TypeScript"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=flat-square",
+    "url": "https://img.shields.io/badge/React-161B22?style=flat-square&logo=react&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:23.456990+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 4461,
+    "svgText": [
+      "React"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=flat-square",
+    "url": "https://img.shields.io/badge/Node.js-161B22?style=flat-square&logo=nodedotjs&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:23.548211+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2711,
+    "svgText": [
+      "Node.js"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=flat-square",
+    "url": "https://img.shields.io/badge/Python-161B22?style=flat-square&logo=python&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:23.548610+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2588,
+    "svgText": [
+      "Python"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=flat-square",
+    "url": "https://img.shields.io/badge/Figma-161B22?style=flat-square&logo=figma&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:23.624010+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2017,
+    "svgText": [
+      "Figma"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=flat-square",
+    "url": "https://img.shields.io/badge/Git-161B22?style=flat-square&logo=git&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:24.597470+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 1123,
+    "svgText": [
+      "Git"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=for-the-badge",
+    "url": "https://img.shields.io/badge/TypeScript-161B22?style=for-the-badge&logo=typescript&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:24.597775+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2280,
+    "svgText": [
+      "TYPESCRIPT"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=for-the-badge",
+    "url": "https://img.shields.io/badge/React-161B22?style=for-the-badge&logo=react&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:24.788109+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 4444,
+    "svgText": [
+      "REACT"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=for-the-badge",
+    "url": "https://img.shields.io/badge/Node.js-161B22?style=for-the-badge&logo=nodedotjs&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:24.788305+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2696,
+    "svgText": [
+      "NODE.JS"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=for-the-badge",
+    "url": "https://img.shields.io/badge/Python-161B22?style=for-the-badge&logo=python&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:25.646825+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2566,
+    "svgText": [
+      "PYTHON"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=for-the-badge",
+    "url": "https://img.shields.io/badge/Figma-161B22?style=for-the-badge&logo=figma&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:25.674627+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 2000,
+    "svgText": [
+      "FIGMA"
+    ]
+  },
+  {
+    "type": "skills",
+    "variant": "style=for-the-badge",
+    "url": "https://img.shields.io/badge/Git-161B22?style=for-the-badge&logo=git&logoColor=white",
+    "checkedAt": "2026-09-17T11:33:25.838447+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml;charset=utf-8",
+    "bytes": 1106,
+    "svgText": [
+      "GIT"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=transparent",
+    "url": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=transparent&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:25.838695+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7850,
+    "svgText": [
+      "The Octocat's GitHub Stats",
+      "B",
+      "Total Stars Earned:",
+      "22.2k",
+      "Total Commits (last year):",
+      "0",
+      "Total PRs:",
+      "8",
+      "Total Issues:",
+      "5",
+      "Contributed to (last year):",
+      "0"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=transparent",
+    "url": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=transparent&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:26.694647+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 4457,
+    "svgText": [
+      "Most Used Languages",
+      "CSS 77.32%",
+      "HTML 22.43%",
+      "JavaScript 0.25%"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=tokyonight",
+    "url": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=tokyonight&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:26.695646+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7848,
+    "svgText": [
+      "The Octocat's GitHub Stats",
+      "B",
+      "Total Stars Earned:",
+      "22.2k",
+      "Total Commits (last year):",
+      "0",
+      "Total PRs:",
+      "8",
+      "Total Issues:",
+      "5",
+      "Contributed to (last year):",
+      "0"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=tokyonight",
+    "url": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=tokyonight&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:26.887382+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 4455,
+    "svgText": [
+      "Most Used Languages",
+      "CSS 77.32%",
+      "HTML 22.43%",
+      "JavaScript 0.25%"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=radical",
+    "url": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=radical&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:27.846996+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7848,
+    "svgText": [
+      "The Octocat's GitHub Stats",
+      "B",
+      "Total Stars Earned:",
+      "22.2k",
+      "Total Commits (last year):",
+      "0",
+      "Total PRs:",
+      "8",
+      "Total Issues:",
+      "5",
+      "Contributed to (last year):",
+      "0"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=radical",
+    "url": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=radical&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:28.336762+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 4455,
+    "svgText": [
+      "Most Used Languages",
+      "CSS 77.32%",
+      "HTML 22.43%",
+      "JavaScript 0.25%"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=nord",
+    "url": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=nord&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:28.587794+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7848,
+    "svgText": [
+      "The Octocat's GitHub Stats",
+      "B",
+      "Total Stars Earned:",
+      "22.2k",
+      "Total Commits (last year):",
+      "0",
+      "Total PRs:",
+      "8",
+      "Total Issues:",
+      "5",
+      "Contributed to (last year):",
+      "0"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=nord",
+    "url": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=nord&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:28.663429+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 4455,
+    "svgText": [
+      "Most Used Languages",
+      "CSS 77.32%",
+      "HTML 22.43%",
+      "JavaScript 0.25%"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=vue-dark",
+    "url": "https://github-stats-extended.vercel.app/api?username=octocat&show_icons=true&theme=vue-dark&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:29.839872+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7848,
+    "svgText": [
+      "The Octocat's GitHub Stats",
+      "B",
+      "Total Stars Earned:",
+      "22.2k",
+      "Total Commits (last year):",
+      "0",
+      "Total PRs:",
+      "8",
+      "Total Issues:",
+      "5",
+      "Contributed to (last year):",
+      "0"
+    ]
+  },
+  {
+    "type": "stats",
+    "variant": "theme=vue-dark",
+    "url": "https://github-stats-extended.vercel.app/api/top-langs/?username=octocat&layout=compact&theme=vue-dark&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:29.864122+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 4455,
+    "svgText": [
+      "Most Used Languages",
+      "CSS 77.32%",
+      "HTML 22.43%",
+      "JavaScript 0.25%"
+    ]
+  },
+  {
+    "type": "streak",
+    "variant": "theme=transparent",
+    "url": "https://streak-stats.demolab.com/?user=octocat&theme=transparent&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:30.368195+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7068,
+    "svgText": [
+      "38",
+      "Total Contributions",
+      "Jan 25, 2011 - Present",
+      "Current Streak",
+      "Sep 17",
+      "0",
+      "3",
+      "Longest Streak",
+      "Jan 25, 2011 - Jan 27, 2011"
+    ]
+  },
+  {
+    "type": "streak",
+    "variant": "theme=tokyonight",
+    "url": "https://streak-stats.demolab.com/?user=octocat&theme=tokyonight&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:30.425536+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7051,
+    "svgText": [
+      "38",
+      "Total Contributions",
+      "Jan 25, 2011 - Present",
+      "Current Streak",
+      "Sep 17",
+      "0",
+      "3",
+      "Longest Streak",
+      "Jan 25, 2011 - Jan 27, 2011"
+    ]
+  },
+  {
+    "type": "streak",
+    "variant": "theme=radical",
+    "url": "https://streak-stats.demolab.com/?user=octocat&theme=radical&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:31.413597+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7051,
+    "svgText": [
+      "38",
+      "Total Contributions",
+      "Jan 25, 2011 - Present",
+      "Current Streak",
+      "Sep 17",
+      "0",
+      "3",
+      "Longest Streak",
+      "Jan 25, 2011 - Jan 27, 2011"
+    ]
+  },
+  {
+    "type": "streak",
+    "variant": "theme=nord",
+    "url": "https://streak-stats.demolab.com/?user=octocat&theme=nord&hide_border=true",
+    "checkedAt": "2026-09-17T11:33:31.605661+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 7051,
+    "svgText": [
+      "38",
+      "Total Contributions",
+      "Jan 25, 2011 - Present",
+      "Current Streak",
+      "Sep 17",
+      "0",
+      "3",
+      "Longest Streak",
+      "Jan 25, 2011 - Jan 27, 2011"
+    ]
+  },
+  {
+    "type": "summary",
+    "variant": "theme=transparent",
+    "url": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=transparent",
+    "checkedAt": "2026-09-17T11:33:32.258340+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 6841,
+    "svgText": [
+      "octocat (The Octocat)",
+      "38 Contributions on GitHub",
+      "6 Public Repos",
+      "Joined GitHub 15 years ago",
+      "octocat@github.com",
+      "25/09",
+      "25/11",
+      "26/01",
+      "26/03",
+      "26/05",
+      "26/07",
+      "26/09",
+      "0",
+      "contributions in the last year"
+    ]
+  },
+  {
+    "type": "summary",
+    "variant": "theme=tokyonight",
+    "url": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=tokyonight",
+    "checkedAt": "2026-09-17T11:33:32.462515+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 6839,
+    "svgText": [
+      "octocat (The Octocat)",
+      "38 Contributions on GitHub",
+      "6 Public Repos",
+      "Joined GitHub 15 years ago",
+      "octocat@github.com",
+      "25/09",
+      "25/11",
+      "26/01",
+      "26/03",
+      "26/05",
+      "26/07",
+      "26/09",
+      "0",
+      "contributions in the last year"
+    ]
+  },
+  {
+    "type": "summary",
+    "variant": "theme=dracula",
+    "url": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=dracula",
+    "checkedAt": "2026-09-17T11:33:33.354256+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 6839,
+    "svgText": [
+      "octocat (The Octocat)",
+      "38 Contributions on GitHub",
+      "6 Public Repos",
+      "Joined GitHub 15 years ago",
+      "octocat@github.com",
+      "25/09",
+      "25/11",
+      "26/01",
+      "26/03",
+      "26/05",
+      "26/07",
+      "26/09",
+      "0",
+      "contributions in the last year"
+    ]
+  },
+  {
+    "type": "summary",
+    "variant": "theme=nord_dark",
+    "url": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=nord_dark",
+    "checkedAt": "2026-09-17T11:33:33.384384+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 6839,
+    "svgText": [
+      "octocat (The Octocat)",
+      "38 Contributions on GitHub",
+      "6 Public Repos",
+      "Joined GitHub 15 years ago",
+      "octocat@github.com",
+      "25/09",
+      "25/11",
+      "26/01",
+      "26/03",
+      "26/05",
+      "26/07",
+      "26/09",
+      "0",
+      "contributions in the last year"
+    ]
+  },
+  {
+    "type": "summary",
+    "variant": "theme=vue",
+    "url": "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=octocat&theme=vue",
+    "checkedAt": "2026-09-17T11:33:36.131694+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml; charset=utf-8",
+    "bytes": 6839,
+    "svgText": [
+      "octocat (The Octocat)",
+      "38 Contributions on GitHub",
+      "6 Public Repos",
+      "Joined GitHub 15 years ago",
+      "octocat@github.com",
+      "25/09",
+      "25/11",
+      "26/01",
+      "26/03",
+      "26/05",
+      "26/07",
+      "26/09",
+      "0",
+      "contributions in the last year"
+    ]
+  },
+  {
+    "type": "spotify",
+    "variant": "theme=natemoo-re",
+    "url": "https://spotify-github-profile.kittinanx.com/api/view?uid=your_spotify_uid&cover_image=true&theme=natemoo-re&show_offline=false&background_color=121212",
+    "checkedAt": "2026-09-17T11:33:36.131950+00:00",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 151,
+    "bodyExcerpt": "Error: Invalid Spotify access_token or refresh_token. Possibly the token revoked. Please re-login at https://github.com/kittinan/spotify-github-profile"
+  },
+  {
+    "type": "spotify",
+    "variant": "theme=novatorem",
+    "url": "https://spotify-github-profile.kittinanx.com/api/view?uid=your_spotify_uid&cover_image=true&theme=novatorem&show_offline=false&background_color=121212",
+    "checkedAt": "2026-09-17T11:33:37.029001+00:00",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 151,
+    "bodyExcerpt": "Error: Invalid Spotify access_token or refresh_token. Possibly the token revoked. Please re-login at https://github.com/kittinan/spotify-github-profile"
+  },
+  {
+    "type": "activity",
+    "variant": "minimal-octocat",
+    "url": "https://github-readme-activity-graph.vercel.app/graph?username=octocat",
+    "checkedAt": "2026-09-17T11:33:37.056724+00:00",
+    "status": 402,
+    "contentType": "text/plain; charset=utf-8",
+    "bytes": 78,
+    "bodyExcerpt": "Payment required\n\nDEPLOYMENT_DISABLED\n\nsfo1::tcvb2-1789644817994-b1f78643ec04\n"
+  },
+  {
+    "type": "activity",
+    "variant": "upstream-example",
+    "url": "https://github-readme-activity-graph.vercel.app/graph?username=Ashutosh00710",
+    "checkedAt": "2026-09-17T11:33:37.372637+00:00",
+    "status": 402,
+    "contentType": "text/plain; charset=utf-8",
+    "bytes": 78,
+    "bodyExcerpt": "Payment required\n\nDEPLOYMENT_DISABLED\n\nsfo1::5gfb8-1789644818223-5bc676b6374e\n"
+  },
+  {
+    "type": "activity",
+    "variant": "deployment-root",
+    "url": "https://github-readme-activity-graph.vercel.app/",
+    "checkedAt": "2026-09-17T11:33:38.102205+00:00",
+    "status": 402,
+    "contentType": "text/plain; charset=utf-8",
+    "bytes": 78,
+    "bodyExcerpt": "Payment required\n\nDEPLOYMENT_DISABLED\n\nsfo1::fhzbb-1789644819057-f024a8aa86fe\n"
+  },
+  {
+    "type": "terminal",
+    "variant": "upstream-sample",
+    "url": "https://raw.githubusercontent.com/x0rzavi/github-readme-terminal/HEAD/docs/assets/sample.gif",
+    "checkedAt": "2026-09-17T11:33:38.229297+00:00",
+    "status": 200,
+    "contentType": "image/gif",
+    "bytes": 47097
+  },
+  {
+    "type": "snake",
+    "variant": "upstream-dark",
+    "url": "https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake-dark.svg",
+    "checkedAt": "2026-09-17T11:33:38.316690+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 100140,
+    "svgText": []
+  },
+  {
+    "type": "snake",
+    "variant": "upstream-light",
+    "url": "https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg",
+    "checkedAt": "2026-09-17T11:33:39.164029+00:00",
+    "status": 200,
+    "contentType": "image/svg+xml",
+    "bytes": 100140,
+    "svgText": []
+  }
+]
